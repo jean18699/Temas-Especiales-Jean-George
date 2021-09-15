@@ -66,14 +66,13 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="32dp"
-            android:layout_marginEnd="64dp"
-            android:layout_marginBottom="128dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
             android:prompt="@string/spinnerTitle"
-            app:layout_constraintBottom_toTopOf="@+id/radProgramarNo"
+            app:layout_constraintBottom_toTopOf="@+id/editDate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/txtGenero"
-            app:layout_constraintTop_toBottomOf="@+id/editApellido"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/editApellido" />
 
         <TextView
             android:id="@+id/txtNacimiento"
@@ -81,7 +80,6 @@
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
-            android:layout_marginEnd="4dp"
             android:layout_marginBottom="16dp"
             android:text="Nacimiento:"
             app:layout_constraintBottom_toTopOf="@+id/txtProgramar"
@@ -94,12 +92,12 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="76dp"
-            android:layout_marginEnd="64dp"
-            android:layout_marginBottom="48dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
             android:ems="10"
             android:inputType="date"
-            app:layout_constraintBottom_toTopOf="@+id/radProgramarNo"
+            app:layout_constraintBottom_toTopOf="@+id/txtProgramar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/txtNacimiento"
@@ -124,12 +122,11 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="210dp"
             android:text="Lenguaje:"
             app:layout_constraintBottom_toTopOf="@+id/btnEnviar"
-            app:layout_constraintEnd_toStartOf="@+id/chkCPP"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintEnd_toStartOf="@+id/chkJava"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtProgramar" />
 
@@ -147,9 +144,9 @@
 
         <RadioButton
             android:id="@+id/radProgramarSi"
-            android:layout_width="70dp"
+            android:layout_width="0dp"
             android:layout_height="27dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="38dp"
             android:layout_marginEnd="8dp"
             android:text="Si"
             app:layout_constraintBottom_toBottomOf="@+id/txtProgramar"
@@ -160,10 +157,10 @@
 
         <CheckBox
             android:id="@+id/chkCSharp"
-            android:layout_width="87dp"
+            android:layout_width="0dp"
             android:layout_height="44dp"
-            android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="44dp"
             android:text="C #"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.064"
@@ -172,17 +169,21 @@
 
         <CheckBox
             android:id="@+id/chkJava"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="8dp"
             android:text="Java"
             app:layout_constraintBaseline_toBaselineOf="@+id/chkPython"
-            app:layout_constraintStart_toStartOf="@+id/chkJS" />
+            app:layout_constraintEnd_toStartOf="@+id/chkPython"
+            app:layout_constraintStart_toEndOf="@+id/txtLenguaje" />
 
         <CheckBox
             android:id="@+id/chkPython"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:layout_marginEnd="44dp"
             android:text="Python"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.289"
@@ -191,28 +192,32 @@
 
         <CheckBox
             android:id="@+id/chkCPP"
-            android:layout_width="84dp"
+            android:layout_width="0dp"
             android:layout_height="47dp"
-            android:layout_marginStart="148dp"
+            android:layout_marginStart="38dp"
+            android:layout_marginEnd="8dp"
             android:text="C/C++"
             app:layout_constraintBaseline_toBaselineOf="@+id/chkCSharp"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/chkCSharp"
+            app:layout_constraintStart_toEndOf="@+id/txtLenguaje" />
 
         <CheckBox
             android:id="@+id/chkJS"
-            android:layout_width="64dp"
+            android:layout_width="0dp"
             android:layout_height="48dp"
-            android:layout_marginStart="148dp"
+            android:layout_marginStart="38dp"
+            android:layout_marginEnd="8dp"
             android:text="JS"
             app:layout_constraintBaseline_toBaselineOf="@+id/chkGolang2"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/chkGolang2"
+            app:layout_constraintStart_toEndOf="@+id/txtLenguaje" />
 
         <CheckBox
             android:id="@+id/chkGolang2"
-            android:layout_width="94dp"
+            android:layout_width="0dp"
             android:layout_height="41dp"
-            android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="44dp"
             android:text="Go Land"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.054"
