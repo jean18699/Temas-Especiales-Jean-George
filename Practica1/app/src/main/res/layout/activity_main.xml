@@ -1,238 +1,247 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:fillViewport="true"
+    >
 
-    <CheckBox
-        android:id="@+id/chkCPP"
-        android:layout_width="84dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="192dp"
-        android:text="C/C++"
-        app:layout_constraintBaseline_toBaselineOf="@+id/chkCSharp"
-        app:layout_constraintStart_toStartOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/editNombre"
-        android:layout_width="0dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:ems="10"
-        android:hint="Digite un nombre"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/editApellido"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/editNombre"
+            android:layout_width="0dp"
+            android:layout_height="49dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:ems="10"
+            android:hint="Digite un nombre"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toTopOf="@+id/editApellido"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editApellido"
-        android:layout_width="0dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:hint="Digite un apellido"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.51"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editNombre" />
+        <EditText
+            android:id="@+id/editApellido"
+            android:layout_width="0dp"
+            android:layout_height="49dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:ems="10"
+            android:hint="Digite un apellido"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.51"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editNombre" />
 
-    <TextView
-        android:id="@+id/txtGenero"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
-        android:text="Genero:"
-        app:layout_constraintBottom_toTopOf="@+id/txtNacimiento"
-        app:layout_constraintEnd_toStartOf="@+id/spnGenero"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editApellido" />
+        <TextView
+            android:id="@+id/txtGenero"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:text="Genero:"
+            app:layout_constraintBottom_toTopOf="@+id/txtNacimiento"
+            app:layout_constraintEnd_toStartOf="@+id/spnGenero"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editApellido"
+            app:layout_constraintVertical_bias="0.45999998"
+            tools:visibility="visible" />
 
-    <Spinner
-        android:id="@+id/spnGenero"
-        android:layout_width="122dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginBottom="65dp"
-        android:prompt="@string/spinnerTitle"
-        app:layout_constraintBottom_toTopOf="@+id/radProgramarNo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/txtGenero"
-        app:layout_constraintTop_toBottomOf="@+id/editApellido"
-        app:layout_constraintVertical_bias="0.0" />
+        <Spinner
+            android:id="@+id/spnGenero"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="128dp"
+            android:prompt="@string/spinnerTitle"
+            app:layout_constraintBottom_toTopOf="@+id/radProgramarNo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txtGenero"
+            app:layout_constraintTop_toBottomOf="@+id/editApellido"
+            app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
-        android:id="@+id/txtNacimiento"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="32dp"
-        android:text="Nacimiento:"
-        app:layout_constraintBottom_toTopOf="@+id/txtProgramar"
-        app:layout_constraintEnd_toStartOf="@+id/editDate"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtGenero" />
+        <TextView
+            android:id="@+id/txtNacimiento"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="16dp"
+            android:text="Nacimiento:"
+            app:layout_constraintBottom_toTopOf="@+id/txtProgramar"
+            app:layout_constraintEnd_toStartOf="@+id/editDate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtGenero" />
 
-    <EditText
-        android:id="@+id/editDate"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="76dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginBottom="48dp"
-        android:ems="10"
-        android:inputType="date"
-        app:layout_constraintBottom_toTopOf="@+id/radProgramarNo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/txtNacimiento"
-        app:layout_constraintTop_toBottomOf="@+id/spnGenero" />
+        <EditText
+            android:id="@+id/editDate"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="76dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="48dp"
+            android:ems="10"
+            android:inputType="date"
+            app:layout_constraintBottom_toTopOf="@+id/radProgramarNo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/txtNacimiento"
+            app:layout_constraintTop_toBottomOf="@+id/spnGenero" />
 
-    <TextView
-        android:id="@+id/txtProgramar"
-        android:layout_width="0dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="36dp"
-        android:text="Le gusta programar?"
-        app:layout_constraintBottom_toTopOf="@+id/txtLenguaje"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtNacimiento"
-        app:layout_constraintVertical_bias="0.0" />
+        <TextView
+            android:id="@+id/txtProgramar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="36dp"
+            android:text="Le gusta programar?"
+            app:layout_constraintBottom_toTopOf="@+id/txtLenguaje"
+            app:layout_constraintEnd_toStartOf="@+id/radProgramarSi"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtNacimiento"
+            app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
-        android:id="@+id/txtLenguaje"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="210dp"
-        android:text="Lenguaje:"
-        app:layout_constraintBottom_toTopOf="@+id/btnEnviar"
-        app:layout_constraintEnd_toStartOf="@+id/chkCPP"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtProgramar" />
+        <TextView
+            android:id="@+id/txtLenguaje"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="210dp"
+            android:text="Lenguaje:"
+            app:layout_constraintBottom_toTopOf="@+id/btnEnviar"
+            app:layout_constraintEnd_toStartOf="@+id/chkCPP"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtProgramar" />
 
-    <RadioButton
-        android:id="@+id/radProgramarNo"
-        android:layout_width="0dp"
-        android:layout_height="31dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="44dp"
-        android:layout_marginBottom="32dp"
-        android:text="No"
-        app:layout_constraintBottom_toTopOf="@+id/chkPython"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/radProgramarSi" />
+        <RadioButton
+            android:id="@+id/radProgramarNo"
+            android:layout_width="0dp"
+            android:layout_height="31dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="44dp"
+            android:layout_marginBottom="32dp"
+            android:text="No"
+            app:layout_constraintBottom_toTopOf="@+id/chkPython"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/radProgramarSi" />
 
-    <RadioButton
-        android:id="@+id/radProgramarSi"
-        android:layout_width="70dp"
-        android:layout_height="27dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="8dp"
-        android:text="Si"
-        app:layout_constraintBottom_toBottomOf="@+id/txtProgramar"
-        app:layout_constraintEnd_toStartOf="@+id/radProgramarNo"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/txtProgramar"
-        app:layout_constraintTop_toTopOf="@+id/txtProgramar" />
+        <RadioButton
+            android:id="@+id/radProgramarSi"
+            android:layout_width="70dp"
+            android:layout_height="27dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="Si"
+            app:layout_constraintBottom_toBottomOf="@+id/txtProgramar"
+            app:layout_constraintEnd_toStartOf="@+id/radProgramarNo"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/txtProgramar"
+            app:layout_constraintTop_toTopOf="@+id/txtProgramar" />
 
-    <CheckBox
-        android:id="@+id/chkJava"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Java"
-        app:layout_constraintBaseline_toBaselineOf="@+id/chkPython"
-        app:layout_constraintStart_toStartOf="@+id/chkJS" />
+        <CheckBox
+            android:id="@+id/chkCSharp"
+            android:layout_width="87dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:text="C #"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.064"
+            app:layout_constraintStart_toEndOf="@+id/chkCPP"
+            app:layout_constraintTop_toBottomOf="@+id/chkGolang2" />
 
-    <CheckBox
-        android:id="@+id/chkJS"
-        android:layout_width="64dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="192dp"
-        android:text="JS"
-        app:layout_constraintBaseline_toBaselineOf="@+id/chkGolang2"
-        app:layout_constraintStart_toStartOf="parent" />
+        <CheckBox
+            android:id="@+id/chkJava"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Java"
+            app:layout_constraintBaseline_toBaselineOf="@+id/chkPython"
+            app:layout_constraintStart_toStartOf="@+id/chkJS" />
 
-    <CheckBox
-        android:id="@+id/chkPython"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="33dp"
-        android:text="Python"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.444"
-        app:layout_constraintStart_toEndOf="@+id/chkJava"
-        app:layout_constraintTop_toBottomOf="@+id/radProgramarSi" />
+        <CheckBox
+            android:id="@+id/chkPython"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Python"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.289"
+            app:layout_constraintStart_toEndOf="@+id/chkJava"
+            app:layout_constraintTop_toBottomOf="@+id/radProgramarSi" />
 
-    <CheckBox
-        android:id="@+id/chkCSharp"
-        android:layout_width="87dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
-        android:text="C #"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.055"
-        app:layout_constraintStart_toEndOf="@+id/chkCPP"
-        app:layout_constraintTop_toBottomOf="@+id/chkGolang2" />
+        <CheckBox
+            android:id="@+id/chkCPP"
+            android:layout_width="84dp"
+            android:layout_height="47dp"
+            android:layout_marginStart="148dp"
+            android:text="C/C++"
+            app:layout_constraintBaseline_toBaselineOf="@+id/chkCSharp"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <CheckBox
-        android:id="@+id/chkGolang2"
-        android:layout_width="94dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:text="Go Land"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.034"
-        app:layout_constraintStart_toEndOf="@+id/chkJS"
-        app:layout_constraintTop_toBottomOf="@+id/chkPython" />
+        <CheckBox
+            android:id="@+id/chkJS"
+            android:layout_width="64dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="148dp"
+            android:text="JS"
+            app:layout_constraintBaseline_toBaselineOf="@+id/chkGolang2"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/btnEnviar"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="16dp"
-        android:text="Enviar"
-        app:layout_constraintBaseline_toBaselineOf="@+id/btnLimpiar"
-        app:layout_constraintEnd_toStartOf="@+id/btnLimpiar"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        <CheckBox
+            android:id="@+id/chkGolang2"
+            android:layout_width="94dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:text="Go Land"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.054"
+            app:layout_constraintStart_toEndOf="@+id/chkJS"
+            app:layout_constraintTop_toBottomOf="@+id/chkPython" />
 
-    <Button
-        android:id="@+id/btnLimpiar"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="16dp"
-        android:text="Limpiar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnEnviar" />
+        <Button
+            android:id="@+id/btnEnviar"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="16dp"
+            android:text="Enviar"
+            app:layout_constraintBaseline_toBaselineOf="@+id/btnLimpiar"
+            app:layout_constraintEnd_toStartOf="@+id/btnLimpiar"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/btnLimpiar"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="16dp"
+            android:text="Limpiar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btnEnviar" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
