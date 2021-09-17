@@ -122,7 +122,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.064"
             app:layout_constraintStart_toEndOf="@+id/chkCPP"
-            app:layout_constraintTop_toBottomOf="@+id/chkGolang2" />
+            app:layout_constraintTop_toBottomOf="@+id/chkGolang" />
 
         <CheckBox
             android:id="@+id/chkJava"
@@ -168,12 +168,12 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:text="JS"
-            app:layout_constraintEnd_toStartOf="@+id/chkGolang2"
+            app:layout_constraintEnd_toStartOf="@+id/chkGolang"
             app:layout_constraintStart_toEndOf="@+id/txtLenguaje"
             app:layout_constraintTop_toBottomOf="@+id/chkCPP" />
 
         <CheckBox
-            android:id="@+id/chkGolang2"
+            android:id="@+id/chkGolang"
             android:layout_width="0dp"
             android:layout_height="41dp"
             android:layout_marginTop="8dp"
@@ -215,44 +215,33 @@
             android:layout_marginTop="108dp"
             android:layout_marginEnd="44dp"
             android:layout_marginBottom="48dp"
+            android:checkedButton="@id/radProgramarSi"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="@+id/txtProgramar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.27"
             app:layout_constraintStart_toEndOf="@+id/txtProgramar"
             app:layout_constraintTop_toBottomOf="@+id/editTextDate">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <RadioButton
+                android:id="@+id/radProgramarSi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="21dp"
+                android:layout_marginBottom="18dp"
+                android:text="Si" />
 
-                <RadioButton
-                    android:id="@+id/radProgramarSi"
-                    android:layout_width="0dp"
-                    android:layout_height="48"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="21dp"
-                    android:layout_marginBottom="18dp"
-                    android:text="Si"
-                    android:onClick="check"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/radProgramarNo"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <RadioButton
+                android:id="@+id/radProgramarNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="21dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="18dp"
+                android:text="No" />
 
-                <RadioButton
-                    android:id="@+id/radProgramarNo"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="21dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="18dp"
-                    android:text="No"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/radProgramarSi"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
         </RadioGroup>
 
         <EditText
@@ -264,6 +253,8 @@
             android:layout_marginEnd="44dp"
             android:ems="10"
             android:inputType="date"
+            android:focusable="false"
+            android:clickable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/txtNacimiento"
