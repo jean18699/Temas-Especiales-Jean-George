@@ -31,7 +31,7 @@ public class SummaryActivity extends AppCompatActivity {
             {
                 if(!listaLenguajes.isEmpty())
                 {
-                    lenguajes = "Mis lenguajes favoritos son: ";
+                    lenguajes = " Mis lenguajes favoritos son: ";
                     for(String lenguaje : extras.getStringArrayList("lenguajes"))
                     {
                         lenguajes += lenguaje + ", ";
@@ -40,11 +40,11 @@ public class SummaryActivity extends AppCompatActivity {
 
                 }else
                 {
-                    lenguajes = "No tengo lenguajes favoritos";
+                    lenguajes = " No tengo lenguajes favoritos";
                 }
             }else
             {
-                lenguajes = "No tengo lenguajes favoritos";
+                lenguajes = " No tengo lenguajes favoritos";
             }
 
 
