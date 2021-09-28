@@ -15,16 +15,21 @@ import android.widget.Switch;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
-    private final String[] perms = {"android.permission.FINE_LOCATION"};
+
     private final int permsRequestCode = 200;
     Button btnCancel;
     Button btnContinue;
+    Switch swtStorage;
     Switch swtLocation;
-    boolean locationAccepted;
+    Switch swtCamera;
+    Switch swtPhone;
+    Switch swtContacts;
     Intent access;
 
 
@@ -34,67 +39,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         access = new Intent(MainActivity.this, AccessActivity.class);
-
+        List<String> perms = new ArrayList<>();
         btnContinue = findViewById(R.id.btnContinue);
         btnCancel = findViewById(R.id.btnCancel);
+        swtStorage = findViewById(R.id.swtStorage);
         swtLocation = findViewById(R.id.swtLocation);
+        swtCamera = findViewById(R.id.swtCamera);
+        swtPhone = findViewById(R.id.swtPhone);
+        swtContacts = findViewById(R.id.swtContacts);
 
+
+        //Evento al presionar el boton de continuar. Se revisara cuales elementos fueron marcados para preguntar por permisos.
         btnContinue.setOnClickListener(v->{
-            if(swtLocation.isChecked()){
 
-                  ActivityCompat.requestPermissions(this,new String[]{"android.permission.ACCESS_FINE_LOCATION"},permsRequestCode);
-            }else
+            if(swtStorage.isChecked()){
+
+                perms.add("android.permission.MANAGE_EXTERNAL_STORAGE");
+
+            }
+            if(swtLocation.isChecked()){
+                perms.add("android.permission.ACCESS_FINE_LOCATION");
+
+            }
+            if(swtCamera.isChecked()){
+                perms.add("android.permission.CAMERA");
+            }
+            if(swtPhone.isChecked())
             {
-                startActivity(access);
+                perms.add("android.permission.CALL_PHONE");
             }
 
+            if(swtContacts.isChecked())
+            {
+                perms.add("android.permission.READ_CONTACTS");
+            }
 
+            ActivityCompat.requestPermissions(this,perms.toArray(new String[0]),permsRequestCode);
+         
+        });
+
+        //Cerrar la actividad al darle al boton Cancel.
+        btnCancel.setOnClickListener(v->{
+            finish();
         });
 
 
-
     }
-
-    //Eventos de click
-    @Override
-    public void onClick(View v){
-        switch (v.getId()){
-
-            case R.id.btnCancel:
-
-                finish();
-                break;
-
-            /*case R.id.btnContinue:
-                if(swtLocation.isChecked()){
-                       finish();
-                    //ActivityCompat.requestPermissions(this,new String[]{ACCESS_FINE_LOCATION},permsRequestCode);
-                }*/
-        }
-     }
 
 
      //Resultados de haber pedido los permisos
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        switch(requestCode)
-        {
-            case permsRequestCode:
-
-                if(grantResults.length > 0)
-                {
-                    locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-
-                    break;
-                }else
-                {
-                    break;
-                }
-            default:
-                access.putExtra("locationAccepted", false);
-        }
 
         startActivity(access);
 
