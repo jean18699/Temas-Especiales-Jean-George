@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
@@ -19,6 +21,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private final String[] perms = {"android.permission.FINE_LOCATION"};
     private final int permsRequestCode = 200;
+    Button btnCancel;
+    Button btnContinue;
+    Switch swtLocation;
+    boolean locationAccepted;
+    Intent access;
 
 
     @Override
@@ -26,15 +33,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button btnCancel = findViewById(R.id.btnCancel);
-        Button btnContinue = findViewById(R.id.btnContinue);
-        Switch swtLocation = findViewById(R.id.swtLocation);
+        access = new Intent(MainActivity.this, AccessActivity.class);
+
+        btnContinue = findViewById(R.id.btnContinue);
+        btnCancel = findViewById(R.id.btnCancel);
+        swtLocation = findViewById(R.id.swtLocation);
 
         btnContinue.setOnClickListener(v->{
             if(swtLocation.isChecked()){
 
-                ActivityCompat.requestPermissions(this,new String[]{ACCESS_FINE_LOCATION},permsRequestCode);
+                  ActivityCompat.requestPermissions(this,new String[]{"android.permission.ACCESS_FINE_LOCATION"},permsRequestCode);
+            }else
+            {
+                startActivity(access);
             }
+
 
         });
 
@@ -52,7 +65,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 finish();
                 break;
 
-
+            /*case R.id.btnContinue:
+                if(swtLocation.isChecked()){
+                       finish();
+                    //ActivityCompat.requestPermissions(this,new String[]{ACCESS_FINE_LOCATION},permsRequestCode);
+                }*/
         }
      }
 
@@ -64,10 +81,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         switch(requestCode)
         {
-            case 200:
+            case permsRequestCode:
 
-                boolean locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                break;
+                if(grantResults.length > 0)
+                {
+                    locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+
+                    break;
+                }else
+                {
+                    break;
+                }
+            default:
+                access.putExtra("locationAccepted", false);
         }
+
+        startActivity(access);
+
     }
 }

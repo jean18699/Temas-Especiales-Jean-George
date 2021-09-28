@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/access_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#151927"
+    tools:context=".AccessActivity">
+
+    <Button
+        android:id="@+id/btnContacts"
+        android:layout_width="168dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="#2846AF"
+        android:backgroundTint="#36151927"
+        android:text="CONTACTS"
+        android:textColor="#F11212"
+        android:textStyle="bold"
+        app:iconTint="#431818"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnPhone" />
+
+    <Button
+        android:id="@+id/btnPhone"
+        android:layout_width="168dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="#2846AF"
+        android:backgroundTint="#36151927"
+        android:text="PHONE"
+        android:textColor="#F11212"
+        android:textStyle="bold"
+        app:iconTint="#431818"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCamera" />
+
+    <Button
+        android:id="@+id/btnCamera"
+        android:layout_width="168dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="#2846AF"
+        android:backgroundTint="#36151927"
+        android:text="CAMERA"
+        android:textColor="#F11212"
+        android:textStyle="bold"
+        app:iconTint="#431818"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLocation2" />
+
+    <Button
+        android:id="@+id/btnLocation2"
+        android:layout_width="168dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="#2846AF"
+        android:backgroundTint="#36151927"
+        android:text="Location"
+        android:textColor="#F11212"
+        android:textStyle="bold"
+        app:iconTint="#431818"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnStorage" />
+
+    <Button
+        android:id="@+id/btnStorage"
+        android:layout_width="168dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="48dp"
+        android:background="#2846AF"
+        android:backgroundTint="#36151927"
+        android:text="Storage"
+        android:textColor="#F11212"
+        android:textStyle="bold"
+        app:iconTint="#431818"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
