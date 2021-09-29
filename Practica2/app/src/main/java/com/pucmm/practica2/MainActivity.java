@@ -3,6 +3,7 @@ package com.pucmm.practica2;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -48,13 +49,16 @@ public class MainActivity extends AppCompatActivity {
         swtPhone = findViewById(R.id.swtPhone);
         swtContacts = findViewById(R.id.swtContacts);
 
+        //bloqueando los switches en el caso de que tengan permisos ya concedidos
+        blockSwitchButtons();
 
         //Evento al presionar el boton de continuar. Se revisara cuales elementos fueron marcados para preguntar por permisos.
         btnContinue.setOnClickListener(v->{
 
             if(swtStorage.isChecked()){
 
-                perms.add("android.permission.MANAGE_EXTERNAL_STORAGE");
+                perms.add("android.permission.WRITE_EXTERNAL_STORAGE");
+                perms.add("android.permission.READ_EXTERNAL_STORAGE");
 
             }
             if(swtLocation.isChecked()){
@@ -86,6 +90,56 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //Funcion para bloquear un switch si ya este posee el permiso concedido
+    private void blockSwitchButtons()
+    {
+        if(checkPermision("android.permission.WRITE_EXTERNAL_STORAGE"))
+        {
+            swtStorage.setChecked(true);
+            swtStorage.setEnabled(false);
+        }
+        if(checkPermision("android.permission.ACCESS_FINE_LOCATION"))
+        {
+            swtLocation.setChecked(true);
+            swtLocation.setEnabled(false);
+        }
+        if(checkPermision("android.permission.CAMERA"))
+        {
+            swtCamera.setChecked(true);
+            swtCamera.setEnabled(false);
+        }
+        if(checkPermision("android.permission.CALL_PHONE"))
+        {
+            swtPhone.setChecked(true);
+            swtPhone.setEnabled(false);
+        }
+        if(checkPermision("android.permission.READ_CONTACTS"))
+        {
+            swtContacts.setChecked(true);
+            swtContacts.setEnabled(false);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //Si volvemos desde la segunda actividad nos aseguramos de que los switches con permisos ya esten bloqueados
+        blockSwitchButtons();
+    }
+
+    //Funcion para determinar si la aplicacion obtuvo los permisos de aquel elemento en el permissionString
+    private boolean checkPermision(String permissionString)
+    {
+        if(ContextCompat.checkSelfPermission(getApplicationContext(), permissionString) == PackageManager.PERMISSION_GRANTED)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
      //Resultados de haber pedido los permisos
     @Override

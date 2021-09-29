@@ -24,7 +24,7 @@ public class AccessActivity extends AppCompatActivity {
 
         ConstraintLayout layout = findViewById(R.id.access_layout);
         Button btnStorage = findViewById(R.id.btnStorage);
-        Button btnLocation = findViewById(R.id.btnStorage);
+        Button btnLocation = findViewById(R.id.btnLocation);
         Button btnCamera = findViewById(R.id.btnCamera);
         Button btnPhone = findViewById(R.id.btnPhone);
         Button btnContacts = findViewById(R.id.btnContacts);
@@ -35,7 +35,7 @@ public class AccessActivity extends AppCompatActivity {
         btnStorage.setOnClickListener(v-> {
 
             //Revisando si hay permiso
-            if (checkPermision("android.permission.MANAGE_EXTERNAL_STORAGE")) {
+            if (checkPermision("android.permission.WRITE_EXTERNAL_STORAGE")) {
                 Snackbar snackStoragePermissionAccepted = Snackbar.make(layout, "Permission granted", Snackbar.LENGTH_SHORT)
                         .setAction("Open", v1 -> {
 
@@ -123,8 +123,6 @@ public class AccessActivity extends AppCompatActivity {
 
 
         });
-
-
 
         //Al presionar el boton de Contacts...
         btnContacts.setOnClickListener(v-> {
