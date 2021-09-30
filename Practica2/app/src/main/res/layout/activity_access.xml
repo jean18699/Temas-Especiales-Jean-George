@@ -8,7 +8,7 @@
     android:background="#151927"
     tools:context=".AccessActivity">
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnContacts"
         android:layout_width="168dp"
         android:layout_height="wrap_content"
@@ -16,6 +16,7 @@
         android:background="#2846AF"
         android:backgroundTint="#36151927"
         android:text="CONTACTS"
+        style="?android:attr/borderlessButtonStyle"
         android:textColor="#F11212"
         android:textStyle="bold"
         app:iconTint="#431818"
@@ -24,7 +25,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnPhone" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnPhone"
         android:layout_width="168dp"
         android:layout_height="wrap_content"
@@ -32,6 +33,7 @@
         android:background="#2846AF"
         android:backgroundTint="#36151927"
         android:text="PHONE"
+        style="?android:attr/borderlessButtonStyle"
         android:textColor="#F11212"
         android:textStyle="bold"
         app:iconTint="#431818"
@@ -40,7 +42,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnCamera" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnCamera"
         android:layout_width="168dp"
         android:layout_height="wrap_content"
@@ -48,6 +50,7 @@
         android:background="#2846AF"
         android:backgroundTint="#36151927"
         android:text="CAMERA"
+        style="?android:attr/borderlessButtonStyle"
         android:textColor="#F11212"
         android:textStyle="bold"
         app:iconTint="#431818"
@@ -56,7 +59,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnLocation" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnLocation"
         android:layout_width="168dp"
         android:layout_height="wrap_content"
@@ -64,6 +67,7 @@
         android:background="#2846AF"
         android:backgroundTint="#36151927"
         android:text="Location"
+        style="?android:attr/borderlessButtonStyle"
         android:textColor="#F11212"
         android:textStyle="bold"
         app:iconTint="#431818"
@@ -72,7 +76,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnStorage" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnStorage"
         android:layout_width="168dp"
         android:layout_height="55dp"
@@ -80,6 +84,7 @@
         android:background="#2846AF"
         android:backgroundTint="#36151927"
         android:text="Storage"
+        style="?android:attr/borderlessButtonStyle"
         android:textColor="#F11212"
         android:textStyle="bold"
         app:iconTint="#431818"

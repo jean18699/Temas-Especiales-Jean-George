@@ -21,6 +21,7 @@ public class AccessActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_access);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Para agregar el boton de retroceso en la cabecera
 
         ConstraintLayout layout = findViewById(R.id.access_layout);
         Button btnStorage = findViewById(R.id.btnStorage);
