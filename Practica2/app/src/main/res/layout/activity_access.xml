@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/access_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#151927"
+    tools:context=".AccessActivity">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnContacts"
+        android:layout_width="168dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="#2846AF"
+        android:backgroundTint="#36151927"
+        android:text="CONTACTS"
+        style="?android:attr/borderlessButtonStyle"
+        android:textColor="#F11212"
+        android:textStyle="bold"
+        app:iconTint="#431818"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnPhone" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnPhone"
+        android:layout_width="168dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="#2846AF"
+        android:backgroundTint="#36151927"
+        android:text="PHONE"
+        style="?android:attr/borderlessButtonStyle"
+        android:textColor="#F11212"
+        android:textStyle="bold"
+        app:iconTint="#431818"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCamera" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnCamera"
+        android:layout_width="168dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="#2846AF"
+        android:backgroundTint="#36151927"
+        android:text="CAMERA"
+        style="?android:attr/borderlessButtonStyle"
+        android:textColor="#F11212"
+        android:textStyle="bold"
+        app:iconTint="#431818"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLocation" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnLocation"
+        android:layout_width="168dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="#2846AF"
+        android:backgroundTint="#36151927"
+        android:text="Location"
+        style="?android:attr/borderlessButtonStyle"
+        android:textColor="#F11212"
+        android:textStyle="bold"
+        app:iconTint="#431818"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnStorage" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnStorage"
+        android:layout_width="168dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="48dp"
+        android:background="#2846AF"
+        android:backgroundTint="#36151927"
+        android:text="Storage"
+        style="?android:attr/borderlessButtonStyle"
+        android:textColor="#F11212"
+        android:textStyle="bold"
+        app:iconTint="#431818"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
