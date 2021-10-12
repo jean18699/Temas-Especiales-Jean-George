@@ -1,5 +1,7 @@
 package com.pucmm.primerparcial;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +9,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.pucmm.primerparcial.placeholder.PlaceholderContent;
@@ -63,10 +68,24 @@ public class OsDetailFragment extends Fragment {
         TextView txtDescription = view.findViewById(R.id.txtDescription);
         TextView txtInternalCodeName = view.findViewById(R.id.txtInternalCodeName);
         TextView txtVersionNumber = view.findViewById(R.id.txtVersionNumber);
+        EditText editDate = view.findViewById(R.id.editTextDate);
+        CheckBox chkSupported = view.findViewById(R.id.chkSupported);
+        Button btnLink = view.findViewById(R.id.btnLink);
 
         txtDescription.setText(element.getDetails());
         txtInternalCodeName.setText("Internal Code:  " + element.getInternalCodeName());
         txtVersionNumber.setText("Version    " + element.getVersionNumber());
+        editDate.setText(element.getReleaseDate().toString());
+        editDate.setEnabled(false); //evitando que se pueda editar la fecha
+        chkSupported.setChecked(element.isSupported());
+        chkSupported.setEnabled(false);
+
+        //Agregando evento de abrir link al presionar el boton
+        btnLink.setOnClickListener(v -> {
+            Uri link = Uri.parse(element.getLink());
+            Intent intent = new Intent(Intent.ACTION_VIEW, link);
+            startActivity(intent);
+        });
 
         return view;
     }
