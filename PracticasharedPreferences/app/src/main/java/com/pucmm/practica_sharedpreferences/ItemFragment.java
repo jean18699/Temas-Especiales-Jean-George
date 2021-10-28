@@ -1,6 +1,7 @@
 package com.pucmm.practica_sharedpreferences;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,8 @@ import android.view.ViewGroup;
 
 import com.pucmm.practica_sharedpreferences.placeholder.PlaceholderContent;
 
+import java.util.Map;
+
 /**
  * A fragment representing a list of Items.
  */
@@ -23,7 +26,7 @@ public class ItemFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-
+    RecyclerView recyclerView;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -54,12 +57,19 @@ public class ItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
-       // PlaceholderContent.PlaceholderItem item = new PlaceholderContent.PlaceholderItem(String.valueOf(1),"item #"+1, "nada de detalles");
-       // PlaceholderContent.ITEMS.add(item);
+
+        //Cargando los datos de la lista guardados localmente
+        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        Map<String,?> keys = sharedPreferences.getAll();
+        for(Map.Entry<String,?> entry : keys.entrySet()){
+            PlaceholderContent.PlaceholderItem item = new PlaceholderContent.PlaceholderItem(entry.getKey(), entry.getValue().toString());
+            PlaceholderContent.ITEMS.add(item);
+        }
+
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
@@ -68,5 +78,11 @@ public class ItemFragment extends Fragment {
             recyclerView.setAdapter(new MyItemRecyclerViewAdapter(PlaceholderContent.ITEMS));
         }
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        recyclerView.getAdapter().notifyDataSetChanged(); //actualizamos la lista
     }
 }
