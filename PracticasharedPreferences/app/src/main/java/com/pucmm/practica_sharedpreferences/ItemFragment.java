@@ -54,7 +54,8 @@ public class ItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
-
+       // PlaceholderContent.PlaceholderItem item = new PlaceholderContent.PlaceholderItem(String.valueOf(1),"item #"+1, "nada de detalles");
+       // PlaceholderContent.ITEMS.add(item);
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
