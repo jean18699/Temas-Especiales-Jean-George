@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.ClipData;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
@@ -25,8 +26,7 @@ public class RegisterValueActivity extends AppCompatActivity {
         Button btnRegistrar = findViewById(R.id.btnRegistrar);
         EditText editValor = findViewById(R.id.editValor);
 
-
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("valores", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
 

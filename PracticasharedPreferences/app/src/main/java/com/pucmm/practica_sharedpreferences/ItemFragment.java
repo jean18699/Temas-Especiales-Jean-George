@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,13 +59,6 @@ public class ItemFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
 
-        //Cargando los datos de la lista guardados localmente
-        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        Map<String,?> keys = sharedPreferences.getAll();
-        for(Map.Entry<String,?> entry : keys.entrySet()){
-            PlaceholderContent.PlaceholderItem item = new PlaceholderContent.PlaceholderItem(entry.getKey(), entry.getValue().toString());
-            PlaceholderContent.ITEMS.add(item);
-        }
 
         // Set the adapter
         if (view instanceof RecyclerView) {
