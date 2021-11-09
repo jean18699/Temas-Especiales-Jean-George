@@ -5,22 +5,15 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity(tableName = "Users")
-@Getter
-@Setter
-@NoArgsConstructor
 public class User {
 
     //@PrimaryKey(autoGenerate = true)
     //@ColumnInfo(name = "id")
    // private int id;
     @PrimaryKey
-    @ColumnInfo(name = "name")
+    @ColumnInfo(name = "username")
     private String username;
     @ColumnInfo(name = "password")
     private String password;
