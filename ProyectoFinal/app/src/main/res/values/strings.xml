@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Proyecto Final</string>
+    <string name="app_name">E-Commerce</string>
+    <string name="lbl_email">Enter Email</string>
+    <string name="lbl_password">Enter Password</string>
+    <string name="input_email">Email</string>
+    <string name="input_password">Password</string>
+    <string name="btn_login">LOGIN</string>
 </resources>
