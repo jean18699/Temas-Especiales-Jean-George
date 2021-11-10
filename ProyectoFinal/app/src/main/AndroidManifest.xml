@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoFinal">
         <activity
+            android:name=".roomviewmodel.activities.UserListActivity"
+            android:exported="true" />
+        <activity
             android:name=".roomviewmodel.activities.MainRoomActivity"
             android:exported="true" />
         <activity android:name=".roomviewmodel.activities.LoginActivity">
