@@ -29,6 +29,8 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater()); //binding permite utilizar los elementos del layout directamente
         setContentView(binding.getRoot()); //binding.getRoot hace referencia al xml del layout
 
+
+
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(binding.main.getId(), LoginFragment.newInstance())
@@ -46,14 +48,6 @@ public class LoginActivity extends AppCompatActivity {
 */
     }
 
-    public void checkLogin(){
-        //App executors nos ayuda a ejecutar consultas de manera segura
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                AppDatabase.getInstance(getApplicationContext()).userDao().insert(new User("emiliox","a","b","c","d"));
-            }
-        });
-    }
+
 
 }

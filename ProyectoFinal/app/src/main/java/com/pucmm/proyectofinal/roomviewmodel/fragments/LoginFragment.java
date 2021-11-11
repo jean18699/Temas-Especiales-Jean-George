@@ -9,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.pucmm.proyectofinal.R;
-import com.pucmm.proyectofinal.databinding.ActivityLoginBinding;
-import com.pucmm.proyectofinal.databinding.FragmentLoginBinding;
+import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
+import com.pucmm.proyectofinal.roomviewmodel.database.AppExecutors;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,12 +25,12 @@ public class LoginFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private AppDatabase appDatabase;
+    private EditText editUserName;
+    private EditText editPassword;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -66,20 +68,47 @@ public class LoginFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
+
         //Uso las referencias directas en lugar del binding por que este ultimo no me respondia los eventos
         Button btnLogin = view.findViewById(R.id.btn_login);
         Button btnUserRegister = view.findViewById(R.id.btn_userRegister);
+        editUserName = view.findViewById(R.id.editUsername);
+        editPassword = view.findViewById(R.id.editPassword);
+        appDatabase = AppDatabase.getInstance(getActivity().getApplicationContext());
 
+        //Logeando al usuario
+        btnLogin.setOnClickListener(v->{
+            Login();
+        });
 
         //Acceder al fragmento de registrar usuario
         btnUserRegister.setOnClickListener(v->{
             getActivity().getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
                     .replace(R.id.main, UserRegisterFragment.newInstance())
+                    .addToBackStack(null)
                     .commit();
         });
 
         return view;
 
     }
+
+    public void Login(){
+        //App executors nos ayuda a ejecutar consultas de manera segura
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                if(appDatabase.userDao().findUserByCredentials(editUserName.getText().toString(), editPassword.getText().toString()) == null){
+                    Snackbar.make(getView(), "Invalid username or password", Snackbar.LENGTH_LONG).show();
+                }else
+                {
+                    Snackbar.make(getView(), "Logged succesfully!", Snackbar.LENGTH_LONG).show();
+                }
+                //AppDatabase.getInstance(getApplicationContext()).databaseDao().eraseUsers();
+            }
+        });
+    }
+
 }

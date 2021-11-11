@@ -18,6 +18,15 @@ public interface UserDao {
     @Query("SELECT * FROM users ORDER BY username")
     LiveData<List<User>> findAll();
 
+    @Query("SELECT * FROM Users WHERE username = :userID")
+    User findUserByUsername(String userID);
+
+    @Query("SELECT * FROM Users WHERE email = :userEmail")
+    User findUserByEmail(String userEmail);
+
+    @Query("SELECT * FROM Users WHERE username = :userID AND password = :userPassword")
+    User findUserByCredentials(String userID, String userPassword);
+
     @Insert
     void insert(User user);
 
