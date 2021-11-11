@@ -1,8 +1,9 @@
 package com.pucmm.proyectofinal.roomviewmodel.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
+
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.pucmm.proyectofinal.R;
+import com.pucmm.proyectofinal.roomviewmodel.activities.MainActivity;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppExecutors;
 
@@ -105,6 +107,10 @@ public class LoginFragment extends Fragment {
                 }else
                 {
                     Snackbar.make(getView(), "Logged succesfully!", Snackbar.LENGTH_LONG).show();
+
+                    //Iniciando el dashboard
+                    Intent dashboard = new Intent(getActivity(), MainActivity.class);
+                    getActivity().startActivity(dashboard);
                 }
                 //AppDatabase.getInstance(getApplicationContext()).databaseDao().eraseUsers();
             }

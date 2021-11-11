@@ -13,14 +13,17 @@
             android:name=".roomviewmodel.activities.UserListActivity"
             android:exported="true" />
         <activity
-            android:name=".roomviewmodel.activities.MainRoomActivity"
-            android:exported="true" />
-        <activity android:name=".roomviewmodel.activities.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:name=".roomviewmodel.activities.MainActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+        <activity android:name=".roomviewmodel.activities.LoginActivity">
+
         </activity>
     </application>
 

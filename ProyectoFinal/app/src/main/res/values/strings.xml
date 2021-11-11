@@ -14,4 +14,7 @@
     <string name="lbl_name">Name</string>
     <string name="lbl_lastname">LastName</string>
     <string name="btnRegister">Register</string>
+    <string name="navigation_drawer_open">open bar</string>
+    <string name="navigation_drawer_close">closed bar</string>
+    <string name="category">Category</string>
 </resources>
