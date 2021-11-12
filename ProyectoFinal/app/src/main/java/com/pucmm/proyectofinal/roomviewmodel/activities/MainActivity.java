@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (id){
             case R.id.menuCategory:
                 fragment = CategoryListFragment.newInstance(columnsCategory);
-               // title = "Categories";
                 break;
         }
 

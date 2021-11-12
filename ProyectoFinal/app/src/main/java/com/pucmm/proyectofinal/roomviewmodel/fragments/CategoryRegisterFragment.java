@@ -105,7 +105,7 @@ public class CategoryRegisterFragment extends Fragment {
                     //Volviendo a la lista de categorias
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .setReorderingAllowed(true)
-                            .replace(R.id.content_frame, CategoryListFragment.newInstance())
+                            .replace(R.id.content_frame, CategoryListFragment.newInstance(2))
                             .commit();
 
                 }

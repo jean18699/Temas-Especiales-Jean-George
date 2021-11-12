@@ -95,7 +95,7 @@ public class CategoryListFragment extends Fragment {
         //Pasando al fragmento de registrar categoria al clickear el boton flotante
 
         floatingActionButton.setOnClickListener(v ->
-                        Toast.makeText(getActivity(), "funciona", Toast.LENGTH_SHORT).show());
+                        Snackbar.make(getView(), "funciona", Snackbar.LENGTH_LONG).show());
                /* getActivity().getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(R.id.content_frame, CategoryRegisterFragment.newInstance())
