@@ -68,19 +68,16 @@ public class CategoryRegisterFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_category_register, container, false);
 
         btnRegister = view.findViewById(R.id.btn_registerCategory);
-        editCategory = view.findViewById(R.id.editCategoryName);
+        editCategory = view.findViewById(R.id.editCategoryRegisterName);
         database = AppDatabase.getInstance(getActivity().getApplicationContext());
 
 
         btnRegister.setOnClickListener(v -> {
             //Validando que todos los campos esten completos antes de registrar la categoria
-            if(editCategory.getText().toString().equals(""))
-            {
+
                 Snackbar.make(getView(), "Please complete all the fields", Snackbar.LENGTH_LONG).show();
-            }else
-            {
-                registerCategory();
-            }
+
+                //registerCategory();
 
         });
 
@@ -108,7 +105,7 @@ public class CategoryRegisterFragment extends Fragment {
                     //Volviendo a la lista de categorias
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .setReorderingAllowed(true)
-                            .replace(R.id.content_frame, CategoryListFragment.newInstance(2))
+                            .replace(R.id.content_frame, CategoryListFragment.newInstance())
                             .commit();
 
                 }

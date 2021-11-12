@@ -19,6 +19,7 @@
     <string name="category">Category</string>
     <string name="menuHomeTitle">Home</string>
     <string name="category_s_name">Category\'s Name</string>
-    <string name="addCategoryButton">Add</string>
+    <string name="addCategoryButton">Create</string>
     <string name="lbl_new_category">Create New Category</string>
+    <string name="register_a_new_category">Register a new category</string>
 </resources>

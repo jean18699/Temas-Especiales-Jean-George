@@ -21,7 +21,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private @NonNull ActivityLoginBinding binding;
-    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
