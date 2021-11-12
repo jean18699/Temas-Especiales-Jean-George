@@ -2,9 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="Home"></item>
-    <item android:title="@string/category"
-        android:icon="@drawable/ic_baseline_category_24"></item>
+    <item android:title="@string/menuHomeTitle" android:id="@+id/menuHome"></item>
+    <item
+        android:title="@string/category"
+        android:id="@+id/menuCategory"
+        android:icon="@drawable/ic_baseline_category_24" />
 
     <item android:title="Product"></item>
 

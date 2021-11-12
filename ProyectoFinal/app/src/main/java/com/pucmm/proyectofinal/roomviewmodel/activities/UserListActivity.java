@@ -39,7 +39,7 @@ public class UserListActivity extends AppCompatActivity {
         binding = FragmentUserListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        userListRecyclerView = binding.userList;
+        //userListRecyclerView = binding.userList;
         userListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
        // recyclerView.setLayoutManager(new GridLayoutManager(this,2));
 

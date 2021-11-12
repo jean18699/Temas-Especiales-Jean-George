@@ -17,4 +17,5 @@
     <string name="navigation_drawer_open">open bar</string>
     <string name="navigation_drawer_close">closed bar</string>
     <string name="category">Category</string>
+    <string name="menuHomeTitle">Home</string>
 </resources>
