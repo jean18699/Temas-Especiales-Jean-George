@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,6 +16,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.databinding.FragmentCategoryListBinding;
 import com.pucmm.proyectofinal.databinding.FragmentUserListBinding;
@@ -71,7 +74,8 @@ public class CategoryListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_category_list, container, false);
         categoryAdapter = new CategoryAdapter(getActivity().getApplicationContext());
-
+        FloatingActionButton floatingActionButton = view.findViewById(R.id.floatBtn_addCategory);
+        
         categoryListRecyclerView = view.findViewById(R.id.categoryList);
 
         if(mColumnCount <= 1)
@@ -84,10 +88,24 @@ public class CategoryListFragment extends Fragment {
 
         }
 
+        appDatabase = AppDatabase.getInstance(getActivity().getApplicationContext());
         categoryAdapter = new CategoryAdapter(getActivity().getApplicationContext());
         categoryListRecyclerView.setAdapter(categoryAdapter);
 
-       // retrieveTasks();
+        //Pasando al fragmento de registrar categoria al clickear el boton flotante
+
+        floatingActionButton.setOnClickListener(v ->
+                        Toast.makeText(getActivity(), "funciona", Toast.LENGTH_SHORT).show());
+               /* getActivity().getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.content_frame, CategoryRegisterFragment.newInstance())
+                .addToBackStack(null)
+                .commit());
+*/
+        retrieveTasks();
+
+
+
         return view;
     }
 

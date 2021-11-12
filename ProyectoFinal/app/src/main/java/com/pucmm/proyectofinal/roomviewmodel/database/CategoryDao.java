@@ -8,7 +8,6 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.pucmm.proyectofinal.roomviewmodel.model.Category;
-import com.pucmm.proyectofinal.roomviewmodel.model.User;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ import java.util.List;
 public interface CategoryDao {
 
     //LiveData permite siempre ver en la UI los cambios realizados en la data
-    @Query("SELECT * FROM users ORDER BY username")
+    @Query("SELECT * FROM categories ORDER BY name")
     LiveData<List<Category>> findAll();
 
     @Query("SELECT * FROM Categories WHERE name = :categoryName")

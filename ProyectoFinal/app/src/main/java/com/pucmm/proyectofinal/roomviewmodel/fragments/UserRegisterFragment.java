@@ -72,7 +72,7 @@ public class UserRegisterFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_register, container, false);
 
         btnRegister = view.findViewById(R.id.btn_registerUser);
-        editUsername = view.findViewById(R.id.editUsername);
+        editUsername = view.findViewById(R.id.editUserName);
         editEmail = view.findViewById(R.id.editEmail);
         editPassword = view.findViewById(R.id.editPassword);
         editName = view.findViewById(R.id.editName);

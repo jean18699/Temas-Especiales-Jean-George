@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -49,11 +50,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //Eventos al presionar un elemento del menu. Aqui alternaremos de fragmentos
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        getSupportFragmentManager().beginTransaction()
-                .setReorderingAllowed(true)
-                .replace(R.id.content_frame, CategoryListFragment.newInstance(columnsCategory))
-                .commit();
-        /*int id = item.getItemId();
+
+        int id = item.getItemId();
         Fragment fragment = null;
         switch (id){
             case R.id.menuCategory:

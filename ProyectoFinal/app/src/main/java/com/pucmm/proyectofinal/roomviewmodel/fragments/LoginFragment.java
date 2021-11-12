@@ -74,7 +74,7 @@ public class LoginFragment extends Fragment {
         //Uso las referencias directas en lugar del binding por que este ultimo no me respondia los eventos
         Button btnLogin = view.findViewById(R.id.btn_login);
         Button btnUserRegister = view.findViewById(R.id.btn_userRegister);
-        editUserName = view.findViewById(R.id.editUsername);
+        editUserName = view.findViewById(R.id.editCategoryName);
         editPassword = view.findViewById(R.id.editPassword);
         appDatabase = AppDatabase.getInstance(getActivity().getApplicationContext());
 

@@ -18,4 +18,7 @@
     <string name="navigation_drawer_close">closed bar</string>
     <string name="category">Category</string>
     <string name="menuHomeTitle">Home</string>
+    <string name="category_s_name">Category\'s Name</string>
+    <string name="addCategoryButton">Add</string>
+    <string name="lbl_new_category">Create New Category</string>
 </resources>
