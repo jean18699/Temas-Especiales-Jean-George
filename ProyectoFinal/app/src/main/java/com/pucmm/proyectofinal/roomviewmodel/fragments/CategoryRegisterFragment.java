@@ -14,7 +14,6 @@ import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppExecutors;
 import com.pucmm.proyectofinal.roomviewmodel.model.Category;
-import com.pucmm.proyectofinal.roomviewmodel.model.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,7 +64,7 @@ public class CategoryRegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_category_register, container, false);
+        View view = inflater.inflate(R.layout.activity_category_register, container, false);
 
         btnRegister = view.findViewById(R.id.btn_registerCategory);
         editCategory = view.findViewById(R.id.editCategoryRegisterName);

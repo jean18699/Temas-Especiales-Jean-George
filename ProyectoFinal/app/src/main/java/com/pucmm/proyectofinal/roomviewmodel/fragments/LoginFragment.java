@@ -87,7 +87,7 @@ public class LoginFragment extends Fragment {
         btnUserRegister.setOnClickListener(v->{
             getActivity().getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .replace(R.id.main, UserRegisterFragment.newInstance())
+                    .replace(R.id.main_category_register, UserRegisterFragment.newInstance())
                     .addToBackStack(null)
                     .commit();
         });

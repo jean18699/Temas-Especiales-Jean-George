@@ -28,23 +28,11 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater()); //binding permite utilizar los elementos del layout directamente
         setContentView(binding.getRoot()); //binding.getRoot hace referencia al xml del layout
 
-
-
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(binding.main.getId(), LoginFragment.newInstance())
                 .commit();
 
-       // AppDatabase.getInstance(getApplicationContext()).userDao().insert(new User("jean18699","a","b","c","d"));
-
-       /* binding.btnLogin.setOnClickListener(v ->{
-
-            checkLogin();
-
-            Intent intent = new Intent(this, UserListActivity.class);
-            startActivity(intent);
-        });
-*/
     }
 
 

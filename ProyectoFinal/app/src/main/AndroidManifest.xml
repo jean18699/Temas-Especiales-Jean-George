@@ -10,21 +10,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoFinal">
         <activity
+            android:name=".roomviewmodel.activities.CategoryRegisterActivity"
+            android:exported="true" />
+        <activity
             android:name=".roomviewmodel.activities.UserListActivity"
             android:exported="true" />
         <activity
             android:name=".roomviewmodel.activities.MainActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity android:name=".roomviewmodel.activities.LoginActivity">
-
-        </activity>
+        <activity android:name=".roomviewmodel.activities.LoginActivity"></activity>
     </application>
 
 </manifest>

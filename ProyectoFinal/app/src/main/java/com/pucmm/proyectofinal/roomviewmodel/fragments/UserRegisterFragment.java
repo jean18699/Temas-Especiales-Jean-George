@@ -126,7 +126,7 @@ public class UserRegisterFragment extends Fragment {
                     //Volviendo al Login
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .setReorderingAllowed(true)
-                            .replace(R.id.main, LoginFragment.newInstance())
+                            .replace(R.id.main_category_register, LoginFragment.newInstance())
                             .commit();
 
                 }

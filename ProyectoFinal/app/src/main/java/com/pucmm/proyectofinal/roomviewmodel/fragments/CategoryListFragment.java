@@ -1,6 +1,7 @@
 package com.pucmm.proyectofinal.roomviewmodel.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.databinding.FragmentCategoryListBinding;
 import com.pucmm.proyectofinal.databinding.FragmentUserListBinding;
+import com.pucmm.proyectofinal.roomviewmodel.activities.CategoryRegisterActivity;
 import com.pucmm.proyectofinal.roomviewmodel.adapters.CategoryAdapter;
 import com.pucmm.proyectofinal.roomviewmodel.adapters.UserAdapter;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
@@ -93,18 +95,11 @@ public class CategoryListFragment extends Fragment {
         categoryListRecyclerView.setAdapter(categoryAdapter);
 
         //Pasando al fragmento de registrar categoria al clickear el boton flotante
-
         floatingActionButton.setOnClickListener(v ->
-                        Snackbar.make(getView(), "funciona", Snackbar.LENGTH_LONG).show());
-               /* getActivity().getSupportFragmentManager().beginTransaction()
-                .setReorderingAllowed(true)
-                .replace(R.id.content_frame, CategoryRegisterFragment.newInstance())
-                .addToBackStack(null)
-                .commit());
-*/
+                startActivity(new Intent(getActivity(), CategoryRegisterActivity.class))
+        );
+
         retrieveTasks();
-
-
 
         return view;
     }
