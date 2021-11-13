@@ -17,6 +17,7 @@ import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.roomviewmodel.activities.MainActivity;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppExecutors;
+import com.pucmm.proyectofinal.roomviewmodel.model.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,8 +50,6 @@ public class LoginFragment extends Fragment {
     public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
         Bundle args = new Bundle();
-      //  args.putString(ARG_PARAM1, param1);
-       // args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -112,8 +111,8 @@ public class LoginFragment extends Fragment {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-
-                if(appDatabase.userDao().findUserByCredentials(editUserName.getText().toString(), editPassword.getText().toString()) == null){
+                User user = appDatabase.userDao().findUserByCredentials(editUserName.getText().toString(), editPassword.getText().toString());
+                if(user == null){
                     Snackbar.make(getView(), "Invalid username or password", Snackbar.LENGTH_LONG).show();
                 }else
                 {
@@ -121,9 +120,9 @@ public class LoginFragment extends Fragment {
 
                     //Iniciando el dashboard
                     Intent dashboard = new Intent(getActivity(), MainActivity.class);
+                    dashboard.putExtra("username",(user.getUsername()));
                     getActivity().startActivity(dashboard);
                 }
-                //AppDatabase.getInstance(getApplicationContext()).databaseDao().eraseUsers();
             }
         });
     }

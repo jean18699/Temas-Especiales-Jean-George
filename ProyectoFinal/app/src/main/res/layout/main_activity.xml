@@ -8,7 +8,8 @@
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
 
 
@@ -32,7 +33,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="@color/purple_500"
-            app:menu="@menu/top_app_bar" >
+            app:menu="@menu/top_app_bar"
+            >
             
 
         </com.google.android.material.navigation.NavigationView>

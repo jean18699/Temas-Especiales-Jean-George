@@ -110,7 +110,7 @@ public class UserRecoveryFragment extends Fragment {
 
                 User user = database.userDao().findUserByEmail(editEmail.getText().toString());
                 if (user != null) {
-                    Snackbar.make(getView(), user.getPassword(), Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(getView(), "Your password is: " + user.getPassword(), Snackbar.LENGTH_LONG).show();
                     return;
                 } else {
                     Snackbar.make(getView(), "This email is not registered", Snackbar.LENGTH_LONG).show();

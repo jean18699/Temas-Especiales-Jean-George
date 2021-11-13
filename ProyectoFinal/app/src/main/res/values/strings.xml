@@ -30,4 +30,6 @@
     <string name="bnt_get_password">GET PASSWORD</string>
     <string name="lblEnterEmail">Enter Email</string>
     <string name="lbl_create_an_account">CREATE AN ACCOUNT</string>
+    <string name="account">Profile</string>
+    <string name="lbl_my_profile">My Profile</string>
 </resources>
