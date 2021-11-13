@@ -13,6 +13,8 @@ import com.pucmm.proyectofinal.roomviewmodel.database.AppExecutors;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.CategoryListFragment;
 import com.pucmm.proyectofinal.roomviewmodel.model.Category;
 
+import java.util.Locale;
+
 public class CategoryRegisterActivity extends AppCompatActivity {
 
     private Button btnRegister;
@@ -47,8 +49,11 @@ public class CategoryRegisterActivity extends AppCompatActivity {
             @Override
             public void run() {
 
+                //Formateando el string de categoria
+                String category_string = formatString(editCategory.getText().toString());
+
                 //Verificando si categoria ya existe por su nombre
-                if(database.categoryDao().findCategoryByName(editCategory.getText().toString()) != null){
+                if(database.categoryDao().findCategoryByName(category_string) != null){
                     Snackbar.make(findViewById(R.id.main_category_register), "This category is already registered", Snackbar.LENGTH_LONG).show();
                     return;
                 }
@@ -56,7 +61,7 @@ public class CategoryRegisterActivity extends AppCompatActivity {
                 {
                     //Registrando la nueva categoria
                     database.categoryDao().insert(new Category(
-                            editCategory.getText().toString()
+                            category_string
                     ));
 
                     //Volviendo a la lista de categorias
@@ -67,5 +72,12 @@ public class CategoryRegisterActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public String formatString(String string){
+        String formatString = string.toLowerCase();
+        StringBuilder sb = new StringBuilder(formatString);
+        sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
+        return sb.toString();
     }
 }

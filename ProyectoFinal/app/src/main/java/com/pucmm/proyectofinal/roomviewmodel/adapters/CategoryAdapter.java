@@ -60,7 +60,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            category = categoriesBinding.categoryElement;
+            category = categoriesBinding.categoryName;
         }
     }
 }
