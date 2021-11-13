@@ -33,7 +33,6 @@ public class UserRegisterFragment extends Fragment {
     private EditText editPassword;
     private EditText editEmail;
     private EditText editName;
-    private EditText editLastName;
     private AppDatabase database;
 
     public UserRegisterFragment() {
@@ -76,14 +75,13 @@ public class UserRegisterFragment extends Fragment {
         editEmail = view.findViewById(R.id.editEmail);
         editPassword = view.findViewById(R.id.editPassword);
         editName = view.findViewById(R.id.editName);
-        editLastName = view.findViewById(R.id.editLastName);
         database = AppDatabase.getInstance(getActivity().getApplicationContext());
 
 
         btnRegister.setOnClickListener(v -> {
             //Validando que todos los campos esten completos antes de registrarse
             if(editUsername.getText().toString().equals("") || editPassword.getText().toString().equals("") || editEmail.getText().toString().equals("") ||
-                    editName.getText().toString().equals("") || editLastName.getText().toString().equals(""))
+                    editName.getText().toString().equals(""))
             {
                 Snackbar.make(getView(), "Please complete all the fields", Snackbar.LENGTH_LONG).show();
             }else
@@ -119,14 +117,13 @@ public class UserRegisterFragment extends Fragment {
                             editUsername.getText().toString(),
                             editPassword.getText().toString(),
                             editEmail.getText().toString(),
-                            editName.getText().toString(),
-                            editLastName.getText().toString()
+                            editName.getText().toString()
                     ));
 
                     //Volviendo al Login
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .setReorderingAllowed(true)
-                            .replace(R.id.main_category_register, LoginFragment.newInstance())
+                            .replace(R.id.main, LoginFragment.newInstance())
                             .commit();
 
                 }

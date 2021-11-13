@@ -74,6 +74,7 @@ public class LoginFragment extends Fragment {
         //Uso las referencias directas en lugar del binding por que este ultimo no me respondia los eventos
         Button btnLogin = view.findViewById(R.id.btn_login);
         Button btnUserRegister = view.findViewById(R.id.btn_userRegister);
+        Button btnRecovery = view.findViewById(R.id.btn_forgotPassword);
         editUserName = view.findViewById(R.id.editCategoryName);
         editPassword = view.findViewById(R.id.editPassword);
         appDatabase = AppDatabase.getInstance(getActivity().getApplicationContext());
@@ -87,10 +88,20 @@ public class LoginFragment extends Fragment {
         btnUserRegister.setOnClickListener(v->{
             getActivity().getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .replace(R.id.main_category_register, UserRegisterFragment.newInstance())
+                    .replace(R.id.main, UserRegisterFragment.newInstance())
                     .addToBackStack(null)
                     .commit();
         });
+
+        btnRecovery.setOnClickListener(v -> {
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .replace(R.id.main, UserRecoveryFragment.newInstance())
+                    .commit();
+        });
+
+
+
 
         return view;
 

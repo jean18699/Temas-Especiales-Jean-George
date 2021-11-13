@@ -3,7 +3,6 @@ package com.pucmm.proyectofinal.roomviewmodel.model;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 
@@ -26,15 +25,11 @@ public class User {
     @ColumnInfo(name = "name")
     private String name;
 
-    @ColumnInfo(name = "lastname")
-    private String lastname;
-
-    public User(String username, String password, String email, String name, String lastname) {
+    public User(String username, String password, String email, String name) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.name = name;
-        this.lastname = lastname;
     }
 
     public String getUsername() {
@@ -69,11 +64,4 @@ public class User {
         this.name = name;
     }
 
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
 }

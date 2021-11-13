@@ -27,4 +27,7 @@
     <string name="lbl_edit_category">Edit Category</string>
     <string name="btnEdit">Edit</string>
     <string name="lblEditProduct">Edit Product</string>
+    <string name="bnt_get_password">GET PASSWORD</string>
+    <string name="lblEnterEmail">Enter Email</string>
+    <string name="lbl_create_an_account">CREATE AN ACCOUNT</string>
 </resources>
