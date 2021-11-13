@@ -17,4 +17,5 @@ public interface DatabaseDao {
     @Query("DELETE FROM Users")
     void eraseUsers();
 
+
 }

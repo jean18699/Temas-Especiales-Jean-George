@@ -7,9 +7,10 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.pucmm.proyectofinal.roomviewmodel.model.Category;
+import com.pucmm.proyectofinal.roomviewmodel.model.Product;
 import com.pucmm.proyectofinal.roomviewmodel.model.User;
 
-@Database(entities = {User.class, Category.class},version = 2)
+@Database(entities = {User.class, Category.class, Product.class},version = 3)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DATABASE_NAME = "e-commerce";
@@ -30,5 +31,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract DatabaseDao databaseDao();
     public abstract CategoryDao categoryDao();
+    public abstract ProductDao ProductDao();
+    public abstract ProductCategoryDao ProductCategoryDao();
 
 }

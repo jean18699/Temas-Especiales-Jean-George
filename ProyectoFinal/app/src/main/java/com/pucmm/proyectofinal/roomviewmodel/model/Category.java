@@ -5,6 +5,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Base64;
+
 
 @Entity(tableName = "Categories")
 public class Category {
@@ -14,8 +16,16 @@ public class Category {
     @ColumnInfo(name = "name")
     private String name;
 
+    @ColumnInfo(name = "image", typeAffinity = ColumnInfo.BLOB)
+    private byte[] image;
+
     public Category(@NonNull String name) {
         this.name = name;
+    }
+
+    public Category(@NonNull String name, byte[] image) {
+        this.name = name;
+        this.image = image;
     }
 
     @NonNull
@@ -25,5 +35,13 @@ public class Category {
 
     public void setName(@NonNull String name) {
         this.name = name;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }
