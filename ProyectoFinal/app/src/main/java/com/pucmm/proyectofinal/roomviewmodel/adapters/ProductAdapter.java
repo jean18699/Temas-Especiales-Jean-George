@@ -1,6 +1,7 @@
 package com.pucmm.proyectofinal.roomviewmodel.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pucmm.proyectofinal.databinding.FragmentProductBinding;
+import com.pucmm.proyectofinal.roomviewmodel.activities.CategoryEditActivity;
+import com.pucmm.proyectofinal.roomviewmodel.activities.ProductEditActivity;
+import com.pucmm.proyectofinal.roomviewmodel.model.Category;
 import com.pucmm.proyectofinal.roomviewmodel.model.Product;
 
 import java.util.List;
@@ -58,12 +62,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         notifyDataSetChanged();
     }
 
+    public Product getProduct(int position) {
+        return productList.get(position);
+    }
+
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView product_id;
         private TextView product_price;
         private TextView product_description;
         private ImageView product_image;
+        private ImageView editBtn;
+
 
 
 
@@ -73,6 +84,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             product_price = productBinding.productPrice;
             product_description = productBinding.productDescription;
             product_image = productBinding.productImage;
+
+            editBtn = productBinding.configProduct;
+
+
+            editBtn.setOnClickListener(v->{
+                String productId = productList.get(getAbsoluteAdapterPosition()).getProductId();
+                Intent intent = new Intent(context, ProductEditActivity.class);
+                intent.putExtra("productId",productId);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            });
+
         }
     }
 }

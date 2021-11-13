@@ -26,4 +26,5 @@
     <string name="product">Products</string>
     <string name="lbl_edit_category">Edit Category</string>
     <string name="btnEdit">Edit</string>
+    <string name="lblEditProduct">Edit Product</string>
 </resources>

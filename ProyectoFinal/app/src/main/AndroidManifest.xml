@@ -16,6 +16,9 @@
             android:name=".roomviewmodel.activities.CategoryEditActivity"
             android:exported="true" />
         <activity
+            android:name=".roomviewmodel.activities.ProductEditActivity"
+            android:exported="true" />
+        <activity
             android:name=".roomviewmodel.activities.ProductRegisterActivity"
             android:exported="true" />
         <activity
