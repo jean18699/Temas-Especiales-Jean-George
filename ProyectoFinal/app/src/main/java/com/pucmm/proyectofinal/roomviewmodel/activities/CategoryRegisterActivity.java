@@ -61,7 +61,7 @@ public class CategoryRegisterActivity extends AppCompatActivity {
                 {
                     //Registrando la nueva categoria
                     database.categoryDao().insert(new Category(
-                            category_string
+                            category_string, null
                     ));
 
                     //Volviendo a la lista de categorias

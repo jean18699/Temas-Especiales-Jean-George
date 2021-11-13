@@ -13,8 +13,8 @@ public class CategoriesByProduct {
     public Product product;
 
     @Relation(
-            parentColumn = "productId",
-            entityColumn = "categoryName",
+            parentColumn = "id",
+            entityColumn = "name",
             associateBy = @Junction(ProductCategoryCrossRef.class)
     )
     public List<Category> categories;

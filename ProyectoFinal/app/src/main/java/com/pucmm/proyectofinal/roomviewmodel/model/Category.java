@@ -19,9 +19,6 @@ public class Category {
     @ColumnInfo(name = "image", typeAffinity = ColumnInfo.BLOB)
     private byte[] image;
 
-    public Category(@NonNull String name) {
-        this.name = name;
-    }
 
     public Category(@NonNull String name, byte[] image) {
         this.name = name;

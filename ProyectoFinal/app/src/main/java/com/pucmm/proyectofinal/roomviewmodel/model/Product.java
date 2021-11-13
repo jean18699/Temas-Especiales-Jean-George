@@ -2,9 +2,10 @@ package com.pucmm.proyectofinal.roomviewmodel.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
-import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import java.util.UUID;
 
 
 @Entity(tableName = "Products")
@@ -13,7 +14,7 @@ public class Product {
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "id")
-    private String uid;
+    private String productId;
 
     @ColumnInfo(name = "description")
     private String description;
@@ -27,20 +28,20 @@ public class Product {
 
 
 
-    public Product(@NonNull String uid, String description, Float price, byte[] image, Category category) {
-        this.uid = uid;
+    public Product(String description, Float price, byte[] image) {
+        this.productId = UUID.randomUUID().toString();
         this.description = description;
         this.price = price;
         this.image = image;
     }
 
     @NonNull
-    public String getUid() {
-        return uid;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setUid(@NonNull String uid) {
-        this.uid = uid;
+    public void setProductId(@NonNull String productId) {
+        this.productId = productId;
     }
 
     public String getDescription() {

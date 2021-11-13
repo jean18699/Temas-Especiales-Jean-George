@@ -17,11 +17,11 @@ import java.util.UUID;
 public interface ProductDao {
 
     //LiveData permite siempre ver en la UI los cambios realizados en la data
-    @Query("SELECT * FROM categories ORDER BY name")
+    @Query("SELECT * FROM Products")
     LiveData<List<Product>> findAll();
 
     @Query("SELECT * FROM Products WHERE id = :productID")
-    Product findProductById(UUID productID);
+    Product findProductById(String productID);
 
     @Insert
     void insert(Product product);

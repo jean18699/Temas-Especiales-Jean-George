@@ -20,7 +20,7 @@ public interface ProductCategoryDao {
 
     @Transaction
     @Query("SELECT * FROM products WHERE id = :productID")
-    LiveData<List<CategoriesByProduct>> findCategoriesByProduct(UUID productID);
+    LiveData<List<CategoriesByProduct>> findCategoriesByProduct(String productID);
 
     @Transaction
     @Query("SELECT * FROM categories WHERE name = :categoryName")
