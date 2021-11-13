@@ -8,7 +8,10 @@
         android:id="@+id/menuCategory"
         android:icon="@drawable/ic_baseline_category_24" />
 
-    <item android:title="Product"></item>
+    <item
+        android:title="@string/product"
+        android:id="@+id/menuProduct"
+        android:icon="@drawable/ic_baseline_shopping_bag_24" />
 
 
 

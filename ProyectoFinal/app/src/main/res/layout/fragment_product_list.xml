@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:backgroundTint="#FBF7F7"
+    android:foregroundTint="#ECCDCD">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatBtn_addProduct"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+
+        android:layout_alignStart="@+id/productList"
+        android:layout_alignTop="@+id/productList"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="false"
+        android:layout_marginStart="228dp"
+        android:layout_marginTop="444dp"
+        android:background="#573030"
+        android:clickable="true"
+        android:src="@android:drawable/ic_input_add"
+        app:backgroundTint="#3F51B5"
+        app:fabCustomSize="56dp"
+        app:rippleColor="@color/white"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/productList"
+        android:name="com.pucmm.proyectofinal.roomviewmodel.fragments.CategoryListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="#F8F5F5"
+        android:foregroundTint="#1C1616"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".roomviewmodel.fragments.CategoryListFragment"
+        tools:listitem="@layout/fragment_product" />
+
+
+</RelativeLayout>

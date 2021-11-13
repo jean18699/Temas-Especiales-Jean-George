@@ -19,10 +19,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.databinding.FragmentCategoryListBinding;
 import com.pucmm.proyectofinal.roomviewmodel.activities.CategoryRegisterActivity;
-import com.pucmm.proyectofinal.roomviewmodel.adapters.CategoryAdapter;
+import com.pucmm.proyectofinal.roomviewmodel.activities.ProductRegisterActivity;
+import com.pucmm.proyectofinal.roomviewmodel.adapters.ProductAdapter;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
 import com.pucmm.proyectofinal.roomviewmodel.model.Category;
-import com.pucmm.proyectofinal.roomviewmodel.viewmodel.CategoryViewModel;
+
+import com.pucmm.proyectofinal.roomviewmodel.model.Product;
+import com.pucmm.proyectofinal.roomviewmodel.viewmodel.ProductViewModel;
 
 import java.util.List;
 
@@ -36,8 +39,8 @@ public class ProductListFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 2;
     private AppDatabase appDatabase;
-    private CategoryAdapter categoryAdapter;
-    private RecyclerView categoryListRecyclerView;
+    private ProductAdapter productAdapter;
+    private RecyclerView productListRecyclerView;
     private @NonNull FragmentCategoryListBinding binding;
 
     /**
@@ -69,29 +72,29 @@ public class ProductListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_category_list, container, false);
-        categoryAdapter = new CategoryAdapter(getActivity().getApplicationContext());
-        FloatingActionButton floatingActionButton = view.findViewById(R.id.floatBtn_addCategory);
+        View view = inflater.inflate(R.layout.fragment_product_list, container, false);
+        productAdapter = new ProductAdapter(getActivity().getApplicationContext());
+        FloatingActionButton floatingActionButton = view.findViewById(R.id.floatBtn_addProduct);
         
-        categoryListRecyclerView = view.findViewById(R.id.categoryList);
+        productListRecyclerView = view.findViewById(R.id.productList);
 
         if(mColumnCount <= 1)
         {
-            categoryListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+            productListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
 
         }else
         {
-            categoryListRecyclerView.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), mColumnCount));
+            productListRecyclerView.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), mColumnCount));
 
         }
 
         appDatabase = AppDatabase.getInstance(getActivity().getApplicationContext());
-        categoryAdapter = new CategoryAdapter(getActivity().getApplicationContext());
-        categoryListRecyclerView.setAdapter(categoryAdapter);
+        productAdapter = new ProductAdapter(getActivity().getApplicationContext());
+        productListRecyclerView.setAdapter(productAdapter);
 
         //Pasando al fragmento de registrar categoria al clickear el boton flotante
         floatingActionButton.setOnClickListener(v ->
-                startActivity(new Intent(getActivity(), CategoryRegisterActivity.class))
+                startActivity(new Intent(getActivity(), ProductRegisterActivity.class))
         );
 
         retrieveTasks();
@@ -101,19 +104,19 @@ public class ProductListFragment extends Fragment {
 
     //Cargando los datos live del view model que utilizara la lista
     private void retrieveTasks(){
-        CategoryViewModel categoryViewModel = new ViewModelProvider(this, new ViewModelProvider.Factory() {
+        ProductViewModel productViewModel = new ViewModelProvider(this, new ViewModelProvider.Factory() {
             @NonNull
             @Override
             public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-                return (T) new CategoryViewModel(appDatabase);
+                return (T) new ProductViewModel(appDatabase);
             }
-        }).get(CategoryViewModel.class);
+        }).get(ProductViewModel.class);
 
-        categoryViewModel.getCategoryListLiveData().observe(getActivity(), new Observer<List<Category>>() {
+        productViewModel.getProductListLiveData().observe(getActivity(), new Observer<List<Product>>() {
 
             @Override
-            public void onChanged(List<Category> categories) {
-                categoryAdapter.setCategories(categories);
+            public void onChanged(List<Product> products) {
+                productAdapter.setProducts(products);
             }
         });
 

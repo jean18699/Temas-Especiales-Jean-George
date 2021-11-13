@@ -32,7 +32,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract DatabaseDao databaseDao();
     public abstract CategoryDao categoryDao();
-    public abstract ProductDao ProductDao();
+    public abstract ProductDao productDao();
     public abstract ProductCategoryDao ProductCategoryDao();
 
 }

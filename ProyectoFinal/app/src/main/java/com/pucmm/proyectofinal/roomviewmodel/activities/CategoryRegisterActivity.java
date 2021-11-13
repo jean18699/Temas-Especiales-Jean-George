@@ -10,10 +10,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppExecutors;
-import com.pucmm.proyectofinal.roomviewmodel.fragments.CategoryListFragment;
 import com.pucmm.proyectofinal.roomviewmodel.model.Category;
-
-import java.util.Locale;
 
 public class CategoryRegisterActivity extends AppCompatActivity {
 
@@ -26,7 +23,7 @@ public class CategoryRegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_register);
         btnRegister = findViewById(R.id.btn_registerCategory);
-        editCategory = findViewById(R.id.editCategoryRegisterName);
+        editCategory = findViewById(R.id.editProductRegisterDescription);
         database = AppDatabase.getInstance(getApplicationContext());
 
         btnRegister.setOnClickListener(v -> {

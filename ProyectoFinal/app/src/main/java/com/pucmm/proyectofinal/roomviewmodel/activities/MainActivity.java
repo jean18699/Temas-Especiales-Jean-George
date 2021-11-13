@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import com.google.android.material.navigation.NavigationView;
 import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.CategoryListFragment;
+import com.pucmm.proyectofinal.roomviewmodel.fragments.ProductListFragment;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -23,7 +24,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private int columnsCategory = 2;
+    private int columnsCategory = 1;
+    private int columnsProducts = 1;
 
 
     @Override
@@ -60,6 +62,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.menuCategory:
                 fragment = CategoryListFragment.newInstance(columnsCategory);
                 break;
+
+            case R.id.menuProduct:
+            fragment = ProductListFragment.newInstance(columnsProducts);
+            break;
         }
 
         if(fragment != null){
