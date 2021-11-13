@@ -13,6 +13,9 @@ public class Category {
 
     @PrimaryKey
     @NonNull
+    @ColumnInfo(name = "categoryId")
+    private Long id;
+
     @ColumnInfo(name = "name")
     private String name;
 
@@ -40,5 +43,14 @@ public class Category {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    @NonNull
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(@NonNull Long id) {
+        this.id = id;
     }
 }

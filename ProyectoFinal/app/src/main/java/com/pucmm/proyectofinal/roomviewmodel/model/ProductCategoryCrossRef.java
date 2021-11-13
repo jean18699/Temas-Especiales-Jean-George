@@ -11,12 +11,12 @@ import androidx.room.Relation;
 import java.util.UUID;
 
 //Tabla many to many para relacionar los productos y las categorias
-@Entity(primaryKeys = {"id","name"})
+@Entity(primaryKeys = {"productId","categoryId"})
 public class ProductCategoryCrossRef {
 
     @NonNull
-    public String id;
+    public String productId;
     @NonNull
-    public String name;
+    public String categoryId;
 
 }

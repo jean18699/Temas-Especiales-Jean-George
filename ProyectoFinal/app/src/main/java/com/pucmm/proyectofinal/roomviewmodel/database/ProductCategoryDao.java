@@ -19,7 +19,7 @@ import java.util.UUID;
 public interface ProductCategoryDao {
 
     @Transaction
-    @Query("SELECT * FROM products WHERE id = :productID")
+    @Query("SELECT * FROM products WHERE productId = :productID")
     LiveData<List<CategoriesByProduct>> findCategoriesByProduct(String productID);
 
     @Transaction

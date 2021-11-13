@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.main_activity);
 
         //REINICIAR LA BASE DE DATOS
-       // getApplicationContext().deleteDatabase("e-commerce");
+        getApplicationContext().deleteDatabase("e-commerce");
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

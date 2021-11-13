@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -21,10 +22,12 @@ public interface CategoryDao {
     @Query("SELECT * FROM Categories WHERE name = :categoryName")
     Category findCategoryByName(String categoryName);
 
+
+
     @Insert
     void insert(Category category);
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     void update(Category category);
 
     @Delete

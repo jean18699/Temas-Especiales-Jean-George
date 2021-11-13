@@ -13,13 +13,13 @@
     app:layout_constraintTop_toTopOf="parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/main_category_register"
+        android:id="@+id/main_category_edit"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".roomviewmodel.fragments.CategoryRegisterFragment">
 
         <TextView
-            android:id="@+id/lbl_category_name"
+            android:id="@+id/lblCategoryName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -39,7 +39,7 @@
             android:layout_marginStart="140dp"
             android:layout_marginTop="82dp"
             android:layout_marginEnd="163dp"
-            android:text="@string/lbl_new_category"
+            android:text="@string/lbl_edit_category"
             android:textColor="#3F51B5"
             android:textSize="30sp"
             android:textStyle="bold"
@@ -53,14 +53,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="50dp"
-            android:text="@string/addCategoryButton"
+            android:text="@string/btnEdit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editCategoryRegisterDescription" />
+            app:layout_constraintTop_toBottomOf="@+id/editCategoryName" />
 
         <EditText
-            android:id="@+id/editCategoryRegisterDescription"
+            android:id="@+id/editCategoryName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -70,7 +70,7 @@
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_category_name" />
+            app:layout_constraintTop_toBottomOf="@+id/lblCategoryName" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

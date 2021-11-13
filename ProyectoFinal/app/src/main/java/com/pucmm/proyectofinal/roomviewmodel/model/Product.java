@@ -13,7 +13,7 @@ public class Product {
 
     @PrimaryKey
     @NonNull
-    @ColumnInfo(name = "id")
+    @ColumnInfo(name = "productId")
     private String productId;
 
     @ColumnInfo(name = "description")

@@ -20,7 +20,7 @@ public interface ProductDao {
     @Query("SELECT * FROM Products")
     LiveData<List<Product>> findAll();
 
-    @Query("SELECT * FROM Products WHERE id = :productID")
+    @Query("SELECT * FROM Products WHERE productId = :productID")
     Product findProductById(String productID);
 
     @Insert

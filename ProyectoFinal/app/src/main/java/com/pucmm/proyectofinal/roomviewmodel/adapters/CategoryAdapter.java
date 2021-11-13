@@ -1,15 +1,23 @@
 package com.pucmm.proyectofinal.roomviewmodel.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.provider.SyncStateContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.databinding.FragmentCategoryBinding;
+import com.pucmm.proyectofinal.roomviewmodel.activities.CategoryEditActivity;
+import com.pucmm.proyectofinal.roomviewmodel.activities.LoginActivity;
 import com.pucmm.proyectofinal.roomviewmodel.model.Category;
 
 import java.util.List;
@@ -37,6 +45,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
         final Category category = categoryList.get(position);
         holder.category.setText(category.getName());
 
+
     }
 
     @Override
@@ -45,6 +54,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
             return 0;
         }
         return categoryList.size();
+    }
+
+    public Category getCategory(int position) {
+        return categoryList.get(position);
     }
 
     //Asignando dinamicamente a la lista
@@ -56,11 +69,23 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView category;
+        private ImageView editBtn;
 
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             category = categoriesBinding.categoryName;
+            editBtn = categoriesBinding.configCategory;
+
+
+            editBtn.setOnClickListener(v->{
+                String categoryName = categoryList.get(getAbsoluteAdapterPosition()).getName();
+                Intent intent = new Intent(context, CategoryEditActivity.class);
+                intent.putExtra("categoryName",categoryName);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            });
+
         }
     }
 }

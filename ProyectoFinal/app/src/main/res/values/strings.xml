@@ -24,4 +24,6 @@
     <string name="register_a_new_category">Register a new category</string>
     <string name="lbl_create_a_new_product">Create a New Product</string>
     <string name="product">Products</string>
+    <string name="lbl_edit_category">Edit Category</string>
+    <string name="btnEdit">Edit</string>
 </resources>

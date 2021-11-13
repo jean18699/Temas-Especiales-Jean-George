@@ -23,7 +23,7 @@ public class CategoryRegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_register);
         btnRegister = findViewById(R.id.btn_registerCategory);
-        editCategory = findViewById(R.id.editProductRegisterDescription);
+        editCategory = findViewById(R.id.editCategoryRegisterDescription);
         database = AppDatabase.getInstance(getApplicationContext());
 
         btnRegister.setOnClickListener(v -> {
