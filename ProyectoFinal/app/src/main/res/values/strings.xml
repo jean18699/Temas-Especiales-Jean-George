@@ -32,4 +32,8 @@
     <string name="lbl_create_an_account">CREATE AN ACCOUNT</string>
     <string name="account">Profile</string>
     <string name="lbl_my_profile">My Profile</string>
+    <string name="user_register_firstname">Enter FirstName</string>
+    <string name="user_register_lastname">Enter LastName</string>
+    <string name="user_register_phone_number">Enter Phone Number</string>
+    <string name="user_register_birthday">Enter Birthday</string>
 </resources>

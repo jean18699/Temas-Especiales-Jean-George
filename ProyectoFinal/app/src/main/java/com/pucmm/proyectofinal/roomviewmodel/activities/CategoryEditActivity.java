@@ -27,7 +27,7 @@ public class CategoryEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_edit);
         btnEdit = findViewById(R.id.btn_registerCategory);
-        editCategoryName = findViewById(R.id.editCategoryName);
+        editCategoryName = findViewById(R.id.editUserEmail);
         database = AppDatabase.getInstance(getApplicationContext());
         intent = getIntent();
 

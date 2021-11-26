@@ -1,6 +1,5 @@
 package com.pucmm.proyectofinal.roomviewmodel.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,16 +73,16 @@ public class UserEditFragment extends Fragment {
         editUsername = view.findViewById(R.id.editUserName);
         editEmail = view.findViewById(R.id.editEmail);
         editPassword = view.findViewById(R.id.editPassword);
-        editName = view.findViewById(R.id.editName);
+        editName = view.findViewById(R.id.editFirstName);
         database = AppDatabase.getInstance(getActivity().getApplicationContext());
         user = (User) getArguments().getSerializable("user");
 
         editUsername.setEnabled(false);
 
-        editUsername.setText(user.getUsername());
+       // editUsername.setText(user.getUsername());
         editEmail.setText(user.getEmail());
         editPassword.setText(user.getPassword());
-        editName.setText(user.getName());
+        editName.setText(user.getFirstName());
 
         editUsername.bringToFront();
 
@@ -113,9 +112,9 @@ public class UserEditFragment extends Fragment {
                 //User user = database.userDao().findUserByUsername(editUsername.getText().toString());
                 if(user != null){
                     user.setEmail(editEmail.getText().toString());
-                    user.setName(editName.getText().toString());
+                    user.setFirstName(editName.getText().toString());
                     user.setPassword(editPassword.getText().toString());
-                    database.userDao().update(user);
+                   // database.userDao().update(user);
 
                     Snackbar.make(getView(), "Update completed!", Snackbar.LENGTH_LONG).show();
 

@@ -11,7 +11,7 @@ import com.pucmm.proyectofinal.roomviewmodel.model.Product;
 import com.pucmm.proyectofinal.roomviewmodel.model.ProductCategoryCrossRef;
 import com.pucmm.proyectofinal.roomviewmodel.model.User;
 
-@Database(entities = {User.class, Category.class, Product.class, ProductCategoryCrossRef.class},version = 4)
+@Database(entities = {Category.class, Product.class, ProductCategoryCrossRef.class},version = 5)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DATABASE_NAME = "e-commerce";
@@ -29,7 +29,7 @@ public abstract class AppDatabase extends RoomDatabase {
         return instance;
     }
 
-    public abstract UserDao userDao();
+    //public abstract UserDao userDao();
     public abstract DatabaseDao databaseDao();
     public abstract CategoryDao categoryDao();
     public abstract ProductDao productDao();

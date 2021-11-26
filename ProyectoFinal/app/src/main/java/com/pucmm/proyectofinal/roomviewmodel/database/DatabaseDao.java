@@ -14,8 +14,5 @@ import java.util.List;
 @Dao
 public interface DatabaseDao {
 
-    @Query("DELETE FROM Users")
-    void eraseUsers();
-
 
 }

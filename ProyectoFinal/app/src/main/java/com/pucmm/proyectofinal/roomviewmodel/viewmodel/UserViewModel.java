@@ -14,7 +14,7 @@ public class UserViewModel extends ViewModel {
     private LiveData<List<User>> userListLiveData;
 
     public UserViewModel(@NonNull AppDatabase appDatabase){
-        userListLiveData = appDatabase.userDao().findAll();
+       // userListLiveData = appDatabase.userDao().findAll();
     }
 
     public LiveData<List<User>> getUserListLiveData() {

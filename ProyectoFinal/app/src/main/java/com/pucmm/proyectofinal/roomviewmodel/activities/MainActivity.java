@@ -41,7 +41,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         intent = getIntent();
-        loadUser();
+
+        user = (User) getIntent().getSerializableExtra("user");
+
+        //loadUser();
 
         //REINICIAR LA BASE DE DATOS
        // getApplicationContext().deleteDatabase("e-commerce");
@@ -62,18 +65,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    private void loadUser(){
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-
-                User loadUser = AppDatabase.getInstance(getApplicationContext()).userDao().findUserByUsername(intent.getStringExtra("username"));
-                if (loadUser != null) {
-                    user = loadUser;
-                }
-            }
-        });
-    }
 
     //Eventos al presionar un elemento del menu. Aqui alternaremos de fragmentos
     @Override

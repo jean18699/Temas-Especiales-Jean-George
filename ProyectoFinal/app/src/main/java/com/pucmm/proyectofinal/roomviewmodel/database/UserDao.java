@@ -15,18 +15,15 @@ import java.util.List;
 public interface UserDao {
 
     //LiveData permite siempre ver en la UI los cambios realizados en la data
-    @Query("SELECT * FROM users ORDER BY username")
-    LiveData<List<User>> findAll();
+   // @Query("SELECT * FROM users ORDER BY email")
+    //LiveData<List<User>> findAll();
 
-    @Query("SELECT * FROM Users WHERE username = :userID")
-    User findUserByUsername(String userID);
+    //@Query("SELECT * FROM Users WHERE email = :userEmail")
+    //User findUserByEmail(String userEmail);
 
-    @Query("SELECT * FROM Users WHERE email = :userEmail")
-    User findUserByEmail(String userEmail);
-
-    @Query("SELECT * FROM Users WHERE username = :userID AND password = :userPassword")
-    User findUserByCredentials(String userID, String userPassword);
-
+   // @Query("SELECT * FROM Users WHERE username = :userID AND password = :userPassword")
+    //User findUserByCredentials(String userID, String userPassword);
+/*
     @Insert
     void insert(User user);
 
@@ -35,5 +32,5 @@ public interface UserDao {
 
     @Delete
     void delete(User user);
-
+*/
 }
