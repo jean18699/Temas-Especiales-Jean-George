@@ -16,23 +16,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.databinding.FragmentCategoryListBinding;
-import com.pucmm.proyectofinal.roomviewmodel.activities.CategoryRegisterActivity;
 import com.pucmm.proyectofinal.roomviewmodel.activities.ProductRegisterActivity;
 import com.pucmm.proyectofinal.roomviewmodel.adapters.ProductAdapter;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
-import com.pucmm.proyectofinal.roomviewmodel.model.Category;
 
 import com.pucmm.proyectofinal.roomviewmodel.model.Product;
 import com.pucmm.proyectofinal.roomviewmodel.viewmodel.ProductViewModel;
+import com.pucmm.proyectofinal.utils.OnTouchListener;
 
 import java.util.List;
 
 /**
  * A fragment representing a list of Items.
  */
-public class ProductListFragment extends Fragment {
+public class ProductListFragment extends Fragment implements OnTouchListener<Product> {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -73,9 +73,8 @@ public class ProductListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_product_list, container, false);
-        productAdapter = new ProductAdapter(getActivity().getApplicationContext());
         FloatingActionButton floatingActionButton = view.findViewById(R.id.floatBtn_addProduct);
-        
+
         productListRecyclerView = view.findViewById(R.id.productList);
 
         if(mColumnCount <= 1)
@@ -89,16 +88,15 @@ public class ProductListFragment extends Fragment {
         }
 
         appDatabase = AppDatabase.getInstance(getActivity().getApplicationContext());
-        productAdapter = new ProductAdapter(getActivity().getApplicationContext());
-        productListRecyclerView.setAdapter(productAdapter);
+        productAdapter = new ProductAdapter(getActivity().getApplicationContext(), this);
+
 
         //Pasando al fragmento de registrar categoria al clickear el boton flotante
         floatingActionButton.setOnClickListener(v ->
                 startActivity(new Intent(getActivity(), ProductRegisterActivity.class))
         );
-
         retrieveTasks();
-
+        productListRecyclerView.setAdapter(productAdapter);
         return view;
     }
 
@@ -117,9 +115,18 @@ public class ProductListFragment extends Fragment {
             @Override
             public void onChanged(List<Product> products) {
                 productAdapter.setProducts(products);
+                //productListRecyclerView.setAdapter(productAdapter);
             }
         });
 
     }
 
+    @Override
+    public void OnClick(Product element) {
+       getActivity().getSupportFragmentManager().beginTransaction()
+               .setReorderingAllowed(true)
+               .replace(R.id.content_frame, ProductDetailFragment.newInstance(element))
+               .addToBackStack(null)
+               .commit();
+    }
 }

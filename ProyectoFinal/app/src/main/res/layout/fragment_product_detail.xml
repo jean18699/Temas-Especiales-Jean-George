@@ -17,13 +17,14 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="20dp"
+            android:textColor="@color/black"
             android:text="Descripcion del producto"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txtPrecioDetalleProducto"
+            android:id="@+id/txtPriceDetail"
             android:layout_width="197dp"
             android:layout_height="43dp"
             android:layout_marginStart="24dp"
@@ -62,9 +63,9 @@
             android:layout_marginEnd="8dp"
             android:text="-"
             app:cornerRadius="64dp"
-            app:layout_constraintEnd_toStartOf="@+id/textView10"
+            app:layout_constraintEnd_toStartOf="@+id/txtQuantity"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtPrecioDetalleProducto" />
+            app:layout_constraintTop_toBottomOf="@+id/txtPriceDetail" />
 
         <Button
             android:id="@+id/btnAddQuantity"
@@ -76,23 +77,25 @@
             app:cornerRadius="64dp"
             android:layout_marginBottom="200dp"
             app:layout_constraintHorizontal_bias="0.02"
-            app:layout_constraintStart_toEndOf="@+id/textView10"
-            app:layout_constraintTop_toBottomOf="@+id/txtPrecioDetalleProducto" />
+            app:layout_constraintStart_toEndOf="@+id/txtQuantity"
+            app:layout_constraintTop_toBottomOf="@+id/txtPriceDetail" />
 
         <TextView
-            android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="29dp"
+            android:id="@+id/txtQuantity"
+            android:layout_width="22dp"
+            android:layout_height="30dp"
             android:layout_marginStart="6dp"
             android:layout_marginTop="20dp"
             android:text="0"
+            android:textAlignment="center"
+            android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@+id/btnRemoveQuantity"
-            app:layout_constraintTop_toBottomOf="@+id/txtPrecioDetalleProducto" />
+            app:layout_constraintTop_toBottomOf="@+id/txtPriceDetail" />
 
         <Button
             android:id="@+id/btnAddCar"
             android:layout_width="0dp"
-            android:layout_height="45dp"
+            android:layout_height="52dp"
             android:layout_marginStart="64dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
@@ -102,7 +105,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/btnAddQuantity"
-            app:layout_constraintTop_toBottomOf="@+id/txtPrecioDetalleProducto" />
+            app:layout_constraintTop_toBottomOf="@+id/txtPriceDetail" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

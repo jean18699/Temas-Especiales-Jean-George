@@ -7,11 +7,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.roomviewmodel.model.Product;
 
-import java.io.Serializable;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,7 +38,7 @@ public class ProductDetailFragment extends Fragment {
     public static ProductDetailFragment newInstance(Product product) {
         ProductDetailFragment fragment = new ProductDetailFragment();
         Bundle args = new Bundle();
-        args.putSerializable("user", product);
+        args.putSerializable("product", product);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,10 +54,34 @@ public class ProductDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_product_detail, container, false);
 
-        System.out.println(product.getDescription());
+        AtomicInteger quantity = new AtomicInteger(1);
+        View view = inflater.inflate(R.layout.fragment_product_detail, container, false);
+        TextView txtDescription = view.findViewById(R.id.txtDetailDescription);
+        TextView txtPrice = view.findViewById(R.id.txtPriceDetail);
+        TextView txtQuantity = view.findViewById(R.id.txtQuantity);
+        Button btnRemoveQuantity = view.findViewById(R.id.btnRemoveQuantity);
+        Button btnAddQuantity = view.findViewById(R.id.btnAddQuantity);
+
+
+        txtDescription.setText(product.getDescription());
+        txtPrice.setText(product.getPrice().toString());
+
+
+        btnRemoveQuantity.setOnClickListener(v->{
+            if(quantity.get() > 1){
+                quantity.getAndDecrement();
+                txtQuantity.setText(String.valueOf(quantity.get()));
+            }
+
+        });
+
+        btnAddQuantity.setOnClickListener(v->{
+            quantity.getAndIncrement();
+            txtQuantity.setText(String.valueOf(quantity.get()));
+        });
+
+
 
         return view;
     }

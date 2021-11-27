@@ -12,10 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pucmm.proyectofinal.databinding.FragmentProductBinding;
-import com.pucmm.proyectofinal.roomviewmodel.activities.CategoryEditActivity;
 import com.pucmm.proyectofinal.roomviewmodel.activities.ProductEditActivity;
-import com.pucmm.proyectofinal.roomviewmodel.model.Category;
 import com.pucmm.proyectofinal.roomviewmodel.model.Product;
+import com.pucmm.proyectofinal.utils.OnTouchListener;
 
 import java.util.List;
 
@@ -23,26 +22,28 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
 
     private List<Product> productList;
     private Context context;
-    private FragmentProductBinding productBinding;
+    private final OnTouchListener<Product> mListener; //Agregado para que la lista responda a los eventos de click
 
 
-    public ProductAdapter(Context context) {
+    public ProductAdapter(Context context, OnTouchListener<Product> mListener) {
         this.context = context;
+        this.mListener = mListener;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        productBinding = FragmentProductBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
-        return new MyViewHolder(productBinding.getRoot());
+        FragmentProductBinding productBinding = FragmentProductBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
+        return new MyViewHolder(productBinding,mListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        final Product product = productList.get(position);
-        holder.product_id.setText(product.getProductId());
-        holder.product_price.setText(product.getPrice().toString());
-        holder.product_description.setText(product.getDescription());
+        holder.product = productList.get(position);
+
+        holder.product_id.setText(holder.product.getProductId());
+        holder.product_price.setText(holder.product.getPrice().toString());
+        holder.product_description.setText(holder.product.getDescription());
         //holder.product_image.setText(product.getImage());
 
 
@@ -62,40 +63,40 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         notifyDataSetChanged();
     }
 
-    public Product getProduct(int position) {
-        return productList.get(position);
-    }
+    public class MyViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener {
+
+        public TextView product_id;
+        public TextView product_price;
+        public TextView product_description;
+        public ImageView product_image;
+        public ImageView editBtn;
+        public OnTouchListener<Product> mListener;
+        public Product product;
 
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-
-        private TextView product_id;
-        private TextView product_price;
-        private TextView product_description;
-        private ImageView product_image;
-        private ImageView editBtn;
-
-
-
-
-        public MyViewHolder(@NonNull View itemView) {
-            super(itemView);
-            product_id = productBinding.productId;
-            product_price = productBinding.productPrice;
-            product_description = productBinding.productDescription;
-            product_image = productBinding.productImage;
-
-            editBtn = productBinding.configProduct;
+        public MyViewHolder(FragmentProductBinding binding, OnTouchListener<Product> listener) {
+            super(binding.getRoot());
+            product_id = binding.productId;
+            product_price = binding.productPrice;
+            product_description = binding.productDescription;
+            //product_image = binding.productImage;
+            mListener = listener;
+            editBtn = binding.configProduct;
+            binding.getRoot().setOnClickListener(this);
 
 
             editBtn.setOnClickListener(v->{
-                String productId = productList.get(getAbsoluteAdapterPosition()).getProductId();
                 Intent intent = new Intent(context, ProductEditActivity.class);
-                intent.putExtra("productId",productId);
+                intent.putExtra("product",product);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             });
 
+        }
+
+        @Override
+        public void onClick(View v) {
+            mListener.OnClick(product);
         }
     }
 }

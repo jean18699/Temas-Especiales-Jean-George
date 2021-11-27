@@ -12,16 +12,15 @@ import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppExecutors;
 import com.pucmm.proyectofinal.roomviewmodel.model.Product;
+import com.pucmm.proyectofinal.roomviewmodel.model.User;
 
 public class ProductEditActivity extends AppCompatActivity {
 
     private Button btnEdit;
     private EditText editProductDescription, editProductPrice;
     private AppDatabase database;
-    private String productId, productDescription;
-    private float productPrice;
     private Product product;
-    private Intent intent;
+
 
 
     @Override
@@ -31,21 +30,9 @@ public class ProductEditActivity extends AppCompatActivity {
         btnEdit = findViewById(R.id.btnEditProduct);
         editProductDescription = findViewById(R.id.editProductDescription);
         editProductPrice = findViewById(R.id.editProductPrice);
-
         database = AppDatabase.getInstance(getApplicationContext());
-        intent = getIntent();
-
-        productId = intent.getStringExtra("productId");
-
-        AppExecutors.getInstance().diskIO().execute(() -> {
-            product = database.productDao().findProductById(productId);
-            populateUI(product);
-        });
-
-        //productDescription = intent.getStringExtra("productDescription");
-        //productPrice = intent.getFloatExtra("productPrice",0);
-        //editProductDescription.setText(productDescription);
-        //editProductPrice.setText((int) productPrice);
+        product = (Product) getIntent().getSerializableExtra("product");
+        populateUI(product);
 
 
         btnEdit.setOnClickListener(v -> {
@@ -74,9 +61,6 @@ public class ProductEditActivity extends AppCompatActivity {
             public void run() {
 
                 //Formateando el string de categoria
-              //  String product_string = formatString(productName);
-
-                //Product product = database.productDao().findProductById(productId);
                 if(product != null){
                     product.setDescription(editProductDescription.getText().toString());
                     product.setPrice(Float.parseFloat(editProductPrice.getText().toString()));
