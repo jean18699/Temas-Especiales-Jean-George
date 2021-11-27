@@ -95,6 +95,7 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
         floatingActionButton.setOnClickListener(v ->
                 startActivity(new Intent(getActivity(), ProductRegisterActivity.class))
         );
+
         retrieveTasks();
         productListRecyclerView.setAdapter(productAdapter);
         return view;
@@ -115,7 +116,6 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
             @Override
             public void onChanged(List<Product> products) {
                 productAdapter.setProducts(products);
-                //productListRecyclerView.setAdapter(productAdapter);
             }
         });
 

@@ -1,5 +1,7 @@
 package com.pucmm.proyectofinal.roomviewmodel.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.roomviewmodel.model.Product;
 
@@ -23,6 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ProductDetailFragment extends Fragment {
 
     private Product product;
+    private Integer quantity;
 
     public ProductDetailFragment() {
         // Required empty public constructor
@@ -55,33 +59,62 @@ public class ProductDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        AtomicInteger quantity = new AtomicInteger(1);
+
         View view = inflater.inflate(R.layout.fragment_product_detail, container, false);
         TextView txtDescription = view.findViewById(R.id.txtDetailDescription);
         TextView txtPrice = view.findViewById(R.id.txtPriceDetail);
         TextView txtQuantity = view.findViewById(R.id.txtQuantity);
         Button btnRemoveQuantity = view.findViewById(R.id.btnRemoveQuantity);
         Button btnAddQuantity = view.findViewById(R.id.btnAddQuantity);
+        Button btnAddToCart = view.findViewById(R.id.btnAddCar);
 
+        //Para guardar el producto localmente en nuestro carrito
+        SharedPreferences sharedPreferences =getActivity().getSharedPreferences("cart", Context.MODE_PRIVATE);
+        SharedPreferences quantityPreferences =getActivity().getSharedPreferences("quantities", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        SharedPreferences.Editor editor2 = quantityPreferences.edit();
+
+        quantity = Integer.valueOf(quantityPreferences.getString(product.getProductId()+"_quantity","1"));
+
+       // sharedPreferences.edit().clear().commit();
+        //quantityPreferences.edit().clear().commit();
 
         txtDescription.setText(product.getDescription());
         txtPrice.setText(product.getPrice().toString());
+        txtQuantity.setText(String.valueOf(quantity));
 
 
+        //Eventos
         btnRemoveQuantity.setOnClickListener(v->{
-            if(quantity.get() > 1){
-                quantity.getAndDecrement();
-                txtQuantity.setText(String.valueOf(quantity.get()));
+            if(quantity > 1){
+                quantity--;
+                txtQuantity.setText(String.valueOf(quantity));
             }
 
         });
 
         btnAddQuantity.setOnClickListener(v->{
-            quantity.getAndIncrement();
-            txtQuantity.setText(String.valueOf(quantity.get()));
+            quantity++;
+            txtQuantity.setText(String.valueOf(quantity));
         });
 
+        btnAddToCart.setOnClickListener(v->{
 
+            //Convertimos el producto a json para guardarlo
+            Gson gson = new Gson();
+            String jsonProduct = gson.toJson(product);
+            editor.putString(product.getProductId(), jsonProduct);
+            editor.commit();
+
+            editor2.putString(product.getProductId()+"_quantity", txtQuantity.getText().toString());
+            editor2.commit();
+
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .replace(R.id.content_frame, ShoppingCartFragment.newInstance(product))
+                    .addToBackStack(null)
+                    .commit();
+        });
 
         return view;
     }
