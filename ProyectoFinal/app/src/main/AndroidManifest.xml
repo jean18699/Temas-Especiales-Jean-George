@@ -12,9 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoFinal">
         <activity
-            android:name=".roomviewmodel.activities.ProductDetailActivity"
-            android:exported="true" />
-        <activity
             android:name=".roomviewmodel.activities.CategoryRegisterActivity"
             android:exported="true" />
         <activity
@@ -29,13 +26,11 @@
         <activity
             android:name=".roomviewmodel.activities.MainActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".roomviewmodel.activities.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:theme="@style/AppTheme.NoActionBar">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        </activity>
+        <activity android:name=".roomviewmodel.activities.LoginActivity">
+
         </activity>
     </application>
 

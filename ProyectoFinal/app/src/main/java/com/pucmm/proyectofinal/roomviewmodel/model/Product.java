@@ -5,11 +5,12 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 
 @Entity(tableName = "Products")
-public class Product {
+public class Product implements Serializable {
 
     @PrimaryKey
     @NonNull

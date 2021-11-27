@@ -33,14 +33,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private int columnsCategory = 1;
     private int columnsProducts = 1;
     private User user;
-    private Intent intent;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        intent = getIntent();
+
 
         user = (User) getIntent().getSerializableExtra("user");
 
