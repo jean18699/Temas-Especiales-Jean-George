@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pucmm.proyectofinal">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -11,6 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoFinal">
+        <activity
+            android:name=".roomviewmodel.activities.ProductDetailActivity"
+            android:exported="true" />
         <activity
             android:name=".roomviewmodel.activities.CategoryRegisterActivity"
             android:exported="true" />
@@ -26,9 +29,7 @@
         <activity
             android:name=".roomviewmodel.activities.MainActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".roomviewmodel.activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

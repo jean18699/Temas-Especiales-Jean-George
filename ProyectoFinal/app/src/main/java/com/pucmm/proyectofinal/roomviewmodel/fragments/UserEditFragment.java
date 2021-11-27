@@ -59,7 +59,7 @@ public class UserEditFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
+            user = (User) getArguments().getSerializable("user");
         }
     }
 
@@ -75,7 +75,7 @@ public class UserEditFragment extends Fragment {
         editPassword = view.findViewById(R.id.editPassword);
         editName = view.findViewById(R.id.editFirstName);
         database = AppDatabase.getInstance(getActivity().getApplicationContext());
-        user = (User) getArguments().getSerializable("user");
+
 
         editUsername.setEnabled(false);
 

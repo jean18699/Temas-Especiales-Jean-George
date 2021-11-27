@@ -140,16 +140,22 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
                         //Iniciando el Dashboard
-                        Intent dashboard = new Intent(getActivity(), MainActivity.class);
-                        dashboard.putExtra("user",(response.body()));
-                        getActivity().startActivity(dashboard);
+                        if(response.body() != null){
+                            Intent dashboard = new Intent(getActivity(), MainActivity.class);
+                            dashboard.putExtra("user",(response.body()));
+                            getActivity().startActivity(dashboard);
+                        }else
+                        {
+                            Snackbar.make(getView(), "Invalid email or password", Snackbar.LENGTH_LONG).show();
+                        }
+
                         System.out.println(response.body());
                     }
 
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
                         System.err.println(t.getLocalizedMessage());
-                        Snackbar.make(getView(), "Invalid email or password", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(getView(), "An error ocurried trying to login you account", Snackbar.LENGTH_LONG).show();
                     }
                 });
 
