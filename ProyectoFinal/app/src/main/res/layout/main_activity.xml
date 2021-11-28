@@ -28,13 +28,17 @@
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/home_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+           >
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize"
-                android:background="@color/purple_500" />
+                android:background="@color/purple_500"
+                app:menu="@menu/main_menu"
+                />
+
 
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
@@ -45,7 +49,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="@color/purple_500"
-            app:menu="@menu/top_app_bar">
+            app:menu="@menu/side_menu"
+            >
 
 
         </com.google.android.material.navigation.NavigationView>

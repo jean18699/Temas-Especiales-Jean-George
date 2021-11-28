@@ -15,14 +15,14 @@
             android:title="@string/product"
             android:id="@+id/menuProduct"
             android:icon="@drawable/ic_baseline_shopping_bag_24" />
+
+        <item
+            android:title="@string/account"
+            android:id="@+id/menuProfile"
+            android:icon="@drawable/ic_baseline_person_24" />
+
     </group>
 
-
-
-    <item
-        android:title="@string/account"
-        android:id="@+id/menuProfile"
-        android:icon="@drawable/ic_baseline_person_24" />
 
 
 

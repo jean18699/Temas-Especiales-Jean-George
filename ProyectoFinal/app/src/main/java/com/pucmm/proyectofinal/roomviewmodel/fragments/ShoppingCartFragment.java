@@ -43,6 +43,10 @@ public class ShoppingCartFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public static ShoppingCartFragment newInstance() {
+        ShoppingCartFragment fragment = new ShoppingCartFragment();
+        return fragment;
+    }
 
     // TODO: Rename and change types and number of parameters
     public static ShoppingCartFragment newInstance(Product product) {
