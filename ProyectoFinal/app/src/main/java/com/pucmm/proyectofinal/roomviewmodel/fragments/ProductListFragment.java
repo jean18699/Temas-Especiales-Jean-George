@@ -24,6 +24,7 @@ import com.pucmm.proyectofinal.roomviewmodel.adapters.ProductAdapter;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
 
 import com.pucmm.proyectofinal.roomviewmodel.model.Product;
+import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
 import com.pucmm.proyectofinal.roomviewmodel.viewmodel.ProductViewModel;
 import com.pucmm.proyectofinal.utils.OnTouchListener;
 
@@ -111,10 +112,10 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
             }
         }).get(ProductViewModel.class);
 
-        productViewModel.getProductListLiveData().observe(getActivity(), new Observer<List<Product>>() {
+        productViewModel.getProductListLiveData().observe(getActivity(), new Observer<List<ProductWithCarousel>>() {
 
             @Override
-            public void onChanged(List<Product> products) {
+            public void onChanged(List<ProductWithCarousel> products) {
                 productAdapter.setProducts(products);
             }
         });

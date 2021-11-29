@@ -63,7 +63,7 @@ public class ProductEditActivity extends AppCompatActivity {
                 //Formateando el string de categoria
                 if(product != null){
                     product.setDescription(editProductDescription.getText().toString());
-                    product.setPrice(Float.parseFloat(editProductPrice.getText().toString()));
+                    product.setPrice(Double.valueOf(editProductPrice.getText().toString()));
                     database.productDao().update(product);
                     finish();
                     return;

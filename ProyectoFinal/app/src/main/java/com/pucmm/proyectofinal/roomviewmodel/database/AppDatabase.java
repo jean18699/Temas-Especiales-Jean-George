@@ -6,12 +6,11 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import com.pucmm.proyectofinal.roomviewmodel.model.Carousel;
 import com.pucmm.proyectofinal.roomviewmodel.model.Category;
 import com.pucmm.proyectofinal.roomviewmodel.model.Product;
-import com.pucmm.proyectofinal.roomviewmodel.model.ProductCategoryCrossRef;
-import com.pucmm.proyectofinal.roomviewmodel.model.User;
 
-@Database(entities = {Category.class, Product.class, ProductCategoryCrossRef.class},version = 5)
+@Database(entities = {Category.class, Product.class, Carousel.class},version = 8)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DATABASE_NAME = "e-commerce";
@@ -30,9 +29,9 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     //public abstract UserDao userDao();
-    public abstract DatabaseDao databaseDao();
+    //public abstract DatabaseDao databaseDao();
     public abstract CategoryDao categoryDao();
     public abstract ProductDao productDao();
-    public abstract ProductCategoryDao ProductCategoryDao();
+    //public abstract ProductCategoryDao ProductCategoryDao();
 
 }

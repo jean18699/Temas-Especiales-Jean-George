@@ -7,8 +7,10 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.pucmm.proyectofinal.roomviewmodel.model.Carousel;
 import com.pucmm.proyectofinal.roomviewmodel.model.Category;
 import com.pucmm.proyectofinal.roomviewmodel.model.Product;
+import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,11 +19,20 @@ import java.util.UUID;
 public interface ProductDao {
 
     //LiveData permite siempre ver en la UI los cambios realizados en la data
-    @Query("SELECT * FROM Products")
-    LiveData<List<Product>> findAll();
+  //  @Query("SELECT * FROM Products")
+   // LiveData<List<Product>> findAll();
 
     @Query("SELECT * FROM Products WHERE productId = :productID")
     Product findProductById(String productID);
+
+    @Query("SELECT * FROM products ORDER BY productId")
+    LiveData<List<ProductWithCarousel>> findAll();
+
+    @Query("DELETE FROM carousel WHERE product = :uid")
+    void deleteCarousels(String uid);
+
+    @Insert
+    void insertCarousels(List<Carousel> carousels);
 
     @Insert
     void insert(Product product);

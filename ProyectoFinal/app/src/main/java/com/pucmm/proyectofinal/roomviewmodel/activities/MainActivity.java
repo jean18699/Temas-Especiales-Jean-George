@@ -12,11 +12,17 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppExecutors;
@@ -36,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private int columnsCategory = 1;
     private int columnsProducts = 1;
     private User user;
-
+    FirebaseAuth mAuth;
 
 
     @Override
@@ -44,13 +50,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-
+        mAuth = FirebaseAuth.getInstance();
         user = (User) getIntent().getSerializableExtra("user");
 
         //loadUser();
 
         //REINICIAR LA BASE DE DATOS
-       // getApplicationContext().deleteDatabase("e-commerce");
+        //getApplicationContext().deleteDatabase("e-commerce");
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -63,11 +69,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-
-
        navigationView.setNavigationItemSelectedListener(this);
 
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            // do your stuff
+        } else {
+            signInAnonymously();
+        }
+    }
+
+    private void signInAnonymously() {
+        mAuth.signInAnonymously().addOnSuccessListener(this, new  OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+                // do your stuff
+            }
+        })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        System.out.println("signInAnonymously:FAILURE");
+                    }
+                });
     }
 
 

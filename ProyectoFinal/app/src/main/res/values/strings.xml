@@ -36,4 +36,10 @@
     <string name="user_register_lastname">Enter LastName</string>
     <string name="user_register_phone_number">Enter Phone Number</string>
     <string name="user_register_birthday">Enter Birthday</string>
+    <string name="products_description">Product\'s Description</string>
+    <string name="lbl_products_price">Product\'s Price</string>
+    <string name="lbl_select_category">Select Category:</string>
+    <string name="please_wait">Please wait</string>
+    <string name="connecting">Connecting...</string>
+    <string name="authenticating">Authenticating...</string>
 </resources>

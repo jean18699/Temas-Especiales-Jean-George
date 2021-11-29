@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -35,6 +36,14 @@ android {
 dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
+
+    // Import the Firebase BoM
+    implementation platform('com.google.firebase:firebase-bom:29.0.0')
+
+    implementation 'com.google.firebase:firebase-storage:19.1.1'
+    implementation 'com.google.firebase:firebase-auth:21.0.1'
+    implementation 'com.google.firebase:firebase-core:20.0.0'
+    implementation 'com.google.firebase:firebase-firestore'
     def room_version = "2.3.0"
     def life_cycle = "2.3.1"
 
@@ -53,5 +62,20 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'io.github.shashank02051997:FancyToast:2.0.1'
+
+    // dependency for Displaying images
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    implementation 'com.kaopiz:kprogresshud:1.2.0'
+    implementation 'com.mikhaellopez:circularimageview:4.3.0'
+
+    // dependency for Loading button
+    implementation 'br.com.simplepass:loading-button-android:1.14.0'
+
+
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
 }
+
+apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

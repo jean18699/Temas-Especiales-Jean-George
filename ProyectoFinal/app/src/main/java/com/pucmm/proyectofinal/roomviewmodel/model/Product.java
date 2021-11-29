@@ -6,6 +6,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
+import java.net.URI;
 import java.util.UUID;
 
 
@@ -20,21 +21,28 @@ public class Product implements Serializable {
     @ColumnInfo(name = "description")
     private String description;
 
+    @ColumnInfo(name = "category")
+    private String category;
+
     @ColumnInfo(name = "price")
-    private Float price;
+    private Double price;
 
-    @ColumnInfo(name = "image", typeAffinity = ColumnInfo.BLOB)
-    private byte[] image;
+    @ColumnInfo(name = "active")
+    private boolean active;
 
+    public Product(){
 
+    }
 
-
-    public Product(String description, Float price, byte[] image) {
+    public Product(String description, Double price, String category) {
         this.productId = UUID.randomUUID().toString();
         this.description = description;
+        this.category = category;
         this.price = price;
-        this.image = image;
+        this.active = true;
     }
+
+
 
     @NonNull
     public String getProductId() {
@@ -53,24 +61,27 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    public Float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public byte[] getImage() {
-        return image;
+    public String getCategory() {
+        return category;
     }
 
-    public void setImage(byte[] image) {
-        this.image = image;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
+    public boolean isActive() {
+        return active;
+    }
 
-
-
-
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }

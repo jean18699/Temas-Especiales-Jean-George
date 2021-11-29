@@ -14,13 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.pucmm.proyectofinal.databinding.FragmentProductBinding;
 import com.pucmm.proyectofinal.roomviewmodel.activities.ProductEditActivity;
 import com.pucmm.proyectofinal.roomviewmodel.model.Product;
+import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
 import com.pucmm.proyectofinal.utils.OnTouchListener;
 
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHolder> {
 
-    private List<Product> productList;
+    private List<ProductWithCarousel> productList;
     private Context context;
     private final OnTouchListener<Product> mListener; //Agregado para que la lista responda a los eventos de click
 
@@ -41,9 +42,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.product = productList.get(position);
 
-        holder.product_id.setText(holder.product.getProductId());
-        holder.product_price.setText(holder.product.getPrice().toString());
-        holder.product_description.setText(holder.product.getDescription());
+        holder.product_id.setText(holder.product.product.getProductId());
+        holder.product_price.setText(holder.product.product.getPrice().toString());
+        holder.product_description.setText(holder.product.product.getDescription());
         //holder.product_image.setText(product.getImage());
 
 
@@ -58,7 +59,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
     }
 
     //Asignando dinamicamente a la lista
-    public void setProducts(List<Product> products) {
+    public void setProducts(List<ProductWithCarousel> products) {
         productList = products;
         notifyDataSetChanged();
     }
@@ -71,7 +72,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         public ImageView product_image;
         public ImageView editBtn;
         public OnTouchListener<Product> mListener;
-        public Product product;
+        public ProductWithCarousel product;
 
 
         public MyViewHolder(FragmentProductBinding binding, OnTouchListener<Product> listener) {
@@ -96,7 +97,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
 
         @Override
         public void onClick(View v) {
-            mListener.OnClick(product);
+            mListener.OnClick(product.product);
         }
     }
 }
