@@ -18,7 +18,7 @@ public class FirebaseNetwork {
 
     private static final String PATH_UPLOAD = "images/";
     private static final String URL_DOWNLOAD = String.format("gs://android-da673.appspot.com/%s", PATH_UPLOAD);
-    private static final long ONE_MEGABYTE = 1024 * 1024;
+    private static final long TEN_MEGABYTE = 1024 * 1024 * 10;
 
     private static FirebaseNetwork sInstance;
 
@@ -78,7 +78,7 @@ public class FirebaseNetwork {
         for (Carousel carousel : carousels) {
             final StorageReference reference = getStorage().getReferenceFromUrl(URL_DOWNLOAD + carousel.getPhoto());
 
-            reference.getBytes(ONE_MEGABYTE)
+            reference.getBytes(TEN_MEGABYTE)
                     .addOnSuccessListener(bytes -> {
                         Log.i(TAG, "download:onSuccess");
                         final Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -121,7 +121,7 @@ public class FirebaseNetwork {
     public void download(final String key, final NetResponse<Bitmap> response) {
         final StorageReference reference = getStorage().getReferenceFromUrl(URL_DOWNLOAD + key);
 
-        reference.getBytes(ONE_MEGABYTE)
+        reference.getBytes(TEN_MEGABYTE)
                 .addOnSuccessListener(bytes -> {
                     Log.i(TAG, "download:onSuccess");
                     final Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);

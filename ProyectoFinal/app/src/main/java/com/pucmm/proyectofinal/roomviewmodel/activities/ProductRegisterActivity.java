@@ -8,6 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -53,6 +56,8 @@ import com.shashank.sony.fancytoastlib.FancyToast;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -72,6 +77,7 @@ public class ProductRegisterActivity extends AppCompatActivity {
     private ImageSwitcher image;
     private int position = 0;
     private ProductWithCarousel element;
+    private ArrayList<Drawable> drawables;
     List<Uri> files;
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
@@ -94,13 +100,11 @@ public class ProductRegisterActivity extends AppCompatActivity {
         image = findViewById(R.id.image);
         database = AppDatabase.getInstance(getApplicationContext());
         files = new ArrayList<>();
-
+        drawables = new ArrayList<>();
         //Para llenar el spinner de categorias
         getAvailableCategories();
 
         image.setFactory(()-> new ImageView(getApplicationContext()));
-
-
 
         btnUploadImage.setOnClickListener(v->photoOptions());
 
@@ -111,6 +115,7 @@ public class ProductRegisterActivity extends AppCompatActivity {
                 FancyToast.makeText(getApplicationContext(), "First Image Already Shown", FancyToast.LENGTH_SHORT, FancyToast.WARNING, false).show();
             }
         });
+
         btnNextImage.setOnClickListener(v->{
             if (position < files.size() - 1) {
                 image.setImageURI(files.get(++position));
@@ -120,16 +125,17 @@ public class ProductRegisterActivity extends AppCompatActivity {
         });
 
         btnDeleteImage.setOnClickListener(v->{
-            if(files.size() > 1){
-                files.remove(position);
-                image.setImageURI(files.get(--position));
-            }
-            else if(files.size() == 1)
-            {
-                files.remove(position);
-                position = 0;
-                image.setImageURI(null);
-            }
+           if(files.size()>0){
+               if(position >= files.size())
+               {
+                   position--;
+               }
+               image.setImageURI(files.get(position));
+               files.remove(position);
+           }else
+           {
+               image.setImageURI(null);
+           }
         });
 
         btnRegister.setOnClickListener(v -> {
@@ -142,11 +148,6 @@ public class ProductRegisterActivity extends AppCompatActivity {
                 registerProduct();
             }
         });
-
-       /* addImage.setOnClickListener(v->{
-            requestPermission();
-            addImage();
-        });*/
 
     }
 
@@ -167,21 +168,34 @@ public class ProductRegisterActivity extends AppCompatActivity {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        final ClipData clipData = result.getData().getClipData();
-                        if (clipData != null) {
-                            for (int i = 0; i < clipData.getItemCount(); i++) {
-                                // adding imageuri in array
-                                final Uri uri = clipData.getItemAt(i).getUri();
+                        try {
+                            final ClipData clipData = result.getData().getClipData();
+                            if (clipData != null) {
+                                for (int i = 0; i < clipData.getItemCount(); i++) {
+                                    // adding imageuri in array
+                                    //final Uri uri = clipData.getItemAt(i).getUri();
+                                    //files.add(uri);
+                                    final Uri uri = clipData.getItemAt(i).getUri();
+                                    final InputStream inputStream = getApplicationContext().getContentResolver().openInputStream(uri);
+                                    final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                                    drawables.add(new BitmapDrawable(getApplicationContext().getResources(), bitmap));
+                                    files.add(uri);
+                                }
+                                // setting 1st selected image into image switcher
+                            } else {
+                                final Uri uri = result.getData().getData();
+                                final InputStream inputStream = getContentResolver().openInputStream(uri);
+                                final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                                drawables.add(new BitmapDrawable(getApplicationContext().getResources(), bitmap));
                                 files.add(uri);
                             }
-                            // setting 1st selected image into image switcher
-                        } else {
-                            Uri uri = result.getData().getData();
-                            files.add(uri);
-                        }
 
-                        image.setImageURI(files.get(0));
-                        position = 0;
+                            image.setImageDrawable(drawables.get(0));
+                            position = 0;
+
+                        }catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             });
@@ -209,16 +223,37 @@ public class ProductRegisterActivity extends AppCompatActivity {
         AppExecutors.getInstance().diskIO().execute(() -> {
 
             List<CarouselUpload> uploads = new ArrayList<>();
-            database.productDao().deleteCarousels(element.product.getProductId());
             final List<Carousel> carousels = new ArrayList<>();
-            for (int index = 0; index < files.size(); index++) {
+
+            database.productDao().insert(product);
+            database.productDao().deleteCarousels(element.product.getProductId());
+
+            for (int index = 0; index < drawables.size(); index++) {
                 Carousel carousel = new Carousel(element.product.getProductId(), index, String.format("products/%s/%s.jpg", element.product.getProductId(), index));
                 carousels.add(carousel);
                 uploads.add(new CarouselUpload(files.get(index), carousel));
             }
+
             database.productDao().insertCarousels(carousels);
 
-            if (files != null && !files.isEmpty() && element.product.getProductId() != null) {
+            if (drawables != null && !drawables.isEmpty() && element.product.getProductId() != null) {
+                FirebaseNetwork.obtain().uploads(uploads, new NetResponse<Void>() {
+                    @Override
+                    public void onResponse(Void response) {
+                        FancyToast.makeText(getApplicationContext(), "Successfully upload images", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                        //progress.dismiss();
+                    }
+                    @Override
+                    public void onFailure(Throwable t) {
+                        //  progress.dismiss();
+                        FancyToast.makeText(getApplicationContext(), t.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                    }
+                });
+                //function.apply(uploads).accept(progressDialog);
+            }
+
+            //FUNCIONAL
+           /* if (files != null && !files.isEmpty() && element.product.getProductId() != null) {
                 FirebaseNetwork.obtain().uploads(uploads, new NetResponse<Void>() {
                     @Override
                     public void onResponse(Void response) {
@@ -236,7 +271,7 @@ public class ProductRegisterActivity extends AppCompatActivity {
             } else {
                // progressDialog.dismiss();
             }
-
+*/
           /*  //Registrando el nuevo producto
 
             database.productDao().deleteCarousels();

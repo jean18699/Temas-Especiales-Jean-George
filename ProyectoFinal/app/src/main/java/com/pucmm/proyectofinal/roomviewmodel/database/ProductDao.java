@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.pucmm.proyectofinal.roomviewmodel.model.Carousel;
@@ -34,12 +35,18 @@ public interface ProductDao {
     @Insert
     void insertCarousels(List<Carousel> carousels);
 
+    @Update
+    void updateCarousels(List<Carousel> carousels);
+
+    @Transaction
     @Insert
     void insert(Product product);
 
+    @Transaction
     @Update
     void update(Product product);
 
+    @Transaction
     @Delete
     void delete(Product product);
 

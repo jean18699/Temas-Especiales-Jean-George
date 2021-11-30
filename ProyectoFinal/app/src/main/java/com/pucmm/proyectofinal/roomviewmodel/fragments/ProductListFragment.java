@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * A fragment representing a list of Items.
  */
-public class ProductListFragment extends Fragment implements OnTouchListener<Product> {
+public class ProductListFragment extends Fragment implements OnTouchListener<ProductWithCarousel> {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -122,12 +122,17 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
 
     }
 
-    @Override
+   /* @Override
     public void OnClick(Product element) {
-       getActivity().getSupportFragmentManager().beginTransaction()
-               .setReorderingAllowed(true)
-               .replace(R.id.content_frame, ProductDetailFragment.newInstance(element))
-               .addToBackStack(null)
-               .commit();
+
+    }
+*/
+    @Override
+    public void OnClick(ProductWithCarousel element) {
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.content_frame, ProductDetailFragment.newInstance(element))
+                .addToBackStack(null)
+                .commit();
     }
 }

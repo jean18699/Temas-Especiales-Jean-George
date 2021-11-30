@@ -15,8 +15,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.roomviewmodel.model.Product;
-
-import java.util.concurrent.atomic.AtomicInteger;
+import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,9 +36,10 @@ public class ProductDetailFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @return A new instance of fragment ProductDetailFragment.
+     * @param product
      */
     // TODO: Rename and change types and number of parameters
-    public static ProductDetailFragment newInstance(Product product) {
+    public static ProductDetailFragment newInstance(ProductWithCarousel product) {
         ProductDetailFragment fragment = new ProductDetailFragment();
         Bundle args = new Bundle();
         args.putSerializable("product", product);
