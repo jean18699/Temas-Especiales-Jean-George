@@ -12,22 +12,27 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pucmm.proyectofinal.databinding.FragmentProductCartBinding;
+import com.pucmm.proyectofinal.roomviewmodel.model.Carousel;
 import com.pucmm.proyectofinal.roomviewmodel.model.Product;
+import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
+import com.pucmm.proyectofinal.utils.CommonUtil;
 
 import org.w3c.dom.Text;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ProductCartAdapter extends RecyclerView.Adapter<ProductCartAdapter.MyViewHolder> {
 
-    private List<Product> cartList;
+    private List<ProductWithCarousel> cartList;
     private List<Integer> quantities;
     private Context context;
     private TextView txtSubTotal, txtTotalPrice;
     private SharedPreferences sharedPreferences;
     private SharedPreferences quantityPreferences;
     private SharedPreferences.Editor editor;
+
 
     public ProductCartAdapter(Context context, TextView txtSubTotal, TextView txtTotalPrice) {
         this.context = context;
@@ -48,20 +53,30 @@ public class ProductCartAdapter extends RecyclerView.Adapter<ProductCartAdapter.
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.product = cartList.get(position);
-        holder.product_price.setText(holder.product.getPrice().toString());
-        holder.product_description.setText(holder.product.getDescription());
-        holder.txtQuantity.setText(quantityPreferences.getString(holder.product.getProductId()+"_quantity", "1"));
+        holder.product_price.setText(holder.product.product.getPrice().toString());
+        holder.product_description.setText(holder.product.product.getDescription());
+        holder.txtQuantity.setText(quantityPreferences.getString(holder.product.product.getProductId()+"_quantity", "1"));
 
         float total = 0;
-        for(Product item : cartList){
-            total += item.getPrice() * Integer.valueOf(quantityPreferences.getString(item.getProductId()+"_quantity","1"));
+        for(ProductWithCarousel item : cartList){
+            total += item.product.getPrice() * Integer.valueOf(quantityPreferences.getString(item.product.getProductId()+"_quantity","1"));
         }
 
         txtSubTotal.setText("Sub total ("+ cartList.size() +" items): " );
         txtTotalPrice.setText(String.valueOf(total));
 
-        holder.quantityValue = Integer.valueOf(quantityPreferences.getString(holder.product.getProductId()+"_quantity","1"));
-        //holder.product_image.setText(product.getImage());
+        holder.quantityValue = Integer.valueOf(quantityPreferences.getString(holder.product.product.getProductId()+"_quantity","1"));
+
+
+        if (holder.product.carousels != null && !holder.product.carousels.isEmpty()) {
+            Optional<Carousel> optional = holder.product.carousels.stream()
+                    .sorted((a1, a2) -> Integer.valueOf(a1.getLineNum()).compareTo(a2.getLineNum()))
+                    .findFirst();
+
+            if (optional.isPresent()) {
+                CommonUtil.downloadImage(optional.get().getPhoto(), holder.product_image);
+            }
+        }
 
 
     }
@@ -75,7 +90,7 @@ public class ProductCartAdapter extends RecyclerView.Adapter<ProductCartAdapter.
     }
 
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(List<ProductWithCarousel> products) {
         cartList = products;
         notifyDataSetChanged();
     }
@@ -91,11 +106,12 @@ public class ProductCartAdapter extends RecyclerView.Adapter<ProductCartAdapter.
         public TextView product_description;
         public TextView txtQuantity;
         public ImageView product_image;
-        public Product product;
+        public ProductWithCarousel product;
         public Button btnDelete;
         public Button btnAddQuantity;
         public Button btnRemoveQuantity;
         public Integer quantityValue;
+
 
 
 
@@ -107,23 +123,20 @@ public class ProductCartAdapter extends RecyclerView.Adapter<ProductCartAdapter.
             btnAddQuantity = binding.btnAddQuantity;
             btnRemoveQuantity = binding.btnRemoveQuantity;
             txtQuantity = binding.txtQuantity;
-            //product_image = binding.productImage;
-
-
-
+            product_image = binding.productImage;
 
             btnDelete.setOnClickListener(v->{
 
                 int currentPosition = cartList.indexOf(product); //Tomo el indice del item que borrare para notificarle al fragmento que este index fue borrado
-                sharedPreferences.edit().remove(product.getProductId()).apply();
-                quantityPreferences.edit().remove(product.getProductId()+"_quantity").apply();
+                sharedPreferences.edit().remove(product.product.getProductId()).apply();
+                quantityPreferences.edit().remove(product.product.getProductId()+"_quantity").apply();
                 cartList.remove(currentPosition);
                 notifyItemRemoved(currentPosition);
                 txtSubTotal.setText(String.valueOf(cartList.size()));
 
                 float total = 0;
-                for(Product item : cartList){
-                   total += item.getPrice() * Integer.valueOf(quantityPreferences.getString(item.getProductId()+"_quantity","1"));
+                for(ProductWithCarousel item : cartList){
+                   total += item.product.getPrice() * Integer.valueOf(quantityPreferences.getString(item.product.getProductId()+"_quantity","1"));
                 }
                 txtSubTotal.setText("Sub total ("+ cartList.size() +" items): " );
                 txtTotalPrice.setText(String.valueOf(total));
@@ -134,10 +147,10 @@ public class ProductCartAdapter extends RecyclerView.Adapter<ProductCartAdapter.
                    quantityValue--;
                }
                txtQuantity.setText(String.valueOf(quantityValue));
-               editor.putString(product.getProductId()+"_quantity", String.valueOf(quantityValue)).commit();
+               editor.putString(product.product.getProductId()+"_quantity", String.valueOf(quantityValue)).commit();
                 float total = 0;
-                for(Product item : cartList){
-                    total += item.getPrice() * Integer.valueOf(quantityPreferences.getString(item.getProductId()+"_quantity","1"));
+                for(ProductWithCarousel item : cartList){
+                    total += item.product.getPrice() * Integer.valueOf(quantityPreferences.getString(item.product.getProductId()+"_quantity","1"));
                 }
                 txtSubTotal.setText("Sub total ("+ cartList.size() +" items): " );
                 txtTotalPrice.setText(String.valueOf(total));
@@ -146,10 +159,10 @@ public class ProductCartAdapter extends RecyclerView.Adapter<ProductCartAdapter.
             btnAddQuantity.setOnClickListener(v->{
                 quantityValue++;
                 txtQuantity.setText(String.valueOf(quantityValue));
-                editor.putString(product.getProductId()+"_quantity", String.valueOf(quantityValue)).commit();
+                editor.putString(product.product.getProductId()+"_quantity", String.valueOf(quantityValue)).commit();
                 float total = 0;
-                for(Product item : cartList){
-                    total += item.getPrice() * Integer.valueOf(quantityPreferences.getString(item.getProductId()+"_quantity","1"));
+                for(ProductWithCarousel item : cartList){
+                    total += item.product.getPrice() * Integer.valueOf(quantityPreferences.getString(item.product.getProductId()+"_quantity","1"));
                 }
                 txtSubTotal.setText("Sub total ("+ cartList.size() +" items): " );
                 txtTotalPrice.setText(String.valueOf(total));

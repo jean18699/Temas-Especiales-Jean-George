@@ -2,6 +2,9 @@ package com.pucmm.proyectofinal.roomviewmodel.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,12 +13,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.pucmm.proyectofinal.R;
+import com.pucmm.proyectofinal.databinding.FragmentProductDetailBinding;
+import com.pucmm.proyectofinal.networksync.FirebaseNetwork;
+import com.pucmm.proyectofinal.networksync.NetResponse;
 import com.pucmm.proyectofinal.roomviewmodel.model.Product;
 import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
+import com.pucmm.proyectofinal.utils.KProgressHUDUtils;
+import com.shashank.sony.fancytoastlib.FancyToast;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,7 +38,8 @@ import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
  */
 public class ProductDetailFragment extends Fragment {
 
-    private Product product;
+    private FragmentProductDetailBinding binding;
+    private ProductWithCarousel managedProduct;
     private Integer quantity;
 
     public ProductDetailFragment() {
@@ -32,6 +47,7 @@ public class ProductDetailFragment extends Fragment {
     }
 
     /**
+     *
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
@@ -51,7 +67,7 @@ public class ProductDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            product = (Product) getArguments().getSerializable("product");
+            managedProduct = (ProductWithCarousel) getArguments().getSerializable("product");
         }
     }
 
@@ -59,14 +75,15 @@ public class ProductDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        binding = FragmentProductDetailBinding.inflate(inflater,container,false);
+        View view = binding.getRoot();
 
-        View view = inflater.inflate(R.layout.fragment_product_detail, container, false);
-        TextView txtDescription = view.findViewById(R.id.txtDetailDescription);
+        /* TextView txtDescription = view.findViewById(R.id.txtDetailDescription);
         TextView txtPrice = view.findViewById(R.id.txtPriceDetail);
         TextView txtQuantity = view.findViewById(R.id.txtQuantity);
         Button btnRemoveQuantity = view.findViewById(R.id.btnRemoveQuantity);
         Button btnAddQuantity = view.findViewById(R.id.btnAddQuantity);
-        Button btnAddToCart = view.findViewById(R.id.btnAddCar);
+        Button btnAddToCart = view.findViewById(R.id.btnAddCar);*/
 
         //Para guardar el producto localmente en nuestro carrito
         SharedPreferences sharedPreferences =getActivity().getSharedPreferences("cart", Context.MODE_PRIVATE);
@@ -74,48 +91,83 @@ public class ProductDetailFragment extends Fragment {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         SharedPreferences.Editor editor2 = quantityPreferences.edit();
 
-        quantity = Integer.valueOf(quantityPreferences.getString(product.getProductId()+"_quantity","1"));
+        quantity = Integer.valueOf(quantityPreferences.getString(managedProduct.product.getProductId()+"_quantity","1"));
+
+
+        if (managedProduct.carousels != null && !managedProduct.carousels.isEmpty()) {
+            final KProgressHUD progressDialog = new KProgressHUDUtils(getActivity()).showDownload();
+            FirebaseNetwork.obtain().downloads(managedProduct.carousels, new NetResponse<List<Bitmap>>() {
+                @Override
+                public void onResponse(List<Bitmap> response) {
+                    ArrayList<Drawable> drawables = new ArrayList<>();
+                    for (Bitmap bitmap : response) {
+                        drawables.add(new BitmapDrawable(getContext().getResources(), bitmap));
+                    }
+                    carouselView.accept(drawables);
+                    progressDialog.dismiss();
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    FancyToast.makeText(getContext(), t.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                    progressDialog.dismiss();
+                }
+            });
+        }
 
        // sharedPreferences.edit().clear().commit();
         //quantityPreferences.edit().clear().commit();
 
-        txtDescription.setText(product.getDescription());
-        txtPrice.setText(product.getPrice().toString());
-        txtQuantity.setText(String.valueOf(quantity));
+        binding.txtDetailDescription.setText(managedProduct.product.getDescription());
+        binding.txtPriceDetail.setText(managedProduct.product.getPrice().toString());
+        binding.txtQuantity.setText(String.valueOf(quantity));
 
 
         //Eventos
-        btnRemoveQuantity.setOnClickListener(v->{
+        binding.btnRemoveQuantity.setOnClickListener(v->{
             if(quantity > 1){
                 quantity--;
-                txtQuantity.setText(String.valueOf(quantity));
+                binding.txtQuantity.setText(String.valueOf(quantity));
             }
 
         });
 
-        btnAddQuantity.setOnClickListener(v->{
+        binding.btnAddQuantity.setOnClickListener(v->{
             quantity++;
-            txtQuantity.setText(String.valueOf(quantity));
+            binding.txtQuantity.setText(String.valueOf(quantity));
         });
 
-        btnAddToCart.setOnClickListener(v->{
+        binding.btnAddCar.setOnClickListener(v->{
 
             //Convertimos el producto a json para guardarlo
             Gson gson = new Gson();
-            String jsonProduct = gson.toJson(product);
-            editor.putString(product.getProductId(), jsonProduct);
+            String jsonProduct = gson.toJson(managedProduct);
+            editor.putString(managedProduct.product.getProductId(), jsonProduct);
             editor.commit();
 
-            editor2.putString(product.getProductId()+"_quantity", txtQuantity.getText().toString());
+            editor2.putString(managedProduct.product.getProductId()+"_quantity", binding.txtQuantity.getText().toString());
             editor2.commit();
 
             getActivity().getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .replace(R.id.content_frame, ShoppingCartFragment.newInstance(product))
+                    .replace(R.id.content_frame, ShoppingCartFragment.newInstance(managedProduct))
                     .addToBackStack(null)
                     .commit();
         });
 
         return view;
     }
+
+    private final Consumer<ArrayList<Drawable>> carouselView = new Consumer<ArrayList<Drawable>>() {
+        @Override
+        public void accept(ArrayList<Drawable> drawables) {
+            binding.carouselView.setSize(drawables.size());
+            binding.carouselView.setCarouselViewListener((view1, position) -> {
+                ImageView imageView = view1.findViewById(R.id.imageView);
+                imageView.setImageDrawable(drawables.get(position));
+            });
+            binding.carouselView.show();
+        }
+    };
+
 }

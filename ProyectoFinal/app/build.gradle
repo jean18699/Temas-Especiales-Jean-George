@@ -36,6 +36,7 @@ android {
     }
 }
 
+
 dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
@@ -43,10 +44,12 @@ dependencies {
     // Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:29.0.0')
 
+
     implementation 'com.google.firebase:firebase-storage:19.1.1'
     implementation 'com.google.firebase:firebase-auth:21.0.1'
     implementation 'com.google.firebase:firebase-core:20.0.0'
     implementation 'com.google.firebase:firebase-firestore'
+
     def room_version = "2.3.0"
     def life_cycle = "2.3.1"
 
@@ -56,6 +59,7 @@ dependencies {
     implementation 'com.airbnb.android:lottie:4.2.0'
     implementation 'com.kaopiz:kprogresshud:1.2.0'
     implementation 'com.synnapps:carouselview:0.1.5'
+    implementation 'com.github.jama5262:CarouselView:1.2.2'
 
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"

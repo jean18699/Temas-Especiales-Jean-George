@@ -17,7 +17,9 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.roomviewmodel.adapters.ProductCartAdapter;
-import com.pucmm.proyectofinal.roomviewmodel.model.Product;
+import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
+import com.pucmm.proyectofinal.roomviewmodel.database.AppExecutors;
+import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,8 @@ public class ShoppingCartFragment extends Fragment {
     private ProductCartAdapter cartAdapter;
     private RecyclerView cartListRecyclerView;
     private int mColumnCount = 2;
-    private List<Product> productList = new ArrayList<>();
+    private AppDatabase appDatabase;
+    private List<ProductWithCarousel> productList = new ArrayList<>();
     private TextView txtSubTotal;
     private TextView txtTotalPrice;
 
@@ -49,7 +52,7 @@ public class ShoppingCartFragment extends Fragment {
     }
 
     // TODO: Rename and change types and number of parameters
-    public static ShoppingCartFragment newInstance(Product product) {
+    public static ShoppingCartFragment newInstance(ProductWithCarousel product) {
         ShoppingCartFragment fragment = new ShoppingCartFragment();
         Bundle args = new Bundle();
         args.putSerializable("product", product);
@@ -60,6 +63,10 @@ public class ShoppingCartFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        appDatabase = AppDatabase.getInstance(getContext());
+        sharedPreferences = getActivity().getSharedPreferences("cart", Context.MODE_PRIVATE);
+        AppExecutors.getInstance().diskIO().execute(() -> { updateCart();});
+
         if (getArguments() != null) {
 
         }
@@ -72,7 +79,8 @@ public class ShoppingCartFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_shopping_cart, container, false);
         txtSubTotal = view.findViewById(R.id.txtSubTotal);
         txtTotalPrice = view.findViewById(R.id.txtTotalPrice);
-        sharedPreferences = getActivity().getSharedPreferences("cart", Context.MODE_PRIVATE);
+
+        //sharedPreferences.edit().clear().commit(); //borrado
         cartListRecyclerView = view.findViewById(R.id.cartList);
 
 
@@ -85,21 +93,31 @@ public class ShoppingCartFragment extends Fragment {
             cartListRecyclerView.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 1));
 
         }
-        cargarCarrito();
+        loadCart();
         cartListRecyclerView.setAdapter(cartAdapter);
         return view;
 
     }
 
+    private void updateCart()
+    {
+        //Si editamos un producto en ProductManagerActivity y volvemos a la actividad principal,
+        // tendremos que actualizar tambien los productos del carrito.
+        Gson gson = new Gson();
+        for(ProductWithCarousel product : appDatabase.productDao().getProducts()){
+            String jsonProduct = gson.toJson(product);
+            sharedPreferences.edit().putString(product.product.getProductId(),jsonProduct).commit();
+        }
+    }
 
-    public void cargarCarrito() {
+    public void loadCart() {
         //Accediendo a los datos guardados localmente
 
         Gson gson = new Gson();
         String json;
         for (Map.Entry<String, ?> entry : sharedPreferences.getAll().entrySet()) {
             json = sharedPreferences.getString(entry.getKey(),"");
-            Product product = gson.fromJson(json,Product.class);
+            ProductWithCarousel product = gson.fromJson(json,ProductWithCarousel.class);
             productList.add(product);
         }
         cartAdapter = new ProductCartAdapter(getActivity().getApplicationContext(), txtSubTotal, txtTotalPrice);

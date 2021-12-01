@@ -83,7 +83,7 @@ public class ProductManagerActivity extends AppCompatActivity {
             binding.editProductPrice.setText(String.valueOf(managedProduct.product.getPrice()));
 
             if (managedProduct.carousels != null && !managedProduct.carousels.isEmpty()) {
-                final KProgressHUD progressDialog = new KProgressHUDUtils(this).showDownload();
+              //  final KProgressHUD progressDialog = new KProgressHUDUtils(this).showDownload();
                 FirebaseNetwork.obtain().downloads(managedProduct.carousels, new NetResponse<List<Bitmap>>() {
                     @Override
                     public void onResponse(List<Bitmap> response) throws FileNotFoundException {
@@ -91,13 +91,13 @@ public class ProductManagerActivity extends AppCompatActivity {
                             drawables.add(new BitmapDrawable(getResources(), bitmap));
                         }
                         binding.image.setImageDrawable(drawables.get(0));
-                        progressDialog.dismiss();
+                  //      progressDialog.dismiss();
                     }
 
                     @Override
                     public void onFailure(Throwable t) {
                         FancyToast.makeText(getApplicationContext(), t.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
-                        progressDialog.dismiss();
+                    //    progressDialog.dismiss();
                     }
                 });
             }
@@ -229,17 +229,17 @@ public class ProductManagerActivity extends AppCompatActivity {
             database.productDao().insertCarousels(carousels);
 
             if (drawables != null && !drawables.isEmpty() && managedProduct.product.getProductId() != null) {
-                final KProgressHUD progress = new KProgressHUDUtils(this).showDownload();
+               // final KProgressHUD progress = new KProgressHUDUtils(this).showDownload();
                 FirebaseNetwork.obtain().uploads(uploads, new NetResponse<Void>() {
                     @Override
                     public void onResponse(Void response) {
                         FancyToast.makeText(getApplicationContext(), "Successfully upload images", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
-                        progress.dismiss();
+                  //      progress.dismiss();
                     }
 
                     @Override
                     public void onFailure(Throwable t) {
-                        progress.dismiss();
+                      //  progress.dismiss();
                         FancyToast.makeText(getApplicationContext(), t.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
                     }
                 });
@@ -271,7 +271,6 @@ public class ProductManagerActivity extends AppCompatActivity {
                     }
                 }
             }
-
         });
     }
 

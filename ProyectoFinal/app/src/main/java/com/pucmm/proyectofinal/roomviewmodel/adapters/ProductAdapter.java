@@ -63,22 +63,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             }
         }
 
-       /* if (holder.product.carousels != null && !holder.product.carousels.isEmpty()) {
-            Carousel carousel = holder.product.carousels.get(0);
-
-            if(carousel != null) {
-                CommonUtil.downloadImage(carousel.getPhoto(), holder.product_image);
-            }
-        }*/
-
-
-       /* if (holder.product.carousels != null && !holder.product.carousels.isEmpty()) {
-
-        }
-*/
-        //   holder.product_image.setImageURI(holder.product.carousels.get(0).getPhoto());
-        //holder.product_image.setText(product.getImage());
-
+      
 
     }
 

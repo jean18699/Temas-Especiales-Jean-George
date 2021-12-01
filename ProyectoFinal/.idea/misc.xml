@@ -24,7 +24,7 @@
         <entry key="..\:/Archivos/Github/Temas-Especiales/ProyectoFinal/app/src/main/res/layout/fragment_login.xml" value="0.36666666666666664" />
         <entry key="..\:/Archivos/Github/Temas-Especiales/ProyectoFinal/app/src/main/res/layout/fragment_product.xml" value="0.4296724470134875" />
         <entry key="..\:/Archivos/Github/Temas-Especiales/ProyectoFinal/app/src/main/res/layout/fragment_product_cart.xml" value="0.36666666666666664" />
-        <entry key="..\:/Archivos/Github/Temas-Especiales/ProyectoFinal/app/src/main/res/layout/fragment_product_detail.xml" value="0.5" />
+        <entry key="..\:/Archivos/Github/Temas-Especiales/ProyectoFinal/app/src/main/res/layout/fragment_product_detail.xml" value="0.1" />
         <entry key="..\:/Archivos/Github/Temas-Especiales/ProyectoFinal/app/src/main/res/layout/fragment_product_list.xml" value="0.33" />
         <entry key="..\:/Archivos/Github/Temas-Especiales/ProyectoFinal/app/src/main/res/layout/fragment_profile.xml" value="0.33" />
         <entry key="..\:/Archivos/Github/Temas-Especiales/ProyectoFinal/app/src/main/res/layout/fragment_shopping_cart.xml" value="0.35260416666666666" />
@@ -32,8 +32,10 @@
         <entry key="..\:/Archivos/Github/Temas-Especiales/ProyectoFinal/app/src/main/res/layout/fragment_user_list.xml" value="0.36666666666666664" />
         <entry key="..\:/Archivos/Github/Temas-Especiales/ProyectoFinal/app/src/main/res/layout/fragment_user_register.xml" value="0.25" />
         <entry key="..\:/Archivos/Github/Temas-Especiales/ProyectoFinal/app/src/main/res/layout/image.xml" value="0.36666666666666664" />
+        <entry key="..\:/Archivos/Github/Temas-Especiales/ProyectoFinal/app/src/main/res/layout/item_product.xml" value="0.16302083333333334" />
         <entry key="..\:/Archivos/Github/Temas-Especiales/ProyectoFinal/app/src/main/res/layout/main_activity.xml" value="0.1" />
         <entry key="..\:/Archivos/Github/Temas-Especiales/ProyectoFinal/app/src/main/res/layout/main_fragment.xml" value="0.36666666666666664" />
+        <entry key="..\:/Archivos/Github/Temas-Especiales/ProyectoFinal/app/src/main/res/layout/product_carousel_image.xml" value="0.2078125" />
         <entry key="..\:/Archivos/Github/Temas-Especiales/ProyectoFinal/app/src/main/res/menu/main_menu.xml" value="0.20833333333333334" />
         <entry key="..\:/Archivos/Github/Temas-Especiales/ProyectoFinal/app/src/main/res/menu/side_menu.xml" value="0.2203125" />
         <entry key="..\:/Archivos/Github/Temas-Especiales/ProyectoFinal/app/src/main/res/menu/top_app_bar.xml" value="0.5" />

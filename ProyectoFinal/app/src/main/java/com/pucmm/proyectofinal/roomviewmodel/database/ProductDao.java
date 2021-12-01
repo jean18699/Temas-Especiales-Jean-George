@@ -29,6 +29,9 @@ public interface ProductDao {
     @Query("SELECT * FROM products ORDER BY productId")
     LiveData<List<ProductWithCarousel>> findAll();
 
+    @Query("SELECT * FROM products ORDER BY productId")
+    List<ProductWithCarousel> getProducts();
+
     @Query("DELETE FROM carousel WHERE product = :uid")
     void deleteCarousels(String uid);
 
