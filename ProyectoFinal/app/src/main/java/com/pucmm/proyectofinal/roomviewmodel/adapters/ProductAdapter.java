@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.pucmm.proyectofinal.databinding.ItemProductBinding;
 import com.pucmm.proyectofinal.roomviewmodel.activities.ProductEditActivity;
+import com.pucmm.proyectofinal.roomviewmodel.activities.ProductManagerActivity;
 import com.pucmm.proyectofinal.roomviewmodel.model.Carousel;
 import com.pucmm.proyectofinal.roomviewmodel.model.Product;
 import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
@@ -118,7 +119,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
 
 
             editBtn.setOnClickListener(v->{
-                Intent intent = new Intent(context, ProductEditActivity.class);
+                Intent intent = new Intent(context, ProductManagerActivity.class);
                 intent.putExtra("product",product);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);

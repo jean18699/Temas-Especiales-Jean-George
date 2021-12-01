@@ -31,7 +31,7 @@ public class Product implements Serializable {
     private boolean active;
 
     public Product(){
-
+        this.productId = UUID.randomUUID().toString();
     }
 
     public Product(String description, Double price, String category) {

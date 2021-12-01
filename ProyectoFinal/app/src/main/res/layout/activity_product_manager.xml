@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        tools:context=".roomviewmodel.activities.ProductRegisterActivity">
+        tools:context=".roomviewmodel.activities.ProductManagerActivity">
 
         <TextView
             android:id="@+id/lbl_product_name"

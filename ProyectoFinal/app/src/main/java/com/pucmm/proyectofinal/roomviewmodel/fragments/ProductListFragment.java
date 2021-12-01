@@ -16,14 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.databinding.FragmentCategoryListBinding;
-import com.pucmm.proyectofinal.roomviewmodel.activities.ProductRegisterActivity;
+import com.pucmm.proyectofinal.roomviewmodel.activities.ProductManagerActivity;
 import com.pucmm.proyectofinal.roomviewmodel.adapters.ProductAdapter;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
 
-import com.pucmm.proyectofinal.roomviewmodel.model.Product;
 import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
 import com.pucmm.proyectofinal.roomviewmodel.viewmodel.ProductViewModel;
 import com.pucmm.proyectofinal.utils.OnTouchListener;
@@ -94,7 +92,7 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
 
         //Pasando al fragmento de registrar categoria al clickear el boton flotante
         floatingActionButton.setOnClickListener(v ->
-                startActivity(new Intent(getActivity(), ProductRegisterActivity.class))
+                startActivity(new Intent(getActivity(), ProductManagerActivity.class))
         );
 
         retrieveTasks();

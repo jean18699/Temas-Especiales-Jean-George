@@ -8,6 +8,7 @@ import android.util.Log;
 import com.google.firebase.storage.*;
 import com.pucmm.proyectofinal.roomviewmodel.model.Carousel;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -42,7 +43,11 @@ public class FirebaseNetwork {
         reference.delete()
                 .addOnSuccessListener(aVoid -> {
                     Log.i(TAG, "delete:onSuccess");
-                    response.onResponse("Successfully deleted on Firebase");
+                    try {
+                        response.onResponse("Successfully deleted on Firebase");
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 })
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "delete:onFailure");
@@ -60,7 +65,11 @@ public class FirebaseNetwork {
                 .addOnSuccessListener(taskSnapshot -> {
                     Log.i(TAG, "upload:onSuccess");
                     taskSnapshot.getUploadSessionUri();
-                    response.onResponse(key);
+                    try {
+                        response.onResponse(key);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }).addOnCanceledListener(() -> Log.i(TAG, "upload:onCanceled"))
                 .addOnCompleteListener(task -> Log.i(TAG, "upload:onComplete"))
                 .addOnFailureListener(e -> {
@@ -84,7 +93,11 @@ public class FirebaseNetwork {
                         final Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                         bitmaps.add(bitmap);
                         if (atomic.decrementAndGet() == 0) {
-                            response.onResponse(bitmaps);
+                            try {
+                                response.onResponse(bitmaps);
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
                         }
                     })
                     .addOnCanceledListener(() -> Log.i(TAG, "download:onCanceled"))
@@ -105,7 +118,11 @@ public class FirebaseNetwork {
                         Log.i(TAG, "upload:onSuccess");
                         taskSnapshot.getUploadSessionUri();
                         if (atomic.decrementAndGet() == 0) {
-                            response.onResponse(null);
+                            try {
+                                response.onResponse(null);
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }).addOnCanceledListener(() -> Log.i(TAG, "upload:onCanceled"))
                     .addOnCompleteListener(task -> Log.i(TAG, "upload:onComplete"))
@@ -125,7 +142,11 @@ public class FirebaseNetwork {
                 .addOnSuccessListener(bytes -> {
                     Log.i(TAG, "download:onSuccess");
                     final Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    response.onResponse(bitmap);
+                    try {
+                        response.onResponse(bitmap);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 })
                 .addOnCanceledListener(() -> Log.i(TAG, "download:onCanceled"))
                 .addOnCompleteListener(task -> Log.i(TAG, "download:onComplete"))

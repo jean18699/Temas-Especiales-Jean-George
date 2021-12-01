@@ -25,7 +25,7 @@
             android:name=".roomviewmodel.activities.ProductEditActivity"
             android:exported="true" />
         <activity
-            android:name=".roomviewmodel.activities.ProductRegisterActivity"
+            android:name=".roomviewmodel.activities.ProductManagerActivity"
             android:exported="true" />
         <activity
             android:name=".roomviewmodel.activities.MainActivity"
