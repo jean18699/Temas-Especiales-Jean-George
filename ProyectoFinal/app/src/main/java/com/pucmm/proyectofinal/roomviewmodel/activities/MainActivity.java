@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
                     .replace(R.id.content_frame, ShoppingCartFragment.newInstance())
+                    .addToBackStack(null)
                     .commit();
             return false;
         });

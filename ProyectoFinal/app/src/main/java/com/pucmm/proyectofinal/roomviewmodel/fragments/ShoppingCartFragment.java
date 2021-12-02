@@ -32,6 +32,7 @@ import java.util.Map;
  */
 public class ShoppingCartFragment extends Fragment {
 
+    private static final String TAG = "ShoppingCartFragment";
     private SharedPreferences sharedPreferences;
     private ProductCartAdapter cartAdapter;
     private RecyclerView cartListRecyclerView;
@@ -80,7 +81,7 @@ public class ShoppingCartFragment extends Fragment {
         txtSubTotal = view.findViewById(R.id.txtSubTotal);
         txtTotalPrice = view.findViewById(R.id.txtTotalPrice);
 
-        //sharedPreferences.edit().clear().commit(); //borrado
+        //sharedPreferences.edit().clear().commit(); //limpiar shared preferences
         cartListRecyclerView = view.findViewById(R.id.cartList);
 
 
@@ -106,7 +107,10 @@ public class ShoppingCartFragment extends Fragment {
         Gson gson = new Gson();
         for(ProductWithCarousel product : appDatabase.productDao().getProducts()){
             String jsonProduct = gson.toJson(product);
-            sharedPreferences.edit().putString(product.product.getProductId(),jsonProduct).commit();
+            if(sharedPreferences.getString(product.product.getProductId(), null) != null)
+            {
+                sharedPreferences.edit().putString(product.product.getProductId(),jsonProduct).commit();
+            }
         }
     }
 
@@ -120,7 +124,7 @@ public class ShoppingCartFragment extends Fragment {
             ProductWithCarousel product = gson.fromJson(json,ProductWithCarousel.class);
             productList.add(product);
         }
-        cartAdapter = new ProductCartAdapter(getActivity().getApplicationContext(), txtSubTotal, txtTotalPrice);
+        cartAdapter = new ProductCartAdapter(getActivity(), txtSubTotal, txtTotalPrice);
         cartAdapter.setProducts(productList);
     }
 

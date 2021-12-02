@@ -100,6 +100,7 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
         return view;
     }
 
+
     //Cargando los datos live del view model que utilizara la lista
     private void retrieveTasks(){
         ProductViewModel productViewModel = new ViewModelProvider(this, new ViewModelProvider.Factory() {

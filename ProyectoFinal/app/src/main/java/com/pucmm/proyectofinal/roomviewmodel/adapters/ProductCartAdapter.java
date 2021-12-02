@@ -11,7 +11,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.databinding.FragmentProductCartBinding;
+import com.pucmm.proyectofinal.databinding.FragmentProductDetailBinding;
+import com.pucmm.proyectofinal.roomviewmodel.activities.MainActivity;
+import com.pucmm.proyectofinal.roomviewmodel.fragments.ProductDetailFragment;
+import com.pucmm.proyectofinal.roomviewmodel.fragments.ShoppingCartFragment;
 import com.pucmm.proyectofinal.roomviewmodel.model.Carousel;
 import com.pucmm.proyectofinal.roomviewmodel.model.Product;
 import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
@@ -26,7 +31,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ProductCartAdapter extends RecyclerView.Adapter<ProductCartAdapter.MyViewHolder> {
 
     private List<ProductWithCarousel> cartList;
-    private List<Integer> quantities;
     private Context context;
     private TextView txtSubTotal, txtTotalPrice;
     private SharedPreferences sharedPreferences;
@@ -95,11 +99,6 @@ public class ProductCartAdapter extends RecyclerView.Adapter<ProductCartAdapter.
         notifyDataSetChanged();
     }
 
-    /*public void setQuantities(List<Integer> quantities) {
-        cartList = products;
-        notifyDataSetChanged();
-    }*/
-
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
         public TextView product_price;
@@ -166,6 +165,16 @@ public class ProductCartAdapter extends RecyclerView.Adapter<ProductCartAdapter.
                 }
                 txtSubTotal.setText("Sub total ("+ cartList.size() +" items): " );
                 txtTotalPrice.setText(String.valueOf(total));
+            });
+
+            product_image.setOnClickListener(v->{
+                MainActivity activity = (MainActivity) context;
+                cartList.clear(); //Para solucionar un bug de que la lista se duplicaba al volver a este fragmento desde detalle del producto
+                activity.getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.content_frame, ProductDetailFragment.newInstance(product))
+                        .addToBackStack(null)
+                        .commit();
             });
 
         }

@@ -43,4 +43,7 @@
     <string name="connecting">Connecting...</string>
     <string name="authenticating">Authenticating...</string>
     <string name="download">Downloading images...</string>
+    <string name="sub_total_items">Sub total(0 items):</string>
+    <string name="lbl_total_price">0.0</string>
+    <string name="proceed_to_checkout">Proceed to checkout</string>
 </resources>
