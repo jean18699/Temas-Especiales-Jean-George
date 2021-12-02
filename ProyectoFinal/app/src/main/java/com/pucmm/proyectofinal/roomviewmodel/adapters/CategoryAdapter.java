@@ -2,8 +2,6 @@ package com.pucmm.proyectofinal.roomviewmodel.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.provider.SyncStateContract;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +11,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.Snackbar;
-import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.databinding.ItemCategoryBinding;
-import com.pucmm.proyectofinal.roomviewmodel.activities.CategoryEditActivity;
+import com.pucmm.proyectofinal.databinding.ItemProductBinding;
 import com.pucmm.proyectofinal.roomviewmodel.activities.CategoryManagerActivity;
-import com.pucmm.proyectofinal.roomviewmodel.activities.LoginActivity;
-import com.pucmm.proyectofinal.roomviewmodel.activities.ProductManagerActivity;
 import com.pucmm.proyectofinal.roomviewmodel.model.Category;
+import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
 import com.pucmm.proyectofinal.utils.CommonUtil;
+import com.pucmm.proyectofinal.utils.OnTouchListener;
 
 import java.util.List;
 
@@ -30,31 +26,31 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     private List<Category> categoryList;
     private Context context;
     private ItemCategoryBinding categoriesBinding;
-    private Category category;
+    private final OnTouchListener<Category> mListener;
 
 
-    public CategoryAdapter(Context context) {
+
+    public CategoryAdapter(Context context, OnTouchListener<Category> mListener) {
         this.context = context;
+        this.mListener = mListener;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         categoriesBinding = ItemCategoryBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
-        return new MyViewHolder(categoriesBinding.getRoot());
+        return new MyViewHolder(categoriesBinding,mListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        category = categoryList.get(position);
-        holder.txtCategory.setText(category.getName());
-        CommonUtil.downloadImage(category.getImage(), holder.image);
+        holder.category = categoryList.get(position);
+        holder.txtCategory.setText(holder.category.getName());
+        CommonUtil.downloadImage(holder.category.getImage(), holder.image);
 
-        Integer id = category.getId();
         holder.editBtn.setOnClickListener(v->{
-            System.out.println("mirame prro: " + id);
             Intent intent = new Intent(context, CategoryManagerActivity.class);
-            intent.putExtra("categoryId",id);
+            intent.putExtra("category",holder.category);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         });
@@ -79,20 +75,29 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
         notifyDataSetChanged();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener  {
 
-        private Category category;
         private TextView txtCategory;
         private ImageView image;
         private ImageView editBtn;
+        public OnTouchListener<Category> mListener;
+        public Category category;
 
 
-        public MyViewHolder(@NonNull View itemView) {
-            super(itemView);
+
+        public MyViewHolder(ItemCategoryBinding binding, OnTouchListener<Category> listener) {
+            super(binding.getRoot());
             txtCategory = categoriesBinding.categoryName;
             image = categoriesBinding.imgCategory;
             editBtn = categoriesBinding.configCategory;
+            mListener = listener;
+            binding.getRoot().setOnClickListener(this);
 
+        }
+
+        @Override
+        public void onClick(View v) {
+            mListener.OnClick(category);
         }
     }
 }

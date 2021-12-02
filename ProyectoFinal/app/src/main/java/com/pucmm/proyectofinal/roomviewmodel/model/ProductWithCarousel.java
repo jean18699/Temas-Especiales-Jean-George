@@ -1,6 +1,7 @@
 package com.pucmm.proyectofinal.roomviewmodel.model;
 
 import androidx.room.Embedded;
+import androidx.room.Ignore;
 import androidx.room.Relation;
 
 import java.io.Serializable;
@@ -23,6 +24,7 @@ public class ProductWithCarousel implements Serializable {
         this.carousels = new ArrayList<>();
     }
 
+    @Ignore
     public ProductWithCarousel(Product product, List<Carousel> carousels) {
         this.product = product;
         this.carousels = carousels;

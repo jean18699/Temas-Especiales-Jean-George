@@ -21,6 +21,7 @@ import com.pucmm.proyectofinal.roomviewmodel.model.Product;
 import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
 import com.pucmm.proyectofinal.utils.CommonUtil;
 import com.pucmm.proyectofinal.utils.OnTouchListener;
+import com.pucmm.proyectofinal.utils.OptionsMenuListener;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +31,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
     private List<ProductWithCarousel> productList;
     private Context context;
     private final OnTouchListener<ProductWithCarousel> mListener; //Agregado para que la lista responda a los eventos de click
-
+    private OptionsMenuListener optionsMenuListener;
 
     public ProductAdapter(Context context, OnTouchListener<ProductWithCarousel> mListener) {
         this.context = context;
@@ -63,7 +64,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             }
         }
 
-      
+        holder.editBtn.setOnClickListener(v->{
+            if (optionsMenuListener != null) {
+                optionsMenuListener.onCreateOptionsMenu(holder.editBtn, holder.product);
+            }
+              /*  Intent intent = new Intent(context, ProductManagerActivity.class);
+                intent.putExtra("product",product);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);*/
+        });
 
     }
 
@@ -79,6 +88,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
     public void setProducts(List<ProductWithCarousel> products) {
         productList = products;
         notifyDataSetChanged();
+    }
+
+    public void setOptionsMenuListener(OptionsMenuListener optionsMenuListener) {
+        this.optionsMenuListener = optionsMenuListener;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener {
@@ -103,12 +116,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             binding.getRoot().setOnClickListener(this);
 
 
-            editBtn.setOnClickListener(v->{
-                Intent intent = new Intent(context, ProductManagerActivity.class);
-                intent.putExtra("product",product);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-            });
+
 
         }
 

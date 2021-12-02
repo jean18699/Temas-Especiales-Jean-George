@@ -16,20 +16,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.pucmm.proyectofinal.R;
-import com.pucmm.proyectofinal.databinding.FragmentCategoryListBinding;
 import com.pucmm.proyectofinal.roomviewmodel.activities.CategoryManagerActivity;
 import com.pucmm.proyectofinal.roomviewmodel.adapters.CategoryAdapter;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
 import com.pucmm.proyectofinal.roomviewmodel.model.Category;
+import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
 import com.pucmm.proyectofinal.roomviewmodel.viewmodel.CategoryViewModel;
+import com.pucmm.proyectofinal.utils.OnTouchListener;
 
 import java.util.List;
 
 /**
  * A fragment representing a list of Items.
  */
-public class CategoryListFragment extends Fragment {
+public class CategoryListFragment extends Fragment implements OnTouchListener<Category> {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -69,7 +71,7 @@ public class CategoryListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_category_list, container, false);
-        categoryAdapter = new CategoryAdapter(getActivity().getApplicationContext());
+        categoryAdapter = new CategoryAdapter(getActivity().getApplicationContext(), this);
         FloatingActionButton floatingActionButton = view.findViewById(R.id.floatBtn_addCategory);
         
         categoryListRecyclerView = view.findViewById(R.id.categoryList);
@@ -85,7 +87,7 @@ public class CategoryListFragment extends Fragment {
         }
 
         appDatabase = AppDatabase.getInstance(getActivity().getApplicationContext());
-        categoryAdapter = new CategoryAdapter(getActivity().getApplicationContext());
+        categoryAdapter = new CategoryAdapter(getActivity().getApplicationContext(), this);
         categoryListRecyclerView.setAdapter(categoryAdapter);
 
         //Pasando al fragmento de registrar categoria al clickear el boton flotante
@@ -108,14 +110,16 @@ public class CategoryListFragment extends Fragment {
             }
         }).get(CategoryViewModel.class);
 
-        categoryViewModel.getCategoryListLiveData().observe(getActivity(), new Observer<List<Category>>() {
-
-            @Override
-            public void onChanged(List<Category> categories) {
-                categoryAdapter.setCategories(categories);
-            }
-        });
+        categoryViewModel.getCategoryListLiveData().observe(getActivity(), categories -> categoryAdapter.setCategories(categories));
 
     }
 
+    @Override
+    public void OnClick(Category element) {
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.content_frame, ProductListFragment.newInstance(1, element))
+                .addToBackStack(null)
+                .commit();
+    }
 }

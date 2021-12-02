@@ -78,13 +78,6 @@ public class ProductDetailFragment extends Fragment {
         binding = FragmentProductDetailBinding.inflate(inflater,container,false);
         View view = binding.getRoot();
 
-        /* TextView txtDescription = view.findViewById(R.id.txtDetailDescription);
-        TextView txtPrice = view.findViewById(R.id.txtPriceDetail);
-        TextView txtQuantity = view.findViewById(R.id.txtQuantity);
-        Button btnRemoveQuantity = view.findViewById(R.id.btnRemoveQuantity);
-        Button btnAddQuantity = view.findViewById(R.id.btnAddQuantity);
-        Button btnAddToCart = view.findViewById(R.id.btnAddCar);*/
-
         //Para guardar el producto localmente en nuestro carrito
         SharedPreferences sharedPreferences =getActivity().getSharedPreferences("cart", Context.MODE_PRIVATE);
         SharedPreferences quantityPreferences =getActivity().getSharedPreferences("quantities", Context.MODE_PRIVATE);

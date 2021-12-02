@@ -3,6 +3,7 @@ package com.pucmm.proyectofinal.roomviewmodel.model;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
@@ -34,6 +35,7 @@ public class Product implements Serializable {
         this.productId = UUID.randomUUID().toString();
     }
 
+    @Ignore
     public Product(String description, Double price, String category) {
         this.productId = UUID.randomUUID().toString();
         this.description = description;

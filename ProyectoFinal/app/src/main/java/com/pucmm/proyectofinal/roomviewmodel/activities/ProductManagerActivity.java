@@ -79,6 +79,7 @@ public class ProductManagerActivity extends AppCompatActivity {
 
             binding.editProductDescription.setText(managedProduct.product.getDescription());
             binding.editProductPrice.setText(String.valueOf(managedProduct.product.getPrice()));
+            binding.btnRegisterProduct.setText("Update");
 
             if (managedProduct.carousels != null && !managedProduct.carousels.isEmpty()) {
               //  final KProgressHUD progressDialog = new KProgressHUDUtils(this).showDownload();

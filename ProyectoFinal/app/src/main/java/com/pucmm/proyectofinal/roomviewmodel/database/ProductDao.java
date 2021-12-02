@@ -32,6 +32,10 @@ public interface ProductDao {
     LiveData<List<ProductWithCarousel>> findAll();
 
     @Transaction
+    @Query("SELECT * FROM products WHERE category = :categoryName ORDER BY productId")
+    LiveData<List<ProductWithCarousel>> findProductsByCategory(String categoryName);
+
+    @Transaction
     @Query("SELECT * FROM products ORDER BY productId")
     List<ProductWithCarousel> getProducts();
 
@@ -59,4 +63,6 @@ public interface ProductDao {
     @Delete
     void delete(Product product);
 
+    @Delete
+    void deleteCarousels(List<Carousel> carousels);
 }

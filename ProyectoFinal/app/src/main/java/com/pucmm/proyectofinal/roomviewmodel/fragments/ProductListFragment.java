@@ -1,6 +1,8 @@
 package com.pucmm.proyectofinal.roomviewmodel.fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,18 +17,32 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.common.internal.Constants;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.databinding.FragmentCategoryListBinding;
+import com.pucmm.proyectofinal.networksync.FirebaseNetwork;
+import com.pucmm.proyectofinal.networksync.NetResponse;
 import com.pucmm.proyectofinal.roomviewmodel.activities.ProductManagerActivity;
 import com.pucmm.proyectofinal.roomviewmodel.adapters.ProductAdapter;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
 
+import com.pucmm.proyectofinal.roomviewmodel.database.AppExecutors;
+import com.pucmm.proyectofinal.roomviewmodel.model.Category;
 import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
 import com.pucmm.proyectofinal.roomviewmodel.viewmodel.ProductViewModel;
+import com.pucmm.proyectofinal.utils.CommonUtil;
+import com.pucmm.proyectofinal.utils.KProgressHUDUtils;
 import com.pucmm.proyectofinal.utils.OnTouchListener;
+import com.pucmm.proyectofinal.utils.OptionsMenuListener;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * A fragment representing a list of Items.
@@ -40,7 +56,7 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
     private AppDatabase appDatabase;
     private ProductAdapter productAdapter;
     private RecyclerView productListRecyclerView;
-    private @NonNull FragmentCategoryListBinding binding;
+    private Category selectedCategory;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -51,10 +67,11 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static ProductListFragment newInstance(int columnCount) {
+    public static ProductListFragment newInstance(int columnCount, Category category) {
         ProductListFragment fragment = new ProductListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
+        args.putSerializable("selectedCategory", category);
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,6 +82,7 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            selectedCategory = (Category) getArguments().getSerializable("selectedCategory");
         }
     }
 
@@ -97,9 +115,62 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
 
         retrieveTasks();
         productListRecyclerView.setAdapter(productAdapter);
+        productAdapter.setOptionsMenuListener((OptionsMenuListener<ProductWithCarousel>) (view1, element) -> {
+            CommonUtil.popupMenu(getContext(), view1, () -> {
+                final Bundle bundle = new Bundle();
+                bundle.putSerializable("product", element);
+               // bundle.putSerializable(Constants.USER, user);
+
+                /*NavHostFragment.findNavController(ProductFragment.this)
+                        .navigate(R.id.action_nav_product_to_nav_product_man, bundle);
+ */           }, () -> {
+                CommonUtil.alertDialog(getContext(), "Confirm dialog delete!",
+                        "You are about to delete record. Do you really want to proceed?",
+                        () -> delete(element));
+            });
+        });
         return view;
     }
 
+    private void delete(ProductWithCarousel element) {
+        final KProgressHUD progressDialog = new KProgressHUDUtils(getActivity()).showConnecting();
+        function.apply(progressDialog).apply(true).accept(element);
+
+        if (element.carousels != null && !element.carousels.isEmpty()) {
+            FirebaseNetwork.obtain().deletes(element.carousels, new NetResponse<String>() {
+                @Override
+                public void onResponse(String response) {
+                    function.apply(progressDialog).apply(true).accept(element);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    function.apply(progressDialog).apply(false).accept(element);
+                    FancyToast.makeText(getContext(), t.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                }
+            });
+        } else {
+            function.apply(progressDialog).apply(true).accept(element);
+        }
+    }
+
+    private final Function<KProgressHUD, Function<Boolean, Consumer<ProductWithCarousel>>> function = progress -> success -> element -> {
+        if (success) {
+            AppExecutors.getInstance().diskIO().execute(() -> {
+                appDatabase.productDao().delete(element.product);
+                appDatabase.productDao().deleteCarousels(element.carousels);
+
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("cart", Context.MODE_PRIVATE);
+                SharedPreferences quantityPreferences = getActivity().getSharedPreferences(element.product.getProductId()+"_quantity", Context.MODE_PRIVATE);
+                sharedPreferences.edit().remove(element.product.getProductId()).apply();
+                quantityPreferences.edit().remove(element.product.getProductId()+"_quantity").apply();
+                getActivity().runOnUiThread(() -> FancyToast.makeText(getContext(), "Successfully deleted!", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show());
+
+
+            });
+        }
+        progress.dismiss();
+    };
 
     //Cargando los datos live del view model que utilizara la lista
     private void retrieveTasks(){
@@ -107,7 +178,7 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
             @NonNull
             @Override
             public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-                return (T) new ProductViewModel(appDatabase);
+                return (T) new ProductViewModel(appDatabase,selectedCategory);
             }
         }).get(ProductViewModel.class);
 
@@ -121,11 +192,6 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
 
     }
 
-   /* @Override
-    public void OnClick(Product element) {
-
-    }
-*/
     @Override
     public void OnClick(ProductWithCarousel element) {
         getActivity().getSupportFragmentManager().beginTransaction()

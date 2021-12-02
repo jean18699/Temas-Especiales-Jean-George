@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
+import com.pucmm.proyectofinal.roomviewmodel.model.Category;
 import com.pucmm.proyectofinal.roomviewmodel.model.Product;
 import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
 
@@ -14,8 +15,16 @@ public class ProductViewModel extends ViewModel {
 
     private LiveData<List<ProductWithCarousel>> productListLiveData;
 
-    public ProductViewModel(@NonNull AppDatabase appDatabase){
-        productListLiveData = appDatabase.productDao().findAll();
+    public ProductViewModel(@NonNull AppDatabase appDatabase, Category category){
+
+        if(category != null){
+            productListLiveData = appDatabase.productDao().findProductsByCategory(category.getName());
+        }else
+        {
+            productListLiveData = appDatabase.productDao().findAll();
+        }
+
+
     }
 
     public LiveData<List<ProductWithCarousel>> getProductListLiveData() {

@@ -53,8 +53,9 @@ public class CategoryManagerActivity extends AppCompatActivity {
       /*  btnRegister = findViewById(R.id.btn_registerCategory);
         editCategory = findViewById(R.id.editCategoryRegisterDescription);*/
         database = AppDatabase.getInstance(getApplicationContext());
+        managedCategory = (Category) getIntent().getSerializableExtra("category");
         AppExecutors.getInstance().diskIO().execute(() -> {
-            managedCategory = database.categoryDao().findCategoryById(getIntent().getIntExtra("categoryId",0));
+           // managedCategory = database.categoryDao().findCategoryById(getIntent().getIntExtra("categoryId",0));
             if (managedCategory != null) {
                 binding.txtTitleCategory.setText("Edit Category");
                 binding.editCategoryName.setText(managedCategory.getName());

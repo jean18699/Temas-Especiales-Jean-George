@@ -155,4 +155,30 @@ public class FirebaseNetwork {
                     response.onFailure(e);
                 });
     }
+
+    public void deletes(final List<Carousel> carousels, final NetResponse<String> response) {
+        AtomicInteger atomic = new AtomicInteger(carousels.size());
+        for (Carousel carousel : carousels) {
+            final StorageReference reference = getStorageReference().child(PATH_UPLOAD + carousel.getPhoto());
+
+            reference.delete()
+                    .addOnSuccessListener(aVoid -> {
+                        Log.i(TAG, "delete:onSuccess");
+                        if (atomic.decrementAndGet() == 0) {
+                            try {
+                                response.onResponse("Successfully deleted on Firebase");
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e(TAG, "delete:onFailure");
+                        response.onFailure(e);
+                    })
+                    .addOnCompleteListener(task -> Log.i(TAG, "delete:onComplete"))
+                    .addOnCanceledListener(() -> Log.i(TAG, "delete:onCanceled"));
+        }
+    }
+
 }

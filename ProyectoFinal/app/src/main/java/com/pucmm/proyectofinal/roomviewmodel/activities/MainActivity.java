@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.menuProduct:
-            fragment = ProductListFragment.newInstance(columnsProducts);
+            fragment = ProductListFragment.newInstance(columnsProducts,null);
             break;
 
             case R.id.menuProfile:
