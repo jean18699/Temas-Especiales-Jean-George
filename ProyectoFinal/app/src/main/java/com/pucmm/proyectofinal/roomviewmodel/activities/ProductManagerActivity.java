@@ -57,8 +57,6 @@ public class ProductManagerActivity extends AppCompatActivity {
     private ProductWithCarousel managedProduct;
     private ArrayList<Drawable> drawables;
     private List<Uri> files;
-    private static final String PATH_UPLOAD = "images/";
-    private static final String URL_DOWNLOAD = String.format("gs://android-da673.appspot.com/%s", PATH_UPLOAD);
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 

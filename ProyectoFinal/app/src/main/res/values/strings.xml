@@ -46,4 +46,7 @@
     <string name="sub_total_items">Sub total(0 items):</string>
     <string name="lbl_total_price">0.0</string>
     <string name="proceed_to_checkout">Proceed to checkout</string>
+    <string name="btn_previous">Previous</string>
+    <string name="btn_delete">Delete</string>
+    <string name="btn_next">Next</string>
 </resources>

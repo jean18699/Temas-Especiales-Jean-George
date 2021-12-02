@@ -22,13 +22,16 @@ public interface CategoryDao {
     @Query("SELECT * FROM categories ORDER BY name")
     List<Category> findCategories();
 
+    @Query("SELECT * FROM categories WHERE categoryId = :id")
+    Category findCategoryById(int id);
+
     @Query("SELECT * FROM Categories WHERE name = :categoryName")
     Category findCategoryByName(String categoryName);
 
 
 
     @Insert
-    void insert(Category category);
+    long insert(Category category);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void update(Category category);

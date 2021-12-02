@@ -10,7 +10,7 @@ import com.pucmm.proyectofinal.roomviewmodel.model.Carousel;
 import com.pucmm.proyectofinal.roomviewmodel.model.Category;
 import com.pucmm.proyectofinal.roomviewmodel.model.Product;
 
-@Database(entities = {Category.class, Product.class, Carousel.class},version = 8)
+@Database(entities = {Category.class, Product.class, Carousel.class},version = 11)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DATABASE_NAME = "e-commerce";

@@ -49,4 +49,5 @@ public class CommonUtil {
         String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, null, null);
         return Uri.parse(path);
     }
+
 }

@@ -12,8 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pucmm.proyectofinal.R;
-import com.pucmm.proyectofinal.databinding.FragmentProductCartBinding;
 import com.pucmm.proyectofinal.databinding.FragmentProductDetailBinding;
+import com.pucmm.proyectofinal.databinding.ItemProductCartBinding;
 import com.pucmm.proyectofinal.roomviewmodel.activities.MainActivity;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.ProductDetailFragment;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.ShoppingCartFragment;
@@ -22,11 +22,8 @@ import com.pucmm.proyectofinal.roomviewmodel.model.Product;
 import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
 import com.pucmm.proyectofinal.utils.CommonUtil;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ProductCartAdapter extends RecyclerView.Adapter<ProductCartAdapter.MyViewHolder> {
 
@@ -50,7 +47,7 @@ public class ProductCartAdapter extends RecyclerView.Adapter<ProductCartAdapter.
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        FragmentProductCartBinding productBinding = FragmentProductCartBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
+        ItemProductCartBinding productBinding = ItemProductCartBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
         return new MyViewHolder(productBinding);
     }
 
@@ -114,7 +111,7 @@ public class ProductCartAdapter extends RecyclerView.Adapter<ProductCartAdapter.
 
 
 
-        public MyViewHolder(FragmentProductCartBinding binding) {
+        public MyViewHolder(ItemProductCartBinding binding) {
             super(binding.getRoot());
             product_price = binding.productPrice;
             product_description = binding.productDescription;

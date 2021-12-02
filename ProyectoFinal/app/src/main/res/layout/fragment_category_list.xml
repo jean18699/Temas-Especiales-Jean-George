@@ -40,7 +40,7 @@
         android:foregroundTint="#1C1616"
         app:layoutManager="LinearLayoutManager"
         tools:context=".roomviewmodel.fragments.CategoryListFragment"
-        tools:listitem="@layout/fragment_category" />
+        tools:listitem="@layout/item_category" />
 
 
 </RelativeLayout>

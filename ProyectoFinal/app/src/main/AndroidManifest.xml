@@ -17,7 +17,7 @@
         android:largeHeap="true"
         android:theme="@style/Theme.ProyectoFinal">
         <activity
-            android:name=".roomviewmodel.activities.CategoryRegisterActivity"
+            android:name=".roomviewmodel.activities.CategoryManagerActivity"
             android:exported="true" />
         <activity
             android:name=".roomviewmodel.activities.CategoryEditActivity"

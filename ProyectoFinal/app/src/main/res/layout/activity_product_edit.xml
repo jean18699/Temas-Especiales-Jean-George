@@ -47,7 +47,7 @@
             app:layout_constraintTop_toBottomOf="@+id/editProductDescription" />
 
         <TextView
-            android:id="@+id/category_name2"
+            android:id="@+id/txtTitleCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="140dp"

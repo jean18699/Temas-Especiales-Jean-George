@@ -1,12 +1,10 @@
 package com.pucmm.proyectofinal.roomviewmodel.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -18,13 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.databinding.FragmentCategoryListBinding;
-import com.pucmm.proyectofinal.databinding.FragmentUserListBinding;
-import com.pucmm.proyectofinal.roomviewmodel.activities.CategoryRegisterActivity;
+import com.pucmm.proyectofinal.roomviewmodel.activities.CategoryManagerActivity;
 import com.pucmm.proyectofinal.roomviewmodel.adapters.CategoryAdapter;
-import com.pucmm.proyectofinal.roomviewmodel.adapters.UserAdapter;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
 import com.pucmm.proyectofinal.roomviewmodel.model.Category;
 import com.pucmm.proyectofinal.roomviewmodel.viewmodel.CategoryViewModel;
@@ -43,7 +38,6 @@ public class CategoryListFragment extends Fragment {
     private AppDatabase appDatabase;
     private CategoryAdapter categoryAdapter;
     private RecyclerView categoryListRecyclerView;
-    private @NonNull FragmentCategoryListBinding binding;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -96,7 +90,7 @@ public class CategoryListFragment extends Fragment {
 
         //Pasando al fragmento de registrar categoria al clickear el boton flotante
         floatingActionButton.setOnClickListener(v ->
-                startActivity(new Intent(getActivity(), CategoryRegisterActivity.class))
+                startActivity(new Intent(getActivity(), CategoryManagerActivity.class))
         );
 
         retrieveTasks();

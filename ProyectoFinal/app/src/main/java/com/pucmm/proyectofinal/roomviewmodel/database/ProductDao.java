@@ -23,21 +23,27 @@ public interface ProductDao {
   //  @Query("SELECT * FROM Products")
    // LiveData<List<Product>> findAll();
 
+    @Transaction
     @Query("SELECT * FROM Products WHERE productId = :productID")
     Product findProductById(String productID);
 
+    @Transaction
     @Query("SELECT * FROM products ORDER BY productId")
     LiveData<List<ProductWithCarousel>> findAll();
 
+    @Transaction
     @Query("SELECT * FROM products ORDER BY productId")
     List<ProductWithCarousel> getProducts();
 
+    @Transaction
     @Query("DELETE FROM carousel WHERE product = :uid")
     void deleteCarousels(String uid);
 
+    @Transaction
     @Insert
     void insertCarousels(List<Carousel> carousels);
 
+    @Transaction
     @Update
     void updateCarousels(List<Carousel> carousels);
 

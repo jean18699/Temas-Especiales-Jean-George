@@ -5,25 +5,28 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.util.Base64;
+import java.io.Serializable;
 
 
 @Entity(tableName = "Categories")
-public class Category {
+public class Category implements Serializable {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name = "categoryId")
-    private Long id;
+    private Integer id;
 
     @ColumnInfo(name = "name")
     private String name;
 
-    @ColumnInfo(name = "image", typeAffinity = ColumnInfo.BLOB)
-    private byte[] image;
+    @ColumnInfo(name = "image")
+    private String image;
 
+    public Category(){
 
-    public Category(@NonNull String name, byte[] image) {
+    }
+
+    public Category(@NonNull String name, String image) {
         this.name = name;
         this.image = image;
     }
@@ -37,20 +40,20 @@ public class Category {
         this.name = name;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
     @NonNull
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(@NonNull Long id) {
+    public void setId(@NonNull Integer id) {
         this.id = id;
     }
 }
