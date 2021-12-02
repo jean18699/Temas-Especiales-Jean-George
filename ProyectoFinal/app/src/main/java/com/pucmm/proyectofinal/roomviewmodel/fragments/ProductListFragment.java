@@ -117,13 +117,12 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
         productListRecyclerView.setAdapter(productAdapter);
         productAdapter.setOptionsMenuListener((OptionsMenuListener<ProductWithCarousel>) (view1, element) -> {
             CommonUtil.popupMenu(getContext(), view1, () -> {
-                final Bundle bundle = new Bundle();
-                bundle.putSerializable("product", element);
-               // bundle.putSerializable(Constants.USER, user);
+                Intent intent = new Intent(getContext(), ProductManagerActivity.class);
+                intent.putExtra("product",element);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getContext().startActivity(intent);
 
-                /*NavHostFragment.findNavController(ProductFragment.this)
-                        .navigate(R.id.action_nav_product_to_nav_product_man, bundle);
- */           }, () -> {
+                }, () -> {
                 CommonUtil.alertDialog(getContext(), "Confirm dialog delete!",
                         "You are about to delete record. Do you really want to proceed?",
                         () -> delete(element));

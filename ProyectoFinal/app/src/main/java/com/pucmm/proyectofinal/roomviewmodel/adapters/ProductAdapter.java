@@ -68,10 +68,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             if (optionsMenuListener != null) {
                 optionsMenuListener.onCreateOptionsMenu(holder.editBtn, holder.product);
             }
-              /*  Intent intent = new Intent(context, ProductManagerActivity.class);
-                intent.putExtra("product",product);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);*/
         });
 
     }
