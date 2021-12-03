@@ -26,6 +26,8 @@ import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppExecutors;
 import com.pucmm.proyectofinal.roomviewmodel.model.Category;
 
+import com.pucmm.proyectofinal.roomviewmodel.model.Product;
+import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
 import com.pucmm.proyectofinal.utils.CommonUtil;
 import com.pucmm.proyectofinal.utils.KProgressHUDUtils;
 import com.shashank.sony.fancytoastlib.FancyToast;
@@ -41,6 +43,9 @@ public class CategoryManagerActivity extends AppCompatActivity {
     private AppDatabase database;
     private Uri uri;
     private Category managedCategory;
+    private boolean editImage;
+    /**Para obtener la referencia de cual fue el antiguo nombre de la categoria en el caso de que lo cambie**/
+    private String oldCategoryName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,26 +54,18 @@ public class CategoryManagerActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 
-      /*  btnRegister = findViewById(R.id.btn_registerCategory);
-        editCategory = findViewById(R.id.editCategoryRegisterDescription);*/
         database = AppDatabase.getInstance(getApplicationContext());
         managedCategory = (Category) getIntent().getSerializableExtra("category");
         AppExecutors.getInstance().diskIO().execute(() -> {
-            // managedCategory = database.categoryDao().findCategoryById(getIntent().getIntExtra("categoryId",0));
+
             if (managedCategory != null) {
+                oldCategoryName = managedCategory.getName();
                 binding.txtTitleCategory.setText("Edit Category");
                 binding.editCategoryName.setText(managedCategory.getName());
-                // binding.editCategoryName.setEnabled(false);
                 CommonUtil.downloadImage(managedCategory.getImage(), binding.categoryImage);
 
             }
         });
-
-        // managedCategory = (Category) getIntent().getSerializableExtra("category");
-
-        // System.out.println(managedCategory.getId());
-
-
 
         binding.btnRegisterCategory.setOnClickListener(v -> {
 
@@ -81,6 +78,7 @@ public class CategoryManagerActivity extends AppCompatActivity {
         });
 
         binding.categoryImage.setOnClickListener(v -> {
+            editImage = true;
             uploadImage();
         });
 
@@ -115,38 +113,32 @@ public class CategoryManagerActivity extends AppCompatActivity {
             //Verificando si categoria ya existe por su nombre
             if (database.categoryDao().findCategoryByName(categoryName) != null) {
                 Snackbar.make(findViewById(R.id.main_category_register), "This category is already registered", Snackbar.LENGTH_LONG).show();
-
+                progressDialog.dismiss();
             }else
             {
-                //System.out.println(managedCategory.getId());
                 if (managedCategory.getId() == null) {
                    int id = (int) database.categoryDao().insert(managedCategory);
                    managedCategory.setId(id);
                 } else {
                     database.categoryDao().update(managedCategory);
+
+                    if(!oldCategoryName.equals(managedCategory.getName()))
+                    {
+                        /**Editando la categoria para todos los productos que la tienen seleccionada**/
+                        for(ProductWithCarousel product : database.productDao().getProducts()){
+                            if(product.product.getCategory().equalsIgnoreCase(oldCategoryName)){
+                                // System.out.println(product.product.getDescription());
+                                product.product.setCategory(managedCategory.getName());
+                                database.productDao().update(product.product);
+                            }
+                        }
+                    }
+
                 }
 
 
-                if (uri != null && managedCategory.getId()!= 0) {
-                    System.out.println("SUBIENDO LA IMAGEN");
+                if (uri != null && managedCategory.getId()!= 0 && editImage) {
                     consumer.accept(progressDialog);
-
-                   /* FirebaseNetwork.obtain().upload(uri, String.format("categories/%s.jpg", managedCategory.getId()),
-                            new NetResponse<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    FancyToast.makeText(getApplicationContext(), "Successfully upload image", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
-                                    managedCategory.setImage(response);
-                                    AppExecutors.getInstance().diskIO().execute(() -> {
-                                        database.categoryDao().update(managedCategory);
-                                    });
-                                }
-
-                                @Override
-                                public void onFailure(Throwable t) {
-                                    FancyToast.makeText(getApplicationContext(), t.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
-                                }
-                            });*/
                 }else
                 {
                     progressDialog.dismiss();
