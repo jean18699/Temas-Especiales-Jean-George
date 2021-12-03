@@ -18,6 +18,7 @@ import com.pucmm.proyectofinal.roomviewmodel.model.Category;
 import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
 import com.pucmm.proyectofinal.utils.CommonUtil;
 import com.pucmm.proyectofinal.utils.OnTouchListener;
+import com.pucmm.proyectofinal.utils.OptionsMenuListener;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     private Context context;
     private ItemCategoryBinding categoriesBinding;
     private final OnTouchListener<Category> mListener;
+    private OptionsMenuListener optionsMenuListener;
 
 
 
@@ -46,14 +48,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.category = categoryList.get(position);
         holder.txtCategory.setText(holder.category.getName());
-        CommonUtil.downloadImage(holder.category.getImage(), holder.image);
+        //CommonUtil.downloadImage(holder.category.getImage(), holder.image);
 
         holder.editBtn.setOnClickListener(v->{
-            Intent intent = new Intent(context, CategoryManagerActivity.class);
-            intent.putExtra("category",holder.category);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+            if (optionsMenuListener != null) {
+                optionsMenuListener.onCreateOptionsMenu(holder.editBtn, holder.category);
+            }
         });
+
+        CommonUtil.downloadImage(holder.category.getImage(), holder.image);
+
 
     }
 
@@ -74,6 +78,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
         categoryList = categories;
         notifyDataSetChanged();
     }
+
+    public void setOptionsMenuListener(OptionsMenuListener optionsMenuListener) {
+        this.optionsMenuListener = optionsMenuListener;
+    }
+
 
     public class MyViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener  {
 

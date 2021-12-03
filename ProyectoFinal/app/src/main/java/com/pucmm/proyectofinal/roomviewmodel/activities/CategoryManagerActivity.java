@@ -10,7 +10,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -55,10 +54,11 @@ public class CategoryManagerActivity extends AppCompatActivity {
         database = AppDatabase.getInstance(getApplicationContext());
         managedCategory = (Category) getIntent().getSerializableExtra("category");
         AppExecutors.getInstance().diskIO().execute(() -> {
-           // managedCategory = database.categoryDao().findCategoryById(getIntent().getIntExtra("categoryId",0));
+            // managedCategory = database.categoryDao().findCategoryById(getIntent().getIntExtra("categoryId",0));
             if (managedCategory != null) {
                 binding.txtTitleCategory.setText("Edit Category");
                 binding.editCategoryName.setText(managedCategory.getName());
+                // binding.editCategoryName.setEnabled(false);
                 CommonUtil.downloadImage(managedCategory.getImage(), binding.categoryImage);
 
             }
@@ -66,7 +66,7 @@ public class CategoryManagerActivity extends AppCompatActivity {
 
         // managedCategory = (Category) getIntent().getSerializableExtra("category");
 
-       // System.out.println(managedCategory.getId());
+        // System.out.println(managedCategory.getId());
 
 
 
@@ -105,50 +105,58 @@ public class CategoryManagerActivity extends AppCompatActivity {
             managedCategory = new Category();
         }
 
-        //Formateando el string de categoria
-        String categoryName = formatString(binding.editCategoryName.getText().toString());
-        managedCategory.setName(categoryName);
-
-
-        //final KProgressHUD progressDialog = new KProgressHUDUtils(this).showConnecting();
+        final KProgressHUD progressDialog = new KProgressHUDUtils(this).showConnecting();
 
         AppExecutors.getInstance().diskIO().execute(() -> {
+            //Formateando el string de categoria
+            String categoryName = formatString(binding.editCategoryName.getText().toString());
+            managedCategory.setName(categoryName);
 
             //Verificando si categoria ya existe por su nombre
             if (database.categoryDao().findCategoryByName(categoryName) != null) {
                 Snackbar.make(findViewById(R.id.main_category_register), "This category is already registered", Snackbar.LENGTH_LONG).show();
-                return;
+
+            }else
+            {
+                //System.out.println(managedCategory.getId());
+                if (managedCategory.getId() == null) {
+                   int id = (int) database.categoryDao().insert(managedCategory);
+                   managedCategory.setId(id);
+                } else {
+                    database.categoryDao().update(managedCategory);
+                }
+
+
+                if (uri != null && managedCategory.getId()!= 0) {
+                    System.out.println("SUBIENDO LA IMAGEN");
+                    consumer.accept(progressDialog);
+
+                   /* FirebaseNetwork.obtain().upload(uri, String.format("categories/%s.jpg", managedCategory.getId()),
+                            new NetResponse<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    FancyToast.makeText(getApplicationContext(), "Successfully upload image", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                                    managedCategory.setImage(response);
+                                    AppExecutors.getInstance().diskIO().execute(() -> {
+                                        database.categoryDao().update(managedCategory);
+                                    });
+                                }
+
+                                @Override
+                                public void onFailure(Throwable t) {
+                                    FancyToast.makeText(getApplicationContext(), t.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                                }
+                            });*/
+                }else
+                {
+                    progressDialog.dismiss();
+                }
+                finish();
             }
 
-            //System.out.println(managedCategory.getId());
-            if (managedCategory.getId() == null) {
-                database.categoryDao().insert(managedCategory);
-               // managedCategory.setId(id);
-            } else {
-                database.categoryDao().update(managedCategory);
-            }
-
-            if (uri != null && managedCategory.getId() != null) {
-                FirebaseNetwork.obtain().upload(uri, String.format("categories/%s.jpg", managedCategory.getId()),
-                    new NetResponse<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            FancyToast.makeText(getApplicationContext(), "Successfully upload image", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
-                            managedCategory.setImage(response);
-                            AppExecutors.getInstance().diskIO().execute(() -> {
-                                database.categoryDao().update(managedCategory);
-                            });
-                        }
-
-                        @Override
-                        public void onFailure(Throwable t) {
-                            FancyToast.makeText(getApplicationContext(), t.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
-                        }
-                     });
-            }
         });
 
-        finish();
+
     }
 
 
@@ -169,6 +177,7 @@ public class CategoryManagerActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Throwable t) {
+
                             progressDialog.dismiss();
                             FancyToast.makeText(getApplicationContext(), t.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
                         }

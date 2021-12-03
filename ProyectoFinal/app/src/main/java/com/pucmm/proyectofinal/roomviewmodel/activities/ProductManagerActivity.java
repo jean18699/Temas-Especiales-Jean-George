@@ -57,6 +57,7 @@ public class ProductManagerActivity extends AppCompatActivity {
     private ProductWithCarousel managedProduct;
     private ArrayList<Drawable> drawables;
     private List<Uri> files;
+    boolean editImage = false;
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
@@ -162,6 +163,7 @@ public class ProductManagerActivity extends AppCompatActivity {
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         try {
+                            editImage = true;
                             final ClipData clipData = result.getData().getClipData();
                             if (clipData != null) {
                                 for (int i = 0; i < clipData.getItemCount(); i++) {
@@ -205,6 +207,8 @@ public class ProductManagerActivity extends AppCompatActivity {
 
         AppExecutors.getInstance().diskIO().execute(() -> {
 
+
+
             if (database.productDao().findProductById(managedProduct.product.getProductId()) != null) {
                 database.productDao().update(managedProduct.product);
             } else {
@@ -214,35 +218,34 @@ public class ProductManagerActivity extends AppCompatActivity {
             List<CarouselUpload> uploads = new ArrayList<>();
             final List<Carousel> carousels = new ArrayList<>();
 
+            if(editImage){
+                database.productDao().deleteCarousels(managedProduct.product.getProductId());
+                for (int index = 0; index < files.size(); index++) {
+                    Carousel carousel = new Carousel(managedProduct.product.getProductId(), index, String.format("products/%s/%s.jpg", managedProduct.product.getProductId(), index));
+                    carousels.add(carousel);
+                    uploads.add(new CarouselUpload(files.get(index), carousel));
+                }
 
-            database.productDao().deleteCarousels(managedProduct.product.getProductId());
+                database.productDao().insertCarousels(carousels);
 
+                if (drawables != null && !drawables.isEmpty() && managedProduct.product.getProductId() != null) {
+                    // final KProgressHUD progress = new KProgressHUDUtils(this).showDownload();
+                    FirebaseNetwork.obtain().uploads(uploads, new NetResponse<Void>() {
+                        @Override
+                        public void onResponse(Void response) {
+                            FancyToast.makeText(getApplicationContext(), "Successfully upload images", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                            //      progress.dismiss();
+                        }
 
-
-            for (int index = 0; index < files.size(); index++) {
-                Carousel carousel = new Carousel(managedProduct.product.getProductId(), index, String.format("products/%s/%s.jpg", managedProduct.product.getProductId(), index));
-                carousels.add(carousel);
-                uploads.add(new CarouselUpload(files.get(index), carousel));
+                        @Override
+                        public void onFailure(Throwable t) {
+                            //  progress.dismiss();
+                            FancyToast.makeText(getApplicationContext(), t.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                        }
+                    });
+                }
             }
 
-            database.productDao().insertCarousels(carousels);
-
-            if (drawables != null && !drawables.isEmpty() && managedProduct.product.getProductId() != null) {
-               // final KProgressHUD progress = new KProgressHUDUtils(this).showDownload();
-                FirebaseNetwork.obtain().uploads(uploads, new NetResponse<Void>() {
-                    @Override
-                    public void onResponse(Void response) {
-                        FancyToast.makeText(getApplicationContext(), "Successfully upload images", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
-                  //      progress.dismiss();
-                    }
-
-                    @Override
-                    public void onFailure(Throwable t) {
-                      //  progress.dismiss();
-                        FancyToast.makeText(getApplicationContext(), t.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
-                    }
-                });
-            }
             finish();
         });
     }
