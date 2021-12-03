@@ -26,7 +26,6 @@ import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppExecutors;
 import com.pucmm.proyectofinal.roomviewmodel.model.Category;
 
-import com.pucmm.proyectofinal.roomviewmodel.model.Product;
 import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
 import com.pucmm.proyectofinal.utils.CommonUtil;
 import com.pucmm.proyectofinal.utils.KProgressHUDUtils;
@@ -62,6 +61,7 @@ public class CategoryManagerActivity extends AppCompatActivity {
                 oldCategoryName = managedCategory.getName();
                 binding.txtTitleCategory.setText("Edit Category");
                 binding.editCategoryName.setText(managedCategory.getName());
+                binding.txtTitleCategory.setText("Edit Category");
                 CommonUtil.downloadImage(managedCategory.getImage(), binding.categoryImage);
 
             }
