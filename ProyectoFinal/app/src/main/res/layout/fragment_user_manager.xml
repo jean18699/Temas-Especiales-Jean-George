@@ -15,7 +15,7 @@
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".roomviewmodel.fragments.UserRegisterFragment">
+        tools:context=".roomviewmodel.fragments.UserManagerFragment">
 
         <TextView
             android:id="@+id/textView9"
@@ -120,18 +120,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-        <EditText
+        <DatePicker
             android:id="@+id/editBirthDay"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="32dp"
-            android:layout_marginBottom="16dp"
             android:ems="10"
             android:inputType="date"
             android:minHeight="48dp"
-            app:layout_constraintBottom_toTopOf="@+id/btn_registerUser"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -188,7 +186,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp"
             android:text="@string/lblEnterEmail"
             android:textColor="#3F51B5"
@@ -197,34 +195,67 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_product_name2" />
+            app:layout_constraintTop_toBottomOf="@+id/userImage" />
 
         <TextView
             android:id="@+id/lbl_product_name2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="88dp"
+            android:layout_marginTop="110dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="32dp"
             android:text="@string/lbl_create_an_account"
             android:textColor="#3F51B5"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/textView3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/userImage"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="48dp"
+            android:src="@drawable/ic_baseline_person_24"
+            android:background="#F3EFEF"
+            app:layout_constraintBottom_toTopOf="@+id/editEmail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lbl_product_name2" />
+
 
         <Button
             android:id="@+id/btn_registerUser"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="300dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="110dp"
             android:text="@string/btnRegister"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chkSeller"
+            app:layout_goneMarginBottom="64dp" />
+
+        <CheckBox
+            android:id="@+id/chkSeller"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/check_seller"
+            android:textColor="#3F51B5"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editBirthDay" />
 

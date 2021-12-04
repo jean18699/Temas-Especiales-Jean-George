@@ -1,8 +1,6 @@
 package com.pucmm.proyectofinal.roomviewmodel.model;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
@@ -12,44 +10,35 @@ import java.util.UUID;
 
 public class User implements Serializable {
 
-    public enum ROLE{
+    public enum ROL {
         SELLER,
         CUSTOMER
     }
 
-    @PrimaryKey
-    @NonNull
-    private String uid;
-    private String email;
-    private String password;
-    private ROLE role;
-    private String firstName;
-    private String lastName;
-    private String contact;
-    private String birthday;
-    private String photo;
+    public int uid;
+    public String firstName;
+    public String lastName;
+    public String email;
+    public String password;
+    public ROL rol;
+    public String contact;
+    public String birthday;
+    public String photo;
 
 
-    public User(String password, String email, ROLE role, String firstName, String lastName, String contact, String birthday) {
-        this.uid = UUID.randomUUID().toString();
-        this.password = password;
-        this.email = email;
-        this.role = role;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.contact = contact;
-        this.birthday = birthday;
-        this.photo = "placeholder.png";
+    public User(){
+
     }
 
 
     @NonNull
-    public String getUid() {
+    public int getUid() {
         return uid;
     }
 
-    public void setUid(@NonNull String uid) {
+    public User setUid(int uid) {
         this.uid = uid;
+        return this;
     }
 
     public String getEmail() {
@@ -68,12 +57,12 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public ROLE getRole() {
-        return role;
+    public ROL getRol() {
+        return rol;
     }
 
-    public void setRole(ROLE role) {
-        this.role = role;
+    public void setRol(ROL rol) {
+        this.rol = rol;
     }
 
     public String getFirstName() {

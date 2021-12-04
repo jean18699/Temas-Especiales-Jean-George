@@ -21,7 +21,6 @@ import com.pucmm.proyectofinal.roomviewmodel.model.User;
 import com.pucmm.proyectofinal.roomviewmodel.model.UserLogin;
 import com.pucmm.proyectofinal.roomviewmodel.services.UserApiService;
 
-import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -107,7 +106,7 @@ public class LoginFragment extends Fragment {
         btnUserRegister.setOnClickListener(v->{
             getActivity().getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .replace(R.id.main, UserRegisterFragment.newInstance())
+                    .replace(R.id.main, UserManagerFragment.newInstance(null))
                     .addToBackStack(null)
                     .commit();
         });
@@ -116,6 +115,7 @@ public class LoginFragment extends Fragment {
             getActivity().getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
                     .replace(R.id.main, UserRecoveryFragment.newInstance())
+                    .addToBackStack(null)
                     .commit();
         });
 

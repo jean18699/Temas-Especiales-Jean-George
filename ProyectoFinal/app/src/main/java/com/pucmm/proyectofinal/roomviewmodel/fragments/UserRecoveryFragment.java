@@ -12,8 +12,16 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
-import com.pucmm.proyectofinal.roomviewmodel.database.AppExecutors;
 import com.pucmm.proyectofinal.roomviewmodel.model.User;
+import com.pucmm.proyectofinal.roomviewmodel.services.UserApiService;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,7 +39,7 @@ public class UserRecoveryFragment extends Fragment {
     private Button btnLogin;
     private Button btnRecovery;
     private EditText editEmail;
-    private AppDatabase database;
+    private List<User> users;
 
     public UserRecoveryFragment() {
         // Required empty public constructor
@@ -71,8 +79,28 @@ public class UserRecoveryFragment extends Fragment {
         btnLogin = view.findViewById(R.id.btnLoginNow);
         btnRegister = view.findViewById(R.id.btnRegisterNow);
         editEmail = view.findViewById(R.id.editEmailRecovery);
-        database = AppDatabase.getInstance(getActivity().getApplicationContext());
 
+
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://137.184.110.89:7002/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        Call<List<User>> userCall = retrofit.create(UserApiService.class).getAll();
+        userCall.enqueue(new Callback<List<User>>() {
+
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                users = response.body();
+
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Snackbar.make(getView(),"An error has ocurried retrieving the accounts", Snackbar.LENGTH_LONG);
+            }
+        });
 
         btnRecovery.setOnClickListener(v -> {
             //Validando que todos los campos esten completos antes de registrarse
@@ -87,13 +115,15 @@ public class UserRecoveryFragment extends Fragment {
             getActivity().getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
                     .replace(R.id.main, LoginFragment.newInstance())
+                    .addToBackStack(null)
                     .commit();
         });
 
         btnRegister.setOnClickListener(v -> {
             getActivity().getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .replace(R.id.main, UserRegisterFragment.newInstance())
+                    .replace(R.id.main, UserManagerFragment.newInstance(null))
+                    .addToBackStack(null)
                     .commit();
         });
 
@@ -104,20 +134,31 @@ public class UserRecoveryFragment extends Fragment {
 
     public void showPassword() {
 
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-
-              //  User user = database.userDao().findUserByEmail(editEmail.getText().toString());
-              /*  if (user != null) {
+            for(User user : users){
+                System.out.println(user.getEmail());
+                if(user.getEmail().equalsIgnoreCase(editEmail.getText().toString())){
                     Snackbar.make(getView(), "Your password is: " + user.getPassword(), Snackbar.LENGTH_LONG).show();
                     return;
-                } else {
+                }else
+                {
                     Snackbar.make(getView(), "This email is not registered", Snackbar.LENGTH_LONG).show();
+                }
+                /*
+                if(user.getEmail().equals(editEmail.getText())){
+                    System.out.println("mirame size: "+ users.size());
+                    Snackbar.make(getView(), "Your password is: " + user.getPassword(), Snackbar.LENGTH_LONG).show();
                 }*/
 
-            }
-        });
+          //  User user = database.userDao().findUserByEmail(editEmail.getText().toString());
+          /*  if (user != null) {
+                Snackbar.make(getView(), "Your password is: " + user.getPassword(), Snackbar.LENGTH_LONG).show();
+                return;
+            } else {
+                Snackbar.make(getView(), "This email is not registered", Snackbar.LENGTH_LONG).show();
+            }*/
+
+        }
+
     }
 
 }

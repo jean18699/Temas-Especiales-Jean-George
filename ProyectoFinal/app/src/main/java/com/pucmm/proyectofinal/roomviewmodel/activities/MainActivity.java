@@ -32,6 +32,7 @@ import com.pucmm.proyectofinal.roomviewmodel.fragments.CategoryListFragment;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.ProductListFragment;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.ShoppingCartFragment;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.UserEditFragment;
+import com.pucmm.proyectofinal.roomviewmodel.fragments.UserManagerFragment;
 import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
 import com.pucmm.proyectofinal.roomviewmodel.model.User;
 
@@ -157,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             break;
 
             case R.id.menuProfile:
-                fragment = UserEditFragment.newInstance(user);
+                fragment = UserManagerFragment.newInstance(user);
                 break;
         }
 

@@ -35,7 +35,7 @@
     <string name="user_register_firstname">Enter FirstName</string>
     <string name="user_register_lastname">Enter LastName</string>
     <string name="user_register_phone_number">Enter Phone Number</string>
-    <string name="user_register_birthday">Enter Birthday</string>
+    <string name="user_register_birthday">Birthday</string>
     <string name="products_description">Product\'s Description</string>
     <string name="lbl_products_price">Product\'s Price</string>
     <string name="lbl_select_category">Select Category:</string>
@@ -49,4 +49,5 @@
     <string name="btn_previous">Previous</string>
     <string name="btn_delete">Delete</string>
     <string name="btn_next">Next</string>
+    <string name="check_seller">Seller</string>
 </resources>

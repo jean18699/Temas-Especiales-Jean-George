@@ -20,7 +20,7 @@ public interface UserApiService {
     Call<User> getUser();
 
     @PUT("users")
-    Call<Void> update(@Body User user);
+    Call<User> update(@Body User user);
 
     @POST("users")
     Call<User> create(@Body User user);
