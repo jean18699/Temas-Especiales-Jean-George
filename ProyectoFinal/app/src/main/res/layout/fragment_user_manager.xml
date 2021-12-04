@@ -186,7 +186,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:layout_marginBottom="8dp"
             android:text="@string/lblEnterEmail"
             android:textColor="#3F51B5"
@@ -198,11 +198,11 @@
             app:layout_constraintTop_toBottomOf="@+id/userImage" />
 
         <TextView
-            android:id="@+id/lbl_product_name2"
+            android:id="@+id/lblUserTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="110dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
             android:text="@string/lbl_create_an_account"
             android:textColor="#3F51B5"
@@ -225,7 +225,7 @@
             app:layout_constraintBottom_toTopOf="@+id/editEmail"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_product_name2" />
+            app:layout_constraintTop_toBottomOf="@+id/lblUserTitle" />
 
 
         <Button
@@ -235,7 +235,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="110dp"
+            android:layout_marginBottom="32dp"
             android:text="@string/btnRegister"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

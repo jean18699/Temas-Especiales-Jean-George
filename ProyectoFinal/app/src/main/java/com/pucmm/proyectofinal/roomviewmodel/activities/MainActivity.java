@@ -39,7 +39,6 @@ import com.pucmm.proyectofinal.roomviewmodel.model.User;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
