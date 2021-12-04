@@ -93,18 +93,20 @@ public class UserManagerFragment extends Fragment {
           /*  String dateSubstring = user.getBirthday().substring(0,10);
             String [] splitDate = dateSubstring.split("-");
             String day = splitDate[2], month = splitDate[1], year = splitDate[0];*/
-
+            binding.lblUserTitle.setText("Manage Account");
             binding.editPassword.setText(user.getPassword());
             binding.editEmail.setText(user.getEmail());
             binding.chkSeller.setChecked(user.getRol().equals(User.ROL.SELLER)? true : false);
             binding.editFirstName.setText(user.getFirstName());
             binding.editLastName.setText(user.getLastName());
             binding.editPhoneNumber.setText(user.getContact());
+            binding.lblUserTitle.setText("Manage Account");
           //  binding.editBirthDay.updateDate(Integer.valueOf(year),Integer.valueOf(month),Integer.valueOf(day));
             CommonUtil.downloadImage(user.getPhoto(), binding.userImage);
             editing = true;
 
         }
+
 
         retrofit = new Retrofit.Builder()
                 .baseUrl("http://137.184.110.89:7002/")
@@ -171,12 +173,12 @@ public class UserManagerFragment extends Fragment {
             user = new User();
         }
 
-        user.setFirstName(binding.editEmail.getText().toString());
+        user.setFirstName(binding.editFirstName.getText().toString());
         user.setLastName(binding.editLastName.getText().toString());
         user.setContact(binding.editPhoneNumber.getText().toString());
         user.setBirthday(getBirthday(binding.editBirthDay));
         user.setEmail(binding.editEmail.getText().toString());
-        user.setPassword(binding.editEmail.getText().toString());
+        user.setPassword(binding.editPassword.getText().toString());
         user.setRol(binding.chkSeller.isChecked() ? User.ROL.SELLER : User.ROL.CUSTOMER);
 
         final KProgressHUD progressDialog = new KProgressHUDUtils(getContext()).showConnecting();
@@ -222,7 +224,7 @@ public class UserManagerFragment extends Fragment {
 
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .setReorderingAllowed(true)
-                            .replace(R.id.main, LoginFragment.newInstance())
+                            .replace(R.id.content_frame, UserManagerFragment.newInstance(user))
                             .commit();
                     progressDialog.dismiss();
                 }
