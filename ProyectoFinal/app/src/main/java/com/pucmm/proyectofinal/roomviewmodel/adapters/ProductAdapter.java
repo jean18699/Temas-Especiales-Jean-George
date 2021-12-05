@@ -14,10 +14,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pucmm.proyectofinal.databinding.ItemProductBinding;
-import com.pucmm.proyectofinal.roomviewmodel.activities.ProductEditActivity;
-import com.pucmm.proyectofinal.roomviewmodel.activities.ProductManagerActivity;
 import com.pucmm.proyectofinal.roomviewmodel.model.Carousel;
-import com.pucmm.proyectofinal.roomviewmodel.model.Product;
 import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
 import com.pucmm.proyectofinal.roomviewmodel.model.User;
 import com.pucmm.proyectofinal.utils.CommonUtil;

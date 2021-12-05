@@ -20,12 +20,7 @@
         <activity
             android:name=".roomviewmodel.activities.CategoryManagerActivity"
             android:exported="true" />
-        <activity
-            android:name=".roomviewmodel.activities.CategoryEditActivity"
-            android:exported="true" />
-        <activity
-            android:name=".roomviewmodel.activities.ProductEditActivity"
-            android:exported="true" />
+
         <activity
             android:name=".roomviewmodel.activities.ProductManagerActivity"
             android:exported="true" />

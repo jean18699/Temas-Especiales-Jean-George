@@ -162,8 +162,8 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
                 appDatabase.productDao().delete(element.product);
                 appDatabase.productDao().deleteCarousels(element.carousels);
 
-                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("cart", Context.MODE_PRIVATE);
-                SharedPreferences quantityPreferences = getActivity().getSharedPreferences(element.product.getProductId()+"_quantity", Context.MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("cart_"+user.getUid(), Context.MODE_PRIVATE);
+                SharedPreferences quantityPreferences = getActivity().getSharedPreferences("quantities_"+user.getUid(), Context.MODE_PRIVATE);
                 sharedPreferences.edit().remove(element.product.getProductId()).apply();
                 quantityPreferences.edit().remove(element.product.getProductId()+"_quantity").apply();
                 getActivity().runOnUiThread(() -> FancyToast.makeText(getContext(), "Successfully deleted!", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show());

@@ -1,22 +1,24 @@
 package com.pucmm.proyectofinal.roomviewmodel.activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageSwitcher;
 import android.widget.ImageView;
-import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -24,10 +26,9 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.StorageReference;
-import com.kaopiz.kprogresshud.KProgressHUD;
+import com.google.android.material.navigation.NavigationBarView;
 import com.pucmm.proyectofinal.databinding.ActivityProductManagerBinding;
 import com.pucmm.proyectofinal.networksync.CarouselUpload;
 import com.pucmm.proyectofinal.networksync.NetResponse;
@@ -40,8 +41,6 @@ import com.pucmm.proyectofinal.networksync.FirebaseNetwork;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppExecutors;
 import com.pucmm.proyectofinal.roomviewmodel.model.Category;
-import com.pucmm.proyectofinal.roomviewmodel.model.Product;
-import com.pucmm.proyectofinal.utils.KProgressHUDUtils;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.io.FileNotFoundException;
@@ -103,8 +102,21 @@ public class ProductManagerActivity extends AppCompatActivity {
             }
         }
 
+        binding.spnCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.BLACK);
+                ((TextView) parent.getChildAt(0)).setTextSize(16);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         binding.image.setFactory(() -> new ImageView(getApplicationContext()));
-        binding.btnUploadImage.setOnClickListener(v -> photoOptions());
+        binding.btnUploadImage.setOnClickListener(v -> requestImagePermissions());
 
         binding.btnPreviousImage.setOnClickListener(v -> {
             if (position > 0) {
@@ -144,8 +156,30 @@ public class ProductManagerActivity extends AppCompatActivity {
         });
     }
 
+    public void requestImagePermissions(){
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                1);
+    }
 
-    private void photoOptions() {
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1: {
+
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    uploadImages();
+                } else {
+                    Toast.makeText(this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
+    }
+
+    private void uploadImages() {
         // initialising intent
         Intent intent = new Intent();
         // setting type to select to be image

@@ -19,10 +19,6 @@ import java.util.UUID;
 @Dao
 public interface ProductDao {
 
-    //LiveData permite siempre ver en la UI los cambios realizados en la data
-  //  @Query("SELECT * FROM Products")
-   // LiveData<List<Product>> findAll();
-
     @Transaction
     @Query("SELECT * FROM Products WHERE productId = :productID")
     Product findProductById(String productID);
@@ -36,7 +32,7 @@ public interface ProductDao {
     LiveData<List<ProductWithCarousel>> findProductsByCategory(String categoryName);
 
     @Transaction
-    @Query("SELECT * FROM products WHERE description LIKE '%' || :query || '%' ORDER BY productId")
+    @Query("SELECT * FROM products WHERE description LIKE :query || '%' ORDER BY productId")
     LiveData<List<ProductWithCarousel>> findProductsByDescription(String query);
 
     @Transaction

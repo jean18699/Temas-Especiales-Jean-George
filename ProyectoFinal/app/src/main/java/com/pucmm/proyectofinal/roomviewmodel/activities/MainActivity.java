@@ -107,6 +107,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                    .replace(R.id.content_frame, ShoppingCartFragment.newInstance(user))
                    .addToBackStack(null)
                    .commit();
+
+           if(!searchView.isIconified()){
+               searchView.setIconified(true);
+           }
+
        }
 
        if(item.getItemId() == R.id.action_search){

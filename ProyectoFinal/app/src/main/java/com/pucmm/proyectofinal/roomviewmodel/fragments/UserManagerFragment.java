@@ -1,7 +1,9 @@
 package com.pucmm.proyectofinal.roomviewmodel.fragments;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -11,12 +13,14 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -120,7 +124,7 @@ public class UserManagerFragment extends Fragment {
                 .build();
 
         binding.userImage.setOnClickListener(v->{
-            uploadImage();
+            requestImagePermissions();
         });
 
         binding.btnRegisterUser.setOnClickListener(v -> {
@@ -139,6 +143,29 @@ public class UserManagerFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public void requestImagePermissions(){
+        ActivityCompat.requestPermissions(getActivity(),
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                1);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1: {
+
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    uploadImage();
+                } else {
+                    Toast.makeText(getContext(), "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
     }
 
     public void uploadImage() {
@@ -222,9 +249,6 @@ public class UserManagerFragment extends Fragment {
                         }
                     });
         }
-
-
-
     }
 
     private void call(Call<User> call, Consumer<Boolean> error) {

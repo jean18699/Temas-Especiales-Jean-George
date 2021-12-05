@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">E-Commerce</string>
-    <string name="lbl_email">Enter Email</string>
-    <string name="lbl_password">Enter Password</string>
+    <string name="lbl_email">Email</string>
+    <string name="lbl_password">Password</string>
     <string name="input_email">Email</string>
     <string name="input_password">Password</string>
     <string name="btn_login">LOGIN</string>
@@ -10,7 +10,7 @@
     <string name="btn_forgotpassword">Forgot Password</string>
     <string name="btn_register">Register Now</string>
     <string name="input_username">Username</string>
-    <string name="lbl_username">Enter Username</string>
+    <string name="lbl_username">Username</string>
     <string name="lbl_name">Name</string>
     <string name="lbl_lastname">LastName</string>
     <string name="btnRegister">Register</string>
@@ -28,13 +28,13 @@
     <string name="btnEdit">Edit</string>
     <string name="lblEditProduct">Edit Product</string>
     <string name="bnt_get_password">GET PASSWORD</string>
-    <string name="lblEnterEmail">Enter Email</string>
+    <string name="lblEnterEmail">Email</string>
     <string name="lbl_create_an_account">CREATE AN ACCOUNT</string>
     <string name="account">Profile</string>
     <string name="lbl_my_profile">My Profile</string>
-    <string name="user_register_firstname">Enter FirstName</string>
-    <string name="user_register_lastname">Enter LastName</string>
-    <string name="user_register_phone_number">Enter Phone Number</string>
+    <string name="user_register_firstname">FirstName</string>
+    <string name="user_register_lastname">LastName</string>
+    <string name="user_register_phone_number">Phone Number</string>
     <string name="user_register_birthday">Birthday</string>
     <string name="products_description">Product\'s Description</string>
     <string name="lbl_products_price">Product\'s Price</string>
@@ -51,4 +51,5 @@
     <string name="btn_next">Next</string>
     <string name="check_seller">Seller</string>
     <string name="menuLogout">Logout</string>
+    <string name="btn_select_image">Select image(s)</string>
 </resources>

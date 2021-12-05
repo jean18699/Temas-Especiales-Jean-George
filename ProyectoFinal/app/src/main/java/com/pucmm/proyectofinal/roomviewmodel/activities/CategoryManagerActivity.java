@@ -5,13 +5,17 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Toast;
 
 
 import com.google.android.material.snackbar.Snackbar;
@@ -79,7 +83,8 @@ public class CategoryManagerActivity extends AppCompatActivity {
 
         binding.categoryImage.setOnClickListener(v -> {
             editImage = true;
-            uploadImage();
+            requestImagePermissions();
+
         });
 
 
@@ -95,6 +100,29 @@ public class CategoryManagerActivity extends AppCompatActivity {
         intent.setAction(Intent.ACTION_GET_CONTENT);
 
         pickAndChoosePictureResultLauncher.launch(intent);
+    }
+
+    public void requestImagePermissions(){
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                1);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1: {
+
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                   uploadImage();
+                } else {
+                    Toast.makeText(this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
     }
 
     public void registerEditCategory() {
