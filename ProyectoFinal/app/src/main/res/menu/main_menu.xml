@@ -13,7 +13,6 @@
         android:id="@+id/cart"
         android:icon="@drawable/ic_baseline_shopping_cart_24"
         app:showAsAction="ifRoom|collapseActionView"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
         android:title="Search"/>
 
 </menu>

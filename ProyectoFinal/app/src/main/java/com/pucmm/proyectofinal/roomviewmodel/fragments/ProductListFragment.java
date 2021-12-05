@@ -17,12 +17,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.common.internal.Constants;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.pucmm.proyectofinal.R;
-import com.pucmm.proyectofinal.databinding.FragmentCategoryListBinding;
 import com.pucmm.proyectofinal.networksync.FirebaseNetwork;
 import com.pucmm.proyectofinal.networksync.NetResponse;
 import com.pucmm.proyectofinal.roomviewmodel.activities.ProductManagerActivity;
@@ -32,6 +29,7 @@ import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppExecutors;
 import com.pucmm.proyectofinal.roomviewmodel.model.Category;
 import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
+import com.pucmm.proyectofinal.roomviewmodel.model.User;
 import com.pucmm.proyectofinal.roomviewmodel.viewmodel.ProductViewModel;
 import com.pucmm.proyectofinal.utils.CommonUtil;
 import com.pucmm.proyectofinal.utils.KProgressHUDUtils;
@@ -40,7 +38,6 @@ import com.pucmm.proyectofinal.utils.OptionsMenuListener;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -57,6 +54,8 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
     private ProductAdapter productAdapter;
     private RecyclerView productListRecyclerView;
     private Category selectedCategory;
+    private User user;
+    private String searchQuery;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -67,11 +66,13 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static ProductListFragment newInstance(int columnCount, Category category) {
+    public static ProductListFragment newInstance(int columnCount, Category category, User user, String searchQuery) {
         ProductListFragment fragment = new ProductListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         args.putSerializable("selectedCategory", category);
+        args.putSerializable("user", user);
+        args.putString("query", searchQuery);
         fragment.setArguments(args);
         return fragment;
     }
@@ -83,6 +84,8 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
             selectedCategory = (Category) getArguments().getSerializable("selectedCategory");
+            user = (User) getArguments().getSerializable("user");
+            searchQuery = getArguments().getString("query");
         }
     }
 
@@ -105,7 +108,7 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
         }
 
         appDatabase = AppDatabase.getInstance(getActivity().getApplicationContext());
-        productAdapter = new ProductAdapter(getActivity().getApplicationContext(), this);
+        productAdapter = new ProductAdapter(getActivity().getApplicationContext(), user, this);
 
 
         //Pasando al fragmento de registrar categoria al clickear el boton flotante
@@ -177,7 +180,7 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
             @NonNull
             @Override
             public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-                return (T) new ProductViewModel(appDatabase,selectedCategory);
+                return (T) new ProductViewModel(appDatabase,selectedCategory, searchQuery);
             }
         }).get(ProductViewModel.class);
 
@@ -195,7 +198,7 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
     public void OnClick(ProductWithCarousel element) {
         getActivity().getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
-                .replace(R.id.content_frame, ProductDetailFragment.newInstance(element))
+                .replace(R.id.content_frame, ProductDetailFragment.newInstance(element, user))
                 .addToBackStack(null)
                 .commit();
     }

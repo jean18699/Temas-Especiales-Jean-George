@@ -7,8 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
 import android.content.Intent;
@@ -29,12 +31,23 @@ import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppExecutors;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.CategoryListFragment;
+import com.pucmm.proyectofinal.roomviewmodel.fragments.HomeFragment;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.ProductListFragment;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.ShoppingCartFragment;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.UserEditFragment;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.UserManagerFragment;
 import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
 import com.pucmm.proyectofinal.roomviewmodel.model.User;
+import com.pucmm.proyectofinal.roomviewmodel.model.UserChangePassword;
+import com.pucmm.proyectofinal.roomviewmodel.services.UserApiService;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -45,7 +58,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private int columnsCategory = 1;
     private int columnsProducts = 1;
     private User user;
-    FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
+    private SearchView searchView;
+    private MenuItem itemSearch;
+    private MenuItem itemCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             signInAnonymously();
         }
 
-        //loadUser();
 
         //REINICIAR LA BASE DE DATOS
         //getApplicationContext().deleteDatabase("e-commerce");
@@ -84,10 +99,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
+       if(item.getItemId() == R.id.cart){
+           getSupportFragmentManager().beginTransaction()
+                   .setReorderingAllowed(true)
+                   .replace(R.id.content_frame, ShoppingCartFragment.newInstance(user))
+                   .addToBackStack(null)
+                   .commit();
+       }
+
+       if(item.getItemId() == R.id.action_search){
+           searchView.setQueryHint("Search a product");
+       }
+
+        return super.onOptionsItemSelected(item);
     }
+
+
+
 
     private void signInAnonymously() {
         mAuth.signInAnonymously().addOnSuccessListener(this, new  OnSuccessListener<AuthResult>() {
@@ -109,12 +139,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         getMenuInflater().inflate(R.menu.main_menu,menu);
 
-        MenuItem itemSearch = menu.findItem(R.id.action_search);
-        MenuItem itemCart = menu.findItem(R.id.cart);
+        itemSearch = menu.findItem(R.id.action_search);
+        itemCart = menu.findItem(R.id.cart);
 
-        SearchView searchView = (SearchView) itemSearch.getActionView();
+        searchView = (SearchView) itemSearch.getActionView();
 
-        searchView.setQueryHint("Search a product");
+       /* searchView.setQueryHint("Search a product");*/
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -123,23 +153,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                return false;
+
+                getSupportFragmentManager().beginTransaction()
+                        .setReorderingAllowed(true)
+                        .addToBackStack(null)
+                        .replace(R.id.content_frame, ProductListFragment.newInstance(1,null,user,newText))
+                        .commit();
+                return true;
             }
         });
 
-        itemCart.setOnMenuItemClickListener(item -> {
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .replace(R.id.content_frame, ShoppingCartFragment.newInstance())
-                    .addToBackStack(null)
-                    .commit();
-            return false;
-        });
 
         return super.onCreateOptionsMenu(menu);
     }
 
 
+
+    @Override
+    public void onBackPressed() {
+        if (!searchView.isIconified()) {
+            searchView.onActionViewCollapsed();
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     //Eventos al presionar un elemento del menu. Aqui alternaremos de fragmentos
     @Override
@@ -148,23 +185,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         Fragment fragment = null;
         switch (id){
+
+            case R.id.menuHome:
+                fragment = HomeFragment.newInstance();
+                break;
+
             case R.id.menuCategory:
-                fragment = CategoryListFragment.newInstance(columnsCategory);
+                fragment = CategoryListFragment.newInstance(columnsCategory, user);
                 break;
 
             case R.id.menuProduct:
-            fragment = ProductListFragment.newInstance(columnsProducts,null);
+            fragment = ProductListFragment.newInstance(columnsProducts,null, user, null);
             break;
 
             case R.id.menuProfile:
                 fragment = UserManagerFragment.newInstance(user);
                 break;
+
+            case R.id.menuLogout:
+                finish();
+                break;
+
         }
 
         if(fragment != null){
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
                     .replace(R.id.content_frame, fragment)
+                    .addToBackStack(null)
                     .commit();
         }
 

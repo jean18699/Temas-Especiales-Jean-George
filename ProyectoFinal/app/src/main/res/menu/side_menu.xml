@@ -21,6 +21,12 @@
             android:id="@+id/menuProfile"
             android:icon="@drawable/ic_baseline_person_24" />
 
+        <item
+            android:title="@string/menuLogout"
+            android:id="@+id/menuLogout"
+            android:icon="@drawable/ic_baseline_exit_to_app_24" />
+
+
     </group>
 
 

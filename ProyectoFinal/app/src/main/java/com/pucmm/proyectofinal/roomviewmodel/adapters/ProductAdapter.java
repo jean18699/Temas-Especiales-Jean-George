@@ -19,6 +19,7 @@ import com.pucmm.proyectofinal.roomviewmodel.activities.ProductManagerActivity;
 import com.pucmm.proyectofinal.roomviewmodel.model.Carousel;
 import com.pucmm.proyectofinal.roomviewmodel.model.Product;
 import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
+import com.pucmm.proyectofinal.roomviewmodel.model.User;
 import com.pucmm.proyectofinal.utils.CommonUtil;
 import com.pucmm.proyectofinal.utils.OnTouchListener;
 import com.pucmm.proyectofinal.utils.OptionsMenuListener;
@@ -32,9 +33,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
     private Context context;
     private final OnTouchListener<ProductWithCarousel> mListener; //Agregado para que la lista responda a los eventos de click
     private OptionsMenuListener optionsMenuListener;
+    private User user;
 
-    public ProductAdapter(Context context, OnTouchListener<ProductWithCarousel> mListener) {
+    public ProductAdapter(Context context, User user, OnTouchListener<ProductWithCarousel> mListener) {
         this.context = context;
+        this.user = user;
         this.mListener = mListener;
     }
 
@@ -111,8 +114,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             editBtn = binding.configProduct;
             binding.getRoot().setOnClickListener(this);
 
-
-
+            if(user.getRol().equals(User.ROL.CUSTOMER)){
+                binding.configProduct.setVisibility(View.GONE);
+            }
 
         }
 

@@ -15,11 +15,17 @@ public class ProductViewModel extends ViewModel {
 
     private LiveData<List<ProductWithCarousel>> productListLiveData;
 
-    public ProductViewModel(@NonNull AppDatabase appDatabase, Category category){
+    public ProductViewModel(@NonNull AppDatabase appDatabase, Category category, String searchQuery){
 
         if(category != null){
             productListLiveData = appDatabase.productDao().findProductsByCategory(category.getName());
-        }else
+
+        }
+        else if(searchQuery != null)
+        {
+            productListLiveData = appDatabase.productDao().findProductsByDescription(searchQuery);
+        }
+        else
         {
             productListLiveData = appDatabase.productDao().findAll();
         }

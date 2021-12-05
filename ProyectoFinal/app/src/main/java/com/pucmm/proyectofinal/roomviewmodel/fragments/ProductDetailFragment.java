@@ -24,6 +24,7 @@ import com.pucmm.proyectofinal.networksync.FirebaseNetwork;
 import com.pucmm.proyectofinal.networksync.NetResponse;
 import com.pucmm.proyectofinal.roomviewmodel.model.Product;
 import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
+import com.pucmm.proyectofinal.roomviewmodel.model.User;
 import com.pucmm.proyectofinal.utils.KProgressHUDUtils;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
@@ -41,6 +42,7 @@ public class ProductDetailFragment extends Fragment {
     private FragmentProductDetailBinding binding;
     private ProductWithCarousel managedProduct;
     private Integer quantity;
+    private User user;
 
     public ProductDetailFragment() {
         // Required empty public constructor
@@ -55,10 +57,11 @@ public class ProductDetailFragment extends Fragment {
      * @param product
      */
     // TODO: Rename and change types and number of parameters
-    public static ProductDetailFragment newInstance(ProductWithCarousel product) {
+    public static ProductDetailFragment newInstance(ProductWithCarousel product, User user) {
         ProductDetailFragment fragment = new ProductDetailFragment();
         Bundle args = new Bundle();
         args.putSerializable("product", product);
+        args.putSerializable("user", user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -68,6 +71,7 @@ public class ProductDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             managedProduct = (ProductWithCarousel) getArguments().getSerializable("product");
+            user = (User) getArguments().getSerializable("user");
         }
     }
 
@@ -79,8 +83,8 @@ public class ProductDetailFragment extends Fragment {
         View view = binding.getRoot();
 
         //Para guardar el producto localmente en nuestro carrito
-        SharedPreferences sharedPreferences =getActivity().getSharedPreferences("cart", Context.MODE_PRIVATE);
-        SharedPreferences quantityPreferences =getActivity().getSharedPreferences("quantities", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences =getActivity().getSharedPreferences("cart_"+user.getUid(), Context.MODE_PRIVATE);
+        SharedPreferences quantityPreferences =getActivity().getSharedPreferences("quantities_"+user.getUid(), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         SharedPreferences.Editor editor2 = quantityPreferences.edit();
 
@@ -143,7 +147,7 @@ public class ProductDetailFragment extends Fragment {
 
             getActivity().getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .replace(R.id.content_frame, ShoppingCartFragment.newInstance(managedProduct))
+                    .replace(R.id.content_frame, ShoppingCartFragment.newInstance(managedProduct, user))
                     .addToBackStack(null)
                     .commit();
         });

@@ -36,6 +36,10 @@ public interface ProductDao {
     LiveData<List<ProductWithCarousel>> findProductsByCategory(String categoryName);
 
     @Transaction
+    @Query("SELECT * FROM products WHERE description LIKE '%' || :query || '%' ORDER BY productId")
+    LiveData<List<ProductWithCarousel>> findProductsByDescription(String query);
+
+    @Transaction
     @Query("SELECT * FROM products ORDER BY productId")
     List<ProductWithCarousel> getProducts();
 

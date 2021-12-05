@@ -1,8 +1,6 @@
 package com.pucmm.proyectofinal.roomviewmodel.fragments;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -24,12 +21,12 @@ import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.networksync.FirebaseNetwork;
 import com.pucmm.proyectofinal.networksync.NetResponse;
 import com.pucmm.proyectofinal.roomviewmodel.activities.CategoryManagerActivity;
-import com.pucmm.proyectofinal.roomviewmodel.activities.ProductManagerActivity;
 import com.pucmm.proyectofinal.roomviewmodel.adapters.CategoryAdapter;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppExecutors;
 import com.pucmm.proyectofinal.roomviewmodel.model.Category;
 import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
+import com.pucmm.proyectofinal.roomviewmodel.model.User;
 import com.pucmm.proyectofinal.roomviewmodel.viewmodel.CategoryViewModel;
 import com.pucmm.proyectofinal.utils.CommonUtil;
 import com.pucmm.proyectofinal.utils.KProgressHUDUtils;
@@ -37,7 +34,6 @@ import com.pucmm.proyectofinal.utils.OnTouchListener;
 import com.pucmm.proyectofinal.utils.OptionsMenuListener;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -53,6 +49,7 @@ public class CategoryListFragment extends Fragment implements OnTouchListener<Ca
     private AppDatabase appDatabase;
     private CategoryAdapter categoryAdapter;
     private RecyclerView categoryListRecyclerView;
+    private User user;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -63,10 +60,11 @@ public class CategoryListFragment extends Fragment implements OnTouchListener<Ca
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static CategoryListFragment newInstance(int columnCount) {
+    public static CategoryListFragment newInstance(int columnCount, User user) {
         CategoryListFragment fragment = new CategoryListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
+        args.putSerializable("user", user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -77,6 +75,7 @@ public class CategoryListFragment extends Fragment implements OnTouchListener<Ca
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            user = (User) getArguments().getSerializable("user");
         }
     }
 
@@ -84,7 +83,7 @@ public class CategoryListFragment extends Fragment implements OnTouchListener<Ca
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_category_list, container, false);
-        categoryAdapter = new CategoryAdapter(getActivity().getApplicationContext(), this);
+        categoryAdapter = new CategoryAdapter(getActivity().getApplicationContext(), user, this);
         FloatingActionButton floatingActionButton = view.findViewById(R.id.floatBtn_addCategory);
 
         categoryListRecyclerView = view.findViewById(R.id.categoryList);
@@ -100,7 +99,7 @@ public class CategoryListFragment extends Fragment implements OnTouchListener<Ca
         }
 
         appDatabase = AppDatabase.getInstance(getActivity().getApplicationContext());
-        categoryAdapter = new CategoryAdapter(getActivity().getApplicationContext(), this);
+        categoryAdapter = new CategoryAdapter(getActivity().getApplicationContext(), user, this);
         categoryListRecyclerView.setAdapter(categoryAdapter);
 
         //Pasando al fragmento de registrar categoria al clickear el boton flotante
@@ -186,7 +185,7 @@ public class CategoryListFragment extends Fragment implements OnTouchListener<Ca
     public void OnClick(Category element) {
         getActivity().getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
-                .replace(R.id.content_frame, ProductListFragment.newInstance(1, element))
+                .replace(R.id.content_frame, ProductListFragment.newInstance(1, element, user, null))
                 .addToBackStack(null)
                 .commit();
     }

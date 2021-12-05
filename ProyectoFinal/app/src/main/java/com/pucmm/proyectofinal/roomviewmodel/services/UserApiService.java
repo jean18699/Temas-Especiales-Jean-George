@@ -1,6 +1,7 @@
 package com.pucmm.proyectofinal.roomviewmodel.services;
 
 import com.pucmm.proyectofinal.roomviewmodel.model.User;
+import com.pucmm.proyectofinal.roomviewmodel.model.UserChangePassword;
 import com.pucmm.proyectofinal.roomviewmodel.model.UserLogin;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public interface UserApiService {
     Call<User> create(@Body User user);
 
     @PUT("users/change")
-    Call<Void> changePassword(@Body User user);
+    Call<User> changePassword(@Body UserChangePassword user);
 
     @POST("users/login")
     Call<User> login(@Body UserLogin user);

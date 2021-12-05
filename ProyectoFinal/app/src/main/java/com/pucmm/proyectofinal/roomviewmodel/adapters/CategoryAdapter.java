@@ -1,7 +1,6 @@
 package com.pucmm.proyectofinal.roomviewmodel.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pucmm.proyectofinal.databinding.ItemCategoryBinding;
-import com.pucmm.proyectofinal.databinding.ItemProductBinding;
-import com.pucmm.proyectofinal.roomviewmodel.activities.CategoryManagerActivity;
 import com.pucmm.proyectofinal.roomviewmodel.model.Category;
-import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
+import com.pucmm.proyectofinal.roomviewmodel.model.User;
 import com.pucmm.proyectofinal.utils.CommonUtil;
 import com.pucmm.proyectofinal.utils.OnTouchListener;
 import com.pucmm.proyectofinal.utils.OptionsMenuListener;
@@ -29,11 +26,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     private ItemCategoryBinding categoriesBinding;
     private final OnTouchListener<Category> mListener;
     private OptionsMenuListener optionsMenuListener;
+    private User user;
 
 
 
-    public CategoryAdapter(Context context, OnTouchListener<Category> mListener) {
+    public CategoryAdapter(Context context, User user, OnTouchListener<Category> mListener) {
         this.context = context;
+        this.user = user;
         this.mListener = mListener;
     }
 
@@ -101,6 +100,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
             editBtn = categoriesBinding.configCategory;
             mListener = listener;
             binding.getRoot().setOnClickListener(this);
+
+            if(user.getRol().equals(User.ROL.CUSTOMER)){
+                binding.configCategory.setVisibility(View.GONE);
+            }
 
         }
 

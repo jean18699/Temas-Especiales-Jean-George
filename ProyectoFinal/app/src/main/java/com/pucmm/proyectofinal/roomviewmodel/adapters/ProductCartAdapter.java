@@ -20,6 +20,7 @@ import com.pucmm.proyectofinal.roomviewmodel.fragments.ShoppingCartFragment;
 import com.pucmm.proyectofinal.roomviewmodel.model.Carousel;
 import com.pucmm.proyectofinal.roomviewmodel.model.Product;
 import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
+import com.pucmm.proyectofinal.roomviewmodel.model.User;
 import com.pucmm.proyectofinal.utils.CommonUtil;
 
 import java.util.List;
@@ -33,15 +34,17 @@ public class ProductCartAdapter extends RecyclerView.Adapter<ProductCartAdapter.
     private SharedPreferences sharedPreferences;
     private SharedPreferences quantityPreferences;
     private SharedPreferences.Editor editor;
+    private User user;
 
 
-    public ProductCartAdapter(Context context, TextView txtSubTotal, TextView txtTotalPrice) {
+    public ProductCartAdapter(Context context, TextView txtSubTotal, TextView txtTotalPrice, User user) {
         this.context = context;
         this.txtSubTotal = txtSubTotal;
         this.txtTotalPrice = txtTotalPrice;
-        sharedPreferences = context.getSharedPreferences("cart", Context.MODE_PRIVATE);
-        quantityPreferences =  context.getSharedPreferences("quantities", Context.MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences("cart_"+user.getUid(), Context.MODE_PRIVATE);
+        quantityPreferences =  context.getSharedPreferences("quantities_"+user.getUid(), Context.MODE_PRIVATE);
         editor = quantityPreferences.edit();
+        this.user = user;
     }
 
     @NonNull
@@ -169,7 +172,7 @@ public class ProductCartAdapter extends RecyclerView.Adapter<ProductCartAdapter.
                 cartList.clear(); //Para solucionar un bug de que la lista se duplicaba al volver a este fragmento desde detalle del producto
                 activity.getSupportFragmentManager().beginTransaction()
                         .setReorderingAllowed(true)
-                        .replace(R.id.content_frame, ProductDetailFragment.newInstance(product))
+                        .replace(R.id.content_frame, ProductDetailFragment.newInstance(product, user))
                         .addToBackStack(null)
                         .commit();
             });

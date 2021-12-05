@@ -20,6 +20,7 @@ import com.pucmm.proyectofinal.roomviewmodel.adapters.ProductCartAdapter;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppExecutors;
 import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
+import com.pucmm.proyectofinal.roomviewmodel.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,22 +42,27 @@ public class ShoppingCartFragment extends Fragment {
     private List<ProductWithCarousel> productList = new ArrayList<>();
     private TextView txtSubTotal;
     private TextView txtTotalPrice;
+    private User user;
 
 
     public ShoppingCartFragment() {
         // Required empty public constructor
     }
 
-    public static ShoppingCartFragment newInstance() {
+    public static ShoppingCartFragment newInstance(User user) {
+        Bundle args = new Bundle();
         ShoppingCartFragment fragment = new ShoppingCartFragment();
+        args.putSerializable("user", user);
+        fragment.setArguments(args);
         return fragment;
     }
 
     // TODO: Rename and change types and number of parameters
-    public static ShoppingCartFragment newInstance(ProductWithCarousel product) {
+    public static ShoppingCartFragment newInstance(ProductWithCarousel product, User user) {
         ShoppingCartFragment fragment = new ShoppingCartFragment();
         Bundle args = new Bundle();
         args.putSerializable("product", product);
+        args.putSerializable("user", user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,7 +71,8 @@ public class ShoppingCartFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         appDatabase = AppDatabase.getInstance(getContext());
-        sharedPreferences = getActivity().getSharedPreferences("cart", Context.MODE_PRIVATE);
+        user = (User) getArguments().getSerializable("user");
+        sharedPreferences = getActivity().getSharedPreferences("cart_"+user.getUid(), Context.MODE_PRIVATE);
         AppExecutors.getInstance().diskIO().execute(() -> { updateCart();});
 
         if (getArguments() != null) {
@@ -116,7 +123,7 @@ public class ShoppingCartFragment extends Fragment {
 
     public void loadCart() {
         //Accediendo a los datos guardados localmente
-
+        productList.clear();
         Gson gson = new Gson();
         String json;
         for (Map.Entry<String, ?> entry : sharedPreferences.getAll().entrySet()) {
@@ -124,7 +131,7 @@ public class ShoppingCartFragment extends Fragment {
             ProductWithCarousel product = gson.fromJson(json,ProductWithCarousel.class);
             productList.add(product);
         }
-        cartAdapter = new ProductCartAdapter(getActivity(), txtSubTotal, txtTotalPrice);
+        cartAdapter = new ProductCartAdapter(getActivity(), txtSubTotal, txtTotalPrice, user);
         cartAdapter.setProducts(productList);
     }
 

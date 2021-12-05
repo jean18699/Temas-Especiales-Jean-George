@@ -26,6 +26,7 @@ import com.pucmm.proyectofinal.databinding.FragmentUserManagerBinding;
 import com.pucmm.proyectofinal.networksync.FirebaseNetwork;
 import com.pucmm.proyectofinal.networksync.NetResponse;
 import com.pucmm.proyectofinal.roomviewmodel.model.User;
+import com.pucmm.proyectofinal.roomviewmodel.model.UserChangePassword;
 import com.pucmm.proyectofinal.roomviewmodel.services.UserApiService;
 import com.pucmm.proyectofinal.utils.CommonUtil;
 import com.pucmm.proyectofinal.utils.KProgressHUDUtils;
@@ -60,6 +61,7 @@ public class UserManagerFragment extends Fragment {
     private Uri uri;
     private boolean editing;
 
+
     public UserManagerFragment() {
         // Required empty public constructor
     }
@@ -88,8 +90,13 @@ public class UserManagerFragment extends Fragment {
         binding =  FragmentUserManagerBinding.inflate(inflater,container,false);
         View view = binding.getRoot();
 
+        binding.lblUserTitle.setText("Create Account");
+        binding.userImage.setVisibility(View.GONE);
+
         if(user != null){
 
+            binding.userImage.setVisibility(View.VISIBLE);
+            System.out.println("MIRA FECHA:" + user.getBirthday());
           /*  String dateSubstring = user.getBirthday().substring(0,10);
             String [] splitDate = dateSubstring.split("-");
             String day = splitDate[2], month = splitDate[1], year = splitDate[0];*/
@@ -101,12 +108,11 @@ public class UserManagerFragment extends Fragment {
             binding.editLastName.setText(user.getLastName());
             binding.editPhoneNumber.setText(user.getContact());
             binding.lblUserTitle.setText("Manage Account");
-          //  binding.editBirthDay.updateDate(Integer.valueOf(year),Integer.valueOf(month),Integer.valueOf(day));
+            //binding.editBirthDay.updateDate(Integer.valueOf(year),Integer.valueOf(month),Integer.valueOf(day));
             CommonUtil.downloadImage(user.getPhoto(), binding.userImage);
             editing = true;
 
         }
-
 
         retrofit = new Retrofit.Builder()
                 .baseUrl("http://137.184.110.89:7002/")
@@ -127,7 +133,6 @@ public class UserManagerFragment extends Fragment {
                 Snackbar.make(getView(), "Please complete all the fields", Snackbar.LENGTH_LONG).show();
             }else
             {
-
                 registerEditUser();
             }
 
@@ -157,7 +162,6 @@ public class UserManagerFragment extends Fragment {
                             uri = result.getData().getData();
                             InputStream inputStream = getActivity().getContentResolver().openInputStream(uri);
                             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-
                             binding.userImage.setImageBitmap(bitmap);
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
@@ -183,81 +187,43 @@ public class UserManagerFragment extends Fragment {
 
         final KProgressHUD progressDialog = new KProgressHUDUtils(getContext()).showConnecting();
 
+        if(editing){
+
+            final Call <User> userUpdateCall = retrofit.create(UserApiService.class).update(user);
+            final Call <User> changePasswordCall = retrofit.create(UserApiService.class).changePassword(new UserChangePassword(user.getEmail(),user.getPassword()));
+            call(userUpdateCall, res1 -> progressDialog.dismiss());
+            call(changePasswordCall, res1 -> progressDialog.dismiss());
+            progressDialog.dismiss();
+
+        }else
+        {
+            final Call <User> userCreateCall = retrofit.create(UserApiService.class).create(user);
+            call(userCreateCall, res1 -> progressDialog.dismiss());
+            progressDialog.dismiss();
+         
+        }
+
         if(uri != null){
             FirebaseNetwork.obtain().upload(uri, String.format("profile/%s.jpg", user.getUid()),
                     new NetResponse<String>() {
                         @Override
                         public void onResponse(String response) {
                             FancyToast.makeText(getContext(), "Successfully upload image", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
-
                             user.setPhoto(response);
-                       /* final Call<User> userUpdateCall = retrofit.create(UserApiService.class).update(user);
-                        userUpdateCall.enqueue(new Callback<User>() {
-                            @Override
-                            public void onResponse(Call<User> call, Response<User> response) {
-
-                            }
-
-                            @Override
-                            public void onFailure(Call<User> call, Throwable t) {
-                            }
-                        });
-                        call(userUpdateCall, res1 -> progressDialog.dismiss());*/
+                            final Call<User> userUpdateCall = retrofit.create(UserApiService.class).update(user);
                             progressDialog.dismiss();
+                            call(userUpdateCall, res1 -> progressDialog.dismiss());
                         }
 
                         @Override
                         public void onFailure(Throwable t) {
-                            progressDialog.dismiss();
-                            FancyToast.makeText(getContext(), t.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+
+                            FancyToast.makeText(getActivity().getApplicationContext(), t.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
                         }
                     });
         }
 
 
-
-        if(editing){
-            Call <User> userCall = retrofit.create(UserApiService.class).update(user);
-            userCall.enqueue(new Callback<User>() {
-                @Override
-                public void onResponse(Call<User> call, Response<User> response) {
-
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .setReorderingAllowed(true)
-                            .replace(R.id.content_frame, UserManagerFragment.newInstance(user))
-                            .commit();
-                    progressDialog.dismiss();
-                }
-
-                @Override
-                public void onFailure(Call<User> call, Throwable t) {
-                    System.err.println(t.getLocalizedMessage());
-                    Snackbar.make(getView(), "This email is already registered", Snackbar.LENGTH_LONG).show();
-                    progressDialog.dismiss();
-                }
-            });
-        }else
-        {
-            Call <User> userCall = retrofit.create(UserApiService.class).create(user);
-            userCall.enqueue(new Callback<User>() {
-                @Override
-                public void onResponse(Call<User> call, Response<User> response) {
-                    System.out.println("MIRAME RESPONSE: "+ response.raw());
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .setReorderingAllowed(true)
-                            .replace(R.id.main, LoginFragment.newInstance())
-                            .commit();
-                    progressDialog.dismiss();
-                }
-
-                @Override
-                public void onFailure(Call<User> call, Throwable t) {
-                    System.err.println(t.getLocalizedMessage());
-                    Snackbar.make(getView(), "This email is already registered", Snackbar.LENGTH_LONG).show();
-                    progressDialog.dismiss();
-                }
-            });
-        }
 
     }
 
@@ -268,6 +234,10 @@ public class UserManagerFragment extends Fragment {
                 switch (response.code()) {
                     case 201:
                         FancyToast.makeText(getContext(), "Successfully registered", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .setReorderingAllowed(true)
+                                .replace(R.id.main, LoginFragment.newInstance())
+                                .commit();
                         error.accept(false);
                         break;
                     case 204:
