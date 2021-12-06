@@ -43,6 +43,7 @@ public class ShoppingCartFragment extends Fragment {
     private TextView txtSubTotal;
     private TextView txtTotalPrice;
     private User user;
+    private TextView txtCarQuantity;
 
 
     public ShoppingCartFragment() {
@@ -87,7 +88,7 @@ public class ShoppingCartFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_shopping_cart, container, false);
         txtSubTotal = view.findViewById(R.id.txtSubTotal);
         txtTotalPrice = view.findViewById(R.id.txtTotalPrice);
-
+        txtCarQuantity = getActivity().findViewById(R.id.cart_badge);
         //sharedPreferences.edit().clear().commit(); //limpiar shared preferences
         cartListRecyclerView = view.findViewById(R.id.cartList);
 
@@ -123,6 +124,8 @@ public class ShoppingCartFragment extends Fragment {
 
     public void loadCart() {
         //Accediendo a los datos guardados localmente
+
+
         productList.clear();
         Gson gson = new Gson();
         String json;
@@ -131,8 +134,9 @@ public class ShoppingCartFragment extends Fragment {
             ProductWithCarousel product = gson.fromJson(json,ProductWithCarousel.class);
             productList.add(product);
         }
-        cartAdapter = new ProductCartAdapter(getActivity(), txtSubTotal, txtTotalPrice, user);
+        cartAdapter = new ProductCartAdapter(getActivity(), txtSubTotal, txtTotalPrice,txtCarQuantity, user);
         cartAdapter.setProducts(productList);
+        txtCarQuantity.setText(String.valueOf(productList.size()));
     }
 
 }

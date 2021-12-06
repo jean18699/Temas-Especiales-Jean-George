@@ -7,12 +7,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -20,12 +26,15 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
 import com.pucmm.proyectofinal.R;
+import com.pucmm.proyectofinal.databinding.MainActivityBinding;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.CategoryListFragment;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.HomeFragment;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.ProductListFragment;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.ShoppingCartFragment;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.UserManagerFragment;
+import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
 import com.pucmm.proyectofinal.roomviewmodel.model.User;
 
 
@@ -52,11 +61,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         user = (User) getIntent().getSerializableExtra("user");
         FirebaseUser user = mAuth.getCurrentUser();
         signInAnonymously();
-        if (user != null) {
-            // do your stuff
+        /*if (user != null) {
+
         } else {
             signInAnonymously();
-        }
+        }*/
 
 
         //REINICIAR LA BASE DE DATOS
@@ -80,21 +89,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-       if(item.getItemId() == R.id.cart){
-           getSupportFragmentManager().beginTransaction()
-                   .setReorderingAllowed(true)
-                   .replace(R.id.content_frame, ShoppingCartFragment.newInstance(user))
-                   .addToBackStack(null)
-                   .commit();
+        if(item.getItemId() == R.id.cart_badge){
+            getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .replace(R.id.content_frame, ShoppingCartFragment.newInstance(user))
+                    .addToBackStack(null)
+                    .commit();
 
-           if(!searchView.isIconified()){
-               searchView.setIconified(true);
-           }
+            if(!searchView.isIconified()){
+                searchView.setIconified(true);
+            }
+            return true;
+        }
 
-       }
 
-       if(item.getItemId() == R.id.action_search){
-           searchView.setQueryHint("Search a product");
+        if(item.getItemId() == R.id.action_search){
+           searchView.setQueryHint("Search...");
        }
 
         return super.onOptionsItemSelected(item);
@@ -104,11 +114,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void signInAnonymously() {
-        mAuth.signInAnonymously().addOnSuccessListener(this, new  OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                // do your stuff
-            }
+        mAuth.signInAnonymously().addOnSuccessListener(this, authResult -> {
+
         }).addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
@@ -125,10 +132,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         itemSearch = menu.findItem(R.id.action_search);
         itemCart = menu.findItem(R.id.cart);
-
         searchView = (SearchView) itemSearch.getActionView();
 
-       /* searchView.setQueryHint("Search a product");*/
+        itemCart.setActionView(R.layout.menu_shopping_cart_symbol);
+
+        FrameLayout cartBadgeLayout =  (FrameLayout) menu.findItem(R.id.cart).getActionView();
+        TextView cartQuantity = (TextView) cartBadgeLayout.findViewById(R.id.cart_badge);
+        SharedPreferences sharedPreferences = getSharedPreferences("cart_"+user.getUid(), Context.MODE_PRIVATE);
+        cartQuantity.setText(String.valueOf(sharedPreferences.getAll().size()));
+
+        cartQuantity.setOnClickListener(v->{
+            getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .replace(R.id.content_frame, ShoppingCartFragment.newInstance(user))
+                    .addToBackStack(null)
+                    .commit();
+
+            if(!searchView.isIconified()){
+                searchView.setIconified(true);
+            }
+        });
+
+
+        /**Buscador de productos**/
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

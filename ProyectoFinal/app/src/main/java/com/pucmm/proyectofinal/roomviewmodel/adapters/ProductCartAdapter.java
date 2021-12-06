@@ -35,9 +35,9 @@ public class ProductCartAdapter extends RecyclerView.Adapter<ProductCartAdapter.
     private SharedPreferences quantityPreferences;
     private SharedPreferences.Editor editor;
     private User user;
+    private TextView txtCarQuantity;
 
-
-    public ProductCartAdapter(Context context, TextView txtSubTotal, TextView txtTotalPrice, User user) {
+    public ProductCartAdapter(Context context, TextView txtSubTotal, TextView txtTotalPrice, TextView txtCarQuantity, User user) {
         this.context = context;
         this.txtSubTotal = txtSubTotal;
         this.txtTotalPrice = txtTotalPrice;
@@ -45,6 +45,7 @@ public class ProductCartAdapter extends RecyclerView.Adapter<ProductCartAdapter.
         quantityPreferences =  context.getSharedPreferences("quantities_"+user.getUid(), Context.MODE_PRIVATE);
         editor = quantityPreferences.edit();
         this.user = user;
+        this.txtCarQuantity = txtCarQuantity;
     }
 
     @NonNull
@@ -139,6 +140,7 @@ public class ProductCartAdapter extends RecyclerView.Adapter<ProductCartAdapter.
                 }
                 txtSubTotal.setText("Sub total ("+ cartList.size() +" items): " );
                 txtTotalPrice.setText(String.valueOf(total));
+                txtCarQuantity.setText(String.valueOf(cartList.size()));
             });
 
             btnRemoveQuantity.setOnClickListener(v->{
