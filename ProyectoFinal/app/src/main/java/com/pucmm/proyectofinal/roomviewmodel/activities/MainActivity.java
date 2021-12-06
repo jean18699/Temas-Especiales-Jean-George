@@ -7,47 +7,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.pucmm.proyectofinal.R;
-import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
-import com.pucmm.proyectofinal.roomviewmodel.database.AppExecutors;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.CategoryListFragment;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.HomeFragment;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.ProductListFragment;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.ShoppingCartFragment;
-import com.pucmm.proyectofinal.roomviewmodel.fragments.UserEditFragment;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.UserManagerFragment;
-import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
 import com.pucmm.proyectofinal.roomviewmodel.model.User;
-import com.pucmm.proyectofinal.roomviewmodel.model.UserChangePassword;
-import com.pucmm.proyectofinal.roomviewmodel.services.UserApiService;
-
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {

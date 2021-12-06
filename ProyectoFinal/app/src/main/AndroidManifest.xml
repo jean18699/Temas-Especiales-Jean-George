@@ -17,6 +17,15 @@
         android:supportsRtl="true"
         android:largeHeap="true"
         android:theme="@style/Theme.ProyectoFinal">
+        <activity android:name=".roomviewmodel.activities.SplashActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".roomviewmodel.activities.CategoryManagerActivity"
             android:exported="true" />
@@ -29,11 +38,7 @@
             android:exported="true">
         </activity>
         <activity android:name=".roomviewmodel.activities.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
