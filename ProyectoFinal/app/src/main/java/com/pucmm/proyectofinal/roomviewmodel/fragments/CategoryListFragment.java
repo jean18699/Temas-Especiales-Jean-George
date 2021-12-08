@@ -1,6 +1,7 @@
 package com.pucmm.proyectofinal.roomviewmodel.fragments;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +46,7 @@ public class CategoryListFragment extends Fragment implements OnTouchListener<Ca
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
-    private int mColumnCount = 2;
+    private int mColumnCount;
     private AppDatabase appDatabase;
     private CategoryAdapter categoryAdapter;
     private RecyclerView categoryListRecyclerView;
@@ -189,4 +190,19 @@ public class CategoryListFragment extends Fragment implements OnTouchListener<Ca
                 .addToBackStack(null)
                 .commit();
     }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            categoryListRecyclerView.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 2));
+
+        }else
+        {
+            categoryListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+        }
+    }
+
+
 }

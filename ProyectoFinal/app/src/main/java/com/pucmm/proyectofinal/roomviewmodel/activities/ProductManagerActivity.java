@@ -23,12 +23,14 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.google.android.material.navigation.NavigationBarView;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.pucmm.proyectofinal.databinding.ActivityProductManagerBinding;
 import com.pucmm.proyectofinal.networksync.CarouselUpload;
 import com.pucmm.proyectofinal.networksync.NetResponse;
@@ -41,11 +43,13 @@ import com.pucmm.proyectofinal.networksync.FirebaseNetwork;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppExecutors;
 import com.pucmm.proyectofinal.roomviewmodel.model.Category;
+import com.pucmm.proyectofinal.utils.KProgressHUDUtils;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ProductManagerActivity extends AppCompatActivity {
@@ -57,8 +61,6 @@ public class ProductManagerActivity extends AppCompatActivity {
     private ArrayList<Drawable> drawables;
     private List<Uri> files;
     boolean editImage = false;
-
-    final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -82,7 +84,7 @@ public class ProductManagerActivity extends AppCompatActivity {
             binding.btnRegisterProduct.setText("Update");
 
             if (managedProduct.carousels != null && !managedProduct.carousels.isEmpty()) {
-              //  final KProgressHUD progressDialog = new KProgressHUDUtils(this).showDownload();
+                final KProgressHUD progressDialog = new KProgressHUDUtils(this).showDownload();
                 FirebaseNetwork.obtain().downloads(managedProduct.carousels, new NetResponse<List<Bitmap>>() {
                     @Override
                     public void onResponse(List<Bitmap> response) throws FileNotFoundException {
@@ -90,17 +92,25 @@ public class ProductManagerActivity extends AppCompatActivity {
                             drawables.add(new BitmapDrawable(getResources(), bitmap));
                         }
                         binding.image.setImageDrawable(drawables.get(0));
-                  //      progressDialog.dismiss();
+                       progressDialog.dismiss();
                     }
 
                     @Override
                     public void onFailure(Throwable t) {
                         FancyToast.makeText(getApplicationContext(), t.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
-                    //    progressDialog.dismiss();
+                        progressDialog.dismiss();
                     }
                 });
             }
+
+            for(int i = 0; i < drawables.size(); i++){
+                Uri uri = Uri.parse(drawables.get(i).toString());
+                files.add(uri);
+            }
+
         }
+
+
 
         binding.spnCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -119,31 +129,51 @@ public class ProductManagerActivity extends AppCompatActivity {
         binding.btnUploadImage.setOnClickListener(v -> requestImagePermissions());
 
         binding.btnPreviousImage.setOnClickListener(v -> {
+
             if (position > 0) {
                 binding.image.setImageDrawable(drawables.get(--position));
+
+                System.out.println("Soy el drawable " + drawables.get(position).getCurrent());
+                System.out.println("MIRAME POSITION: " + position + ", MIRAME DRAWABLES SIZE: " + drawables.size() + ", MIRAME FILES SIZE: "+ files.size() );
             } else {
                 FancyToast.makeText(getApplicationContext(), "First Image Already Shown", FancyToast.LENGTH_SHORT, FancyToast.WARNING, false).show();
             }
         });
 
         binding.btnNextImage.setOnClickListener(v -> {
+
             if (position < drawables.size() - 1) {
                 binding.image.setImageDrawable(drawables.get(++position));
+                System.out.println("Soy el drawable " + drawables.get(position).toString());
+                System.out.println("MIRAME POSITION: " + position + ", MIRAME DRAWABLES SIZE: " + drawables.size() + ", MIRAME FILES SIZE: "+ files.size() );
             } else {
                 FancyToast.makeText(getApplicationContext(), "Last Image Already Shown", FancyToast.LENGTH_SHORT, FancyToast.WARNING, false).show();
             }
         });
 
+
         binding.btnDeleteImage.setOnClickListener(v -> {
+            //System.out.println("MIRAME POSITION: " + position + ", MIRAME DRAWABLES SIZE: " + drawables.size() + ", MIRAME FILES SIZE: "+ files.size() );
+
             if (drawables.size() > 0) {
-                if (position >= files.size()) {
+                if (position > files.size()) {
                     position--;
                 }
+
                 binding.image.setImageDrawable(drawables.get(position));
                 drawables.remove(position);
-            } else {
+
+                if(drawables.size() == 0 ){
+                    binding.image.setImageDrawable(null);
+                }
+
+            }
+            else {
                 binding.image.setImageDrawable(null);
             }
+
+            editImage = true;
+
         });
 
         binding.btnRegisterProduct.setOnClickListener(v -> {
@@ -191,6 +221,12 @@ public class ProductManagerActivity extends AppCompatActivity {
         pickAndChoosePictureResultLauncher.launch(intent);
     }
 
+    public void updateImages(){
+        files.clear();
+
+        Collections.reverse(files);
+    }
+
     private ActivityResultLauncher<Intent> pickAndChoosePictureResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
                 @Override
@@ -198,6 +234,8 @@ public class ProductManagerActivity extends AppCompatActivity {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         try {
                             editImage = true;
+                            //drawables.clear();
+                            //files.clear();
                             final ClipData clipData = result.getData().getClipData();
                             if (clipData != null) {
                                 for (int i = 0; i < clipData.getItemCount(); i++) {
@@ -241,49 +279,56 @@ public class ProductManagerActivity extends AppCompatActivity {
 
         AppExecutors.getInstance().diskIO().execute(() -> {
 
-
-
             if (database.productDao().findProductById(managedProduct.product.getProductId()) != null) {
                 database.productDao().update(managedProduct.product);
             } else {
                 database.productDao().insert(managedProduct.product);
             }
 
-            List<CarouselUpload> uploads = new ArrayList<>();
-            final List<Carousel> carousels = new ArrayList<>();
 
             if(editImage){
-                database.productDao().deleteCarousels(managedProduct.product.getProductId());
-                for (int index = 0; index < files.size(); index++) {
-                    Carousel carousel = new Carousel(managedProduct.product.getProductId(), index, String.format("products/%s/%s.jpg", managedProduct.product.getProductId(), index));
-                    carousels.add(carousel);
-                    uploads.add(new CarouselUpload(files.get(index), carousel));
-                }
-
-                database.productDao().insertCarousels(carousels);
-
-                if (drawables != null && !drawables.isEmpty() && managedProduct.product.getProductId() != null) {
-                    // final KProgressHUD progress = new KProgressHUDUtils(this).showDownload();
-                    FirebaseNetwork.obtain().uploads(uploads, new NetResponse<Void>() {
-                        @Override
-                        public void onResponse(Void response) {
-                            FancyToast.makeText(getApplicationContext(), "Successfully upload images", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
-                            //      progress.dismiss();
-                        }
-
-                        @Override
-                        public void onFailure(Throwable t) {
-                            //  progress.dismiss();
-                            FancyToast.makeText(getApplicationContext(), t.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
-                        }
-                    });
-                }
+               updateCarousels();
             }
 
             finish();
         });
     }
 
+    public void updateCarousels(){
+
+        List<CarouselUpload> uploads = new ArrayList<>();
+        final List<Carousel> carousels = new ArrayList<>();
+
+        database.productDao().deleteCarousels(managedProduct.product.getProductId());
+        for (int index = 0; index < drawables.size(); index++) {
+            Carousel carousel = new Carousel(managedProduct.product.getProductId(), index, String.format("products/%s/%s.jpg", managedProduct.product.getProductId(), index));
+            carousels.add(carousel);
+            if(files.size() > 0){
+                uploads.add(new CarouselUpload(files.get(index), carousel));
+            }
+
+        }
+
+        database.productDao().insertCarousels(carousels);
+
+        if (drawables != null && !drawables.isEmpty() && managedProduct.product.getProductId() != null) {
+            // final KProgressHUD progress = new KProgressHUDUtils(this).showDownload();
+            FirebaseNetwork.obtain().uploads(uploads, new NetResponse<Void>() {
+                @Override
+                public void onResponse(Void response) {
+                    FancyToast.makeText(getApplicationContext(), "Successfully upload images", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                    //      progress.dismiss();
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    //  progress.dismiss();
+                    FancyToast.makeText(getApplicationContext(), t.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                }
+            });
+        }
+
+    }
 
     public void getAvailableCategories() {
 

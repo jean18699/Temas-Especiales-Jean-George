@@ -123,7 +123,7 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
                 Intent intent = new Intent(getContext(), ProductManagerActivity.class);
                 intent.putExtra("product",element);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getContext().startActivity(intent);
+                startActivity(intent);
 
                 }, () -> {
                 CommonUtil.alertDialog(getContext(), "Confirm dialog delete!",
@@ -184,13 +184,12 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
             }
         }).get(ProductViewModel.class);
 
-        productViewModel.getProductListLiveData().observe(getActivity(), new Observer<List<ProductWithCarousel>>() {
-
-            @Override
+        productViewModel.getProductListLiveData().observe(getActivity(), products -> productAdapter.setProducts(products));
+            /*@Override
             public void onChanged(List<ProductWithCarousel> products) {
                 productAdapter.setProducts(products);
-            }
-        });
+
+        });*/
 
     }
 

@@ -65,7 +65,7 @@ public class CategoryManagerActivity extends AppCompatActivity {
                 oldCategoryName = managedCategory.getName();
                 binding.txtTitleCategory.setText("Edit Category");
                 binding.editCategoryName.setText(managedCategory.getName());
-                binding.txtTitleCategory.setText("Edit Category");
+                binding.btnRegisterCategory.setText("Edit");
                 CommonUtil.downloadImage(managedCategory.getImage(), binding.categoryImage);
 
             }
