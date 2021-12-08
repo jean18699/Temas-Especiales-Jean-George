@@ -22,11 +22,14 @@ import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.databinding.FragmentProductDetailBinding;
 import com.pucmm.proyectofinal.networksync.FirebaseNetwork;
 import com.pucmm.proyectofinal.networksync.NetResponse;
+import com.pucmm.proyectofinal.roomviewmodel.model.Notification;
 import com.pucmm.proyectofinal.roomviewmodel.model.Product;
 import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
 import com.pucmm.proyectofinal.roomviewmodel.model.User;
 import com.pucmm.proyectofinal.utils.KProgressHUDUtils;
 import com.shashank.sony.fancytoastlib.FancyToast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +46,8 @@ public class ProductDetailFragment extends Fragment {
     private ProductWithCarousel managedProduct;
     private Integer quantity;
     private User user;
+    private TextView txtNotifQuantity;
+
 
     public ProductDetailFragment() {
         // Required empty public constructor
@@ -85,11 +90,13 @@ public class ProductDetailFragment extends Fragment {
         //Para guardar el producto localmente en nuestro carrito
         SharedPreferences sharedPreferences =getActivity().getSharedPreferences("cart_"+user.getUid(), Context.MODE_PRIVATE);
         SharedPreferences quantityPreferences =getActivity().getSharedPreferences("quantities_"+user.getUid(), Context.MODE_PRIVATE);
+        SharedPreferences notificationPreferences = getActivity().getSharedPreferences("notifications_" + user.getUid(), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         SharedPreferences.Editor editor2 = quantityPreferences.edit();
+        SharedPreferences.Editor editorNotif = notificationPreferences.edit();
 
         quantity = Integer.valueOf(quantityPreferences.getString(managedProduct.product.getProductId()+"_quantity","1"));
-
+        txtNotifQuantity = getActivity().findViewById(R.id.notification_badge);
 
         if (managedProduct.carousels != null && !managedProduct.carousels.isEmpty()) {
             final KProgressHUD progressDialog = new KProgressHUDUtils(getActivity()).showDownload();
@@ -144,6 +151,16 @@ public class ProductDetailFragment extends Fragment {
 
             editor2.putString(managedProduct.product.getProductId()+"_quantity", binding.txtQuantity.getText().toString());
             editor2.commit();
+
+
+
+            Notification notification = new Notification("Se han agregado productos al carrito");
+            Gson notifGson = new Gson();
+            String jsonNotif = notifGson.toJson(notification);
+            editorNotif.putString(String.valueOf(notificationPreferences.getAll().size()+1), jsonNotif);
+            editorNotif.commit();
+            txtNotifQuantity.setText(String.valueOf(notificationPreferences.getAll().size()));
+
 
             getActivity().getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)

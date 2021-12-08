@@ -14,6 +14,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.ActivityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -22,9 +23,11 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import com.kaopiz.kprogresshud.KProgressHUD;
+import com.mikhaellopez.circularimageview.CircularImageView;
 import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.databinding.FragmentUserManagerBinding;
 import com.pucmm.proyectofinal.networksync.FirebaseNetwork;
@@ -39,11 +42,13 @@ import com.shashank.sony.fancytoastlib.FancyToast;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.function.Consumer;
 
 import retrofit2.Call;
@@ -100,11 +105,33 @@ public class UserManagerFragment extends Fragment {
         if(user != null){
 
             binding.userImage.setVisibility(View.VISIBLE);
-            System.out.println("MIRA FECHA:" + user.getBirthday());
-          /*  String dateSubstring = user.getBirthday().substring(0,10);
+
+            //Formateando la fecha que llega desde el API
+            TimeZone tz = TimeZone.getTimeZone("GMT");
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+            df.setTimeZone(tz);
+
+
+            String dateSubstring;
+
+            if(user.getBirthday().contains("T")){
+                dateSubstring = user.getBirthday().substring(0,10);
+            }else
+            {
+                Timestamp ts = new Timestamp(Long.parseLong(user.getBirthday()));
+                Date date=new Date(ts.getTime());
+                String formatedDate = df.format(date);
+                dateSubstring = formatedDate.substring(0,10);
+            }
+
+            System.out.println("MIRA FECHA:" + dateSubstring);
+
             String [] splitDate = dateSubstring.split("-");
-            String day = splitDate[2], month = splitDate[1], year = splitDate[0];*/
+            String day = splitDate[2], month = splitDate[1], year = splitDate[0];
+
             binding.lblUserTitle.setText("Manage Account");
+            binding.btnRegisterUser.setText("Update");
+
             binding.editPassword.setText(user.getPassword());
             binding.editEmail.setText(user.getEmail());
             binding.chkSeller.setChecked(user.getRol().equals(User.ROL.SELLER)? true : false);
@@ -112,7 +139,7 @@ public class UserManagerFragment extends Fragment {
             binding.editLastName.setText(user.getLastName());
             binding.editPhoneNumber.setText(user.getContact());
             binding.lblUserTitle.setText("Manage Account");
-            //binding.editBirthDay.updateDate(Integer.valueOf(year),Integer.valueOf(month),Integer.valueOf(day));
+            binding.editBirthDay.updateDate(Integer.valueOf(year),Integer.valueOf(month),Integer.valueOf(day));
             CommonUtil.downloadImage(user.getPhoto(), binding.userImage);
             editing = true;
 
@@ -124,7 +151,8 @@ public class UserManagerFragment extends Fragment {
                 .build();
 
         binding.userImage.setOnClickListener(v->{
-            requestImagePermissions();
+            uploadImage();
+            //requestImagePermissions();
         });
 
         binding.btnRegisterUser.setOnClickListener(v -> {
@@ -249,6 +277,7 @@ public class UserManagerFragment extends Fragment {
                         }
                     });
         }
+
     }
 
     private void call(Call<User> call, Consumer<Boolean> error) {
@@ -265,6 +294,26 @@ public class UserManagerFragment extends Fragment {
                         error.accept(false);
                         break;
                     case 204:
+
+                        //Actualizando la imagen de perfil en el sidebar
+                        NavigationView navView = getActivity().findViewById(R.id.nav_view);
+                        View headerLayout = navView.getHeaderView(0);
+                        CircularImageView profilePicture = headerLayout.findViewById(R.id.profilePicture);
+
+                        if (user.getPhoto() != null && !user.getPhoto().isEmpty()) {
+                            FirebaseNetwork.obtain().download(user.getPhoto(), new NetResponse<Bitmap>() {
+                                @Override
+                                public void onResponse(Bitmap response) {
+
+                                    profilePicture.setImageBitmap(response);
+                                }
+
+                                @Override
+                                public void onFailure(Throwable t) {
+
+                                }
+                            });
+                        }
                         FancyToast.makeText(getContext(), "Successfully updated", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
                         error.accept(false);
                         break;
@@ -293,7 +342,7 @@ public class UserManagerFragment extends Fragment {
         final int year = datePicker.getYear();
 
         final Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
+        calendar.set(year, month-1, day);
 
         final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 

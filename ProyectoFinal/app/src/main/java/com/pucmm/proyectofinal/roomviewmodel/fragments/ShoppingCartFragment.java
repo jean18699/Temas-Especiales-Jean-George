@@ -44,6 +44,7 @@ public class ShoppingCartFragment extends Fragment {
     private TextView txtTotalPrice;
     private User user;
     private TextView txtCarQuantity;
+    private TextView txtNotificationQuantity;
 
 
     public ShoppingCartFragment() {

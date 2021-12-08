@@ -14,13 +14,13 @@
         android:icon="@drawable/ic_baseline_shopping_cart_24"
         android:actionLayout="@layout/menu_shopping_cart_symbol"
         app:showAsAction="always"
-        android:title="Search"/>
+        android:title="Shopping Cart"/>
 
     <item
         android:id="@+id/notification"
         android:icon="@drawable/ic_baseline_notifications_24"
         app:showAsAction="always"
         android:actionLayout="@layout/menu_notification_symbol"
-        android:title="Search"/>
+        android:title="Notifications"/>
 
 </menu>

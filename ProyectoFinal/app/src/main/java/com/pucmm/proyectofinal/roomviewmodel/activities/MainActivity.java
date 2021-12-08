@@ -13,9 +13,12 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,10 +30,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
+import com.mikhaellopez.circularimageview.CircularImageView;
 import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.databinding.MainActivityBinding;
+import com.pucmm.proyectofinal.networksync.FirebaseNetwork;
+import com.pucmm.proyectofinal.networksync.NetResponse;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.CategoryListFragment;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.HomeFragment;
+import com.pucmm.proyectofinal.roomviewmodel.fragments.NotificationFragment;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.ProductListFragment;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.ShoppingCartFragment;
 import com.pucmm.proyectofinal.roomviewmodel.fragments.UserManagerFragment;
@@ -50,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SearchView searchView;
     private MenuItem itemSearch;
     private MenuItem itemCart;
+    private MenuItem itemNotification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +67,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mAuth = FirebaseAuth.getInstance();
         user = (User) getIntent().getSerializableExtra("user");
-        FirebaseUser user = mAuth.getCurrentUser();
-        signInAnonymously();
-        /*if (user != null) {
 
-        } else {
-            signInAnonymously();
-        }*/
+        signInAnonymously();
 
 
         //REINICIAR LA BASE DE DATOS
@@ -84,6 +87,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView.setNavigationItemSelectedListener(this);
 
+        View headerLayout = navigationView.getHeaderView(0);
+        CircularImageView profilePicture = headerLayout.findViewById(R.id.profilePicture);
+        if (user.getPhoto() != null && !user.getPhoto().isEmpty()) {
+            FirebaseNetwork.obtain().download(user.getPhoto(), new NetResponse<Bitmap>() {
+                @Override
+                public void onResponse(Bitmap response) {
+
+                    profilePicture.setImageBitmap(response);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+
+                }
+            });
+        }
     }
 
     @Override
@@ -132,19 +151,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         itemSearch = menu.findItem(R.id.action_search);
         itemCart = menu.findItem(R.id.cart);
+        itemNotification = menu.findItem(R.id.notification);
+
         searchView = (SearchView) itemSearch.getActionView();
 
         itemCart.setActionView(R.layout.menu_shopping_cart_symbol);
+        itemNotification.setActionView(R.layout.menu_notification_symbol);
 
+        /**Colocando la cantidad en el carrito al simbolo del carrito**/
         FrameLayout cartBadgeLayout =  (FrameLayout) menu.findItem(R.id.cart).getActionView();
         TextView cartQuantity = (TextView) cartBadgeLayout.findViewById(R.id.cart_badge);
         SharedPreferences sharedPreferences = getSharedPreferences("cart_"+user.getUid(), Context.MODE_PRIVATE);
         cartQuantity.setText(String.valueOf(sharedPreferences.getAll().size()));
 
+        /**Colocando la cantidad de notificaciones al simbolo de notificaciones**/
+        FrameLayout notificationBadgeLayout =  (FrameLayout) menu.findItem(R.id.notification).getActionView();
+        TextView notificationQuantity = (TextView) notificationBadgeLayout.findViewById(R.id.notification_badge);
+        SharedPreferences notificationPreferences = getSharedPreferences("notifications_" + user.getUid(), Context.MODE_PRIVATE);
+        notificationQuantity.setText(String.valueOf(notificationPreferences.getAll().size()));
+
+
         cartQuantity.setOnClickListener(v->{
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
                     .replace(R.id.content_frame, ShoppingCartFragment.newInstance(user))
+                    .addToBackStack(null)
+                    .commit();
+
+            if(!searchView.isIconified()){
+                searchView.setIconified(true);
+            }
+        });
+
+        notificationQuantity.setOnClickListener(v->{
+            getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .replace(R.id.content_frame, NotificationFragment.newInstance(user))
                     .addToBackStack(null)
                     .commit();
 
@@ -186,6 +228,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             super.onBackPressed();
         }
+
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+
     }
 
     //Eventos al presionar un elemento del menu. Aqui alternaremos de fragmentos

@@ -54,6 +54,7 @@
             android:background="@color/teal_700"
             app:itemTextColor="@color/white"
             app:itemIconTint="@color/white"
+            app:headerLayout="@layout/navigation_header"
             app:menu="@menu/side_menu"
             >
 

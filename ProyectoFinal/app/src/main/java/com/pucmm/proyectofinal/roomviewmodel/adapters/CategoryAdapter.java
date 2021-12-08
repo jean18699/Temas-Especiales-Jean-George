@@ -47,7 +47,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.category = categoryList.get(position);
         holder.txtCategory.setText(holder.category.getName());
-        //CommonUtil.downloadImage(holder.category.getImage(), holder.image);
 
         holder.editBtn.setOnClickListener(v->{
             if (optionsMenuListener != null) {
