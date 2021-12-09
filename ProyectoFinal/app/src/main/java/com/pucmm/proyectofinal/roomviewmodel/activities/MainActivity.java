@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private int columnsCategory = 2;
+    private int columnsCategory = 1;
     private int columnsProducts = 1;
     private User user;
     private FirebaseAuth mAuth;

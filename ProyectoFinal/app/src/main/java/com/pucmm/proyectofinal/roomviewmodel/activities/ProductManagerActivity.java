@@ -132,20 +132,14 @@ public class ProductManagerActivity extends AppCompatActivity {
 
             if (position > 0) {
                 binding.image.setImageDrawable(drawables.get(--position));
-
-                System.out.println("Soy el drawable " + drawables.get(position).getCurrent());
-                System.out.println("MIRAME POSITION: " + position + ", MIRAME DRAWABLES SIZE: " + drawables.size() + ", MIRAME FILES SIZE: "+ files.size() );
             } else {
                 FancyToast.makeText(getApplicationContext(), "First Image Already Shown", FancyToast.LENGTH_SHORT, FancyToast.WARNING, false).show();
             }
         });
 
         binding.btnNextImage.setOnClickListener(v -> {
-
             if (position < drawables.size() - 1) {
                 binding.image.setImageDrawable(drawables.get(++position));
-                System.out.println("Soy el drawable " + drawables.get(position).toString());
-                System.out.println("MIRAME POSITION: " + position + ", MIRAME DRAWABLES SIZE: " + drawables.size() + ", MIRAME FILES SIZE: "+ files.size() );
             } else {
                 FancyToast.makeText(getApplicationContext(), "Last Image Already Shown", FancyToast.LENGTH_SHORT, FancyToast.WARNING, false).show();
             }
@@ -153,11 +147,10 @@ public class ProductManagerActivity extends AppCompatActivity {
 
 
         binding.btnDeleteImage.setOnClickListener(v -> {
-            //System.out.println("MIRAME POSITION: " + position + ", MIRAME DRAWABLES SIZE: " + drawables.size() + ", MIRAME FILES SIZE: "+ files.size() );
-
             if (drawables.size() > 0) {
                 if (position > files.size()) {
                     position--;
+
                 }
 
                 binding.image.setImageDrawable(drawables.get(position));
@@ -234,8 +227,8 @@ public class ProductManagerActivity extends AppCompatActivity {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         try {
                             editImage = true;
-                            //drawables.clear();
-                            //files.clear();
+                            drawables.clear();
+                            files.clear();
                             final ClipData clipData = result.getData().getClipData();
                             if (clipData != null) {
                                 for (int i = 0; i < clipData.getItemCount(); i++) {
