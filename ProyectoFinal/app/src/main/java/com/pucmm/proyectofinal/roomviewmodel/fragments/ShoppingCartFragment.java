@@ -21,10 +21,12 @@ import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.roomviewmodel.adapters.ProductCartAdapter;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppDatabase;
 import com.pucmm.proyectofinal.roomviewmodel.database.AppExecutors;
+import com.pucmm.proyectofinal.roomviewmodel.model.Notification;
 import com.pucmm.proyectofinal.roomviewmodel.model.ProductWithCarousel;
 import com.pucmm.proyectofinal.roomviewmodel.model.User;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +39,7 @@ public class ShoppingCartFragment extends Fragment {
 
 
     private SharedPreferences sharedPreferences;
+    private SharedPreferences quantityPreferences;
     private ProductCartAdapter cartAdapter;
     private RecyclerView cartListRecyclerView;
     private int mColumnCount = 2;
@@ -46,7 +49,9 @@ public class ShoppingCartFragment extends Fragment {
     private TextView txtTotalPrice;
     private User user;
     private TextView txtCarQuantity;
-
+    private TextView txtNotifQuantity;
+    private SharedPreferences notificationPreferences;
+    private Notification notification;
 
     public ShoppingCartFragment() {
         // Required empty public constructor
@@ -76,6 +81,8 @@ public class ShoppingCartFragment extends Fragment {
         appDatabase = AppDatabase.getInstance(getContext());
         user = (User) getArguments().getSerializable("user");
         sharedPreferences = getActivity().getSharedPreferences("cart_"+user.getUid(), Context.MODE_PRIVATE);
+        quantityPreferences =getActivity().getSharedPreferences("quantities_"+user.getUid(), Context.MODE_PRIVATE);
+
         AppExecutors.getInstance().diskIO().execute(() -> { updateCart();});
 
         if (getArguments() != null) {
@@ -94,6 +101,8 @@ public class ShoppingCartFragment extends Fragment {
         Button btnCheckout = view.findViewById(R.id.btnCheckout);
         //sharedPreferences.edit().clear().commit(); //limpiar shared preferences
         cartListRecyclerView = view.findViewById(R.id.cartList);
+        txtNotifQuantity = getActivity().findViewById(R.id.notification_badge);
+        notificationPreferences = getActivity().getSharedPreferences("notifications_" + user.getUid(), Context.MODE_PRIVATE);
 
 
         if(mColumnCount <= 1)
@@ -110,23 +119,41 @@ public class ShoppingCartFragment extends Fragment {
 
 
         btnCheckout.setOnClickListener(v->{
-            AppExecutors.getInstance().diskIO().execute(() -> {
-                for(ProductWithCarousel product : productList){
-                    product.product.setActive(true);
-                    appDatabase.productDao().update(product.product);
-                }
-            });
-            productList.clear();
-            sharedPreferences.edit().clear().commit();
-            cartAdapter.setProducts(productList);
-            txtSubTotal.setText("Sub total (0 items): ");
-            txtTotalPrice.setText("0.0");
-            txtCarQuantity.setText(String.valueOf(productList.size()));
-            Snackbar.make(getView(), "Su compra ha sido realizada con exito!", Snackbar.LENGTH_LONG).show();
+            if(productList.size() > 0){
+                buyProducts();
+            }else
+            {
+                Snackbar.make(getView(), "No hay productos a comprar en el carrito...", Snackbar.LENGTH_LONG).show();
+            }
+
         });
 
         return view;
 
+    }
+
+    private void buyProducts(){
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            for(ProductWithCarousel product : productList){
+                product.product.setActive(true);
+                appDatabase.productDao().update(product.product);
+            }
+            notification = new Notification("Se ha realizado la compra de " + productList.size() + " producto(s) en la fecha: " + new Date());
+            productList.clear();
+            sharedPreferences.edit().clear().commit();
+            quantityPreferences.edit().clear().commit();
+
+        });
+
+        cartAdapter.setProducts(productList);
+        txtSubTotal.setText("Sub total(0 items): ");
+        txtTotalPrice.setText("0.0");
+        txtCarQuantity.setText("0");
+        Snackbar.make(getView(), "Su compra ha sido realizada con exito!", Snackbar.LENGTH_LONG).show();
+        Gson notifGson = new Gson();
+        String jsonNotif = notifGson.toJson(notification);
+        notificationPreferences.edit().putString(String.valueOf(notificationPreferences.getAll().size()+1), jsonNotif).commit();
+        txtNotifQuantity.setText(String.valueOf(notificationPreferences.getAll().size()));
     }
 
     private void updateCart()
