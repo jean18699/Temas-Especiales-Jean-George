@@ -87,6 +87,10 @@ public class CategoryListFragment extends Fragment implements OnTouchListener<Ca
         categoryAdapter = new CategoryAdapter(getActivity().getApplicationContext(), user, this);
         FloatingActionButton floatingActionButton = view.findViewById(R.id.floatBtn_addCategory);
 
+        if(user.getRol().equals(User.ROL.CUSTOMER)){
+            floatingActionButton.setVisibility(View.GONE);
+        }
+
         categoryListRecyclerView = view.findViewById(R.id.categoryList);
 
         if(mColumnCount <= 1)
