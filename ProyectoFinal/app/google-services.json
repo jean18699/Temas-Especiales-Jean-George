@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "833858262189",
+    "project_id": "android-da673",
+    "storage_bucket": "android-da673.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:833858262189:android:a12aac9b105ea309d62224",
+        "android_client_info": {
+          "package_name": "com.pucmm.csti"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "833858262189-7m2p72rh3mlh6smlu1rulfhdnujpqqig.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuACMZfDnTPKwPbFFefP4pmub6WQODcs8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "833858262189-7m2p72rh3mlh6smlu1rulfhdnujpqqig.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

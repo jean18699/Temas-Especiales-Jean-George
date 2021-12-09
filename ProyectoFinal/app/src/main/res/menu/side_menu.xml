@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group>
+        <item android:title="@string/menuHomeTitle"
+            android:id="@+id/menuHome"
+            android:icon="@drawable/ic_baseline_home_24"></item>
+        <item
+            android:title="@string/category"
+            android:id="@+id/menuCategory"
+            android:icon="@drawable/ic_baseline_category_24" />
+
+        <item
+            android:title="@string/product"
+            android:id="@+id/menuProduct"
+            android:icon="@drawable/ic_baseline_shopping_bag_24" />
+
+        <item
+            android:title="@string/account"
+            android:id="@+id/menuProfile"
+            android:icon="@drawable/ic_baseline_person_24" />
+
+        <item
+            android:title="@string/menuLogout"
+            android:id="@+id/menuLogout"
+            android:icon="@drawable/ic_baseline_exit_to_app_24" />
+
+
+    </group>
+
+
+
+
+</menu>
