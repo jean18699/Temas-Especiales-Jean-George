@@ -10,6 +10,8 @@ import androidx.core.view.GravityCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -106,17 +108,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             });
         }
+
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                //.addToBackStack("Home")
+                .add(R.id.content_frame, HomeFragment.newInstance(), "Home")
+                .commit();
+
+
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         if(item.getItemId() == R.id.cart_badge){
-            getSupportFragmentManager().beginTransaction()
+           /* getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .replace(R.id.content_frame, ShoppingCartFragment.newInstance(user))
-                    .addToBackStack(null)
-                    .commit();
+                   // .addToBackStack("Cart")
+                    .replace(R.id.content_frame, ShoppingCartFragment.newInstance(user), "Cart")
+                    .commit();*/
 
             if(!searchView.isIconified()){
                 searchView.setIconified(true);
@@ -189,8 +199,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         notificationQuantity.setOnClickListener(v->{
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .replace(R.id.content_frame, NotificationFragment.newInstance(user))
-                    .addToBackStack(null)
+                    .replace(R.id.content_frame, NotificationFragment.newInstance(user), "Notifications")
+                    .addToBackStack("Notifications")
                     .commit();
 
             if(!searchView.isIconified()){
@@ -211,7 +221,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 getSupportFragmentManager().beginTransaction()
                         .setReorderingAllowed(true)
-                        .addToBackStack(null)
                         .replace(R.id.content_frame, ProductListFragment.newInstance(1,null,user,newText))
                         .commit();
                 return true;
@@ -222,15 +231,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onCreateOptionsMenu(menu);
     }
 
+    private void replaceFragment (Fragment fragment){
 
+    }
 
     @Override
     public void onBackPressed() {
-        if (!searchView.isIconified()) {
+
+       /* if (!searchView.isIconified()) {
             searchView.onActionViewCollapsed();
         } else {
             super.onBackPressed();
-        }
+        }*/
 
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
@@ -246,22 +258,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         int id = item.getItemId();
         Fragment fragment = null;
+        String tag = null;
+
         switch (id){
 
             case R.id.menuHome:
                 fragment = HomeFragment.newInstance();
+                tag = "Home";
                 break;
 
             case R.id.menuCategory:
                 fragment = CategoryListFragment.newInstance(columnsCategory, user);
+                tag = "Categories";
                 break;
 
             case R.id.menuProduct:
-            fragment = ProductListFragment.newInstance(columnsProducts,null, user, null);
+                fragment = ProductListFragment.newInstance(columnsProducts,null, user, null);
+                tag = "Products";
             break;
 
             case R.id.menuProfile:
                 fragment = UserManagerFragment.newInstance(user);
+                tag = "Profile";
                 break;
 
             case R.id.menuLogout:
@@ -273,8 +291,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(fragment != null){
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .replace(R.id.content_frame, fragment)
-                    .addToBackStack(null)
+                    .replace(R.id.content_frame, fragment, tag)
+                    .addToBackStack(tag)
                     .commit();
         }
 

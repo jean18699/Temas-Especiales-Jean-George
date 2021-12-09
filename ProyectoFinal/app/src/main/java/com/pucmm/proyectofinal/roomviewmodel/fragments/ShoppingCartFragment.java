@@ -35,7 +35,7 @@ import java.util.Map;
  */
 public class ShoppingCartFragment extends Fragment {
 
-    private static final String TAG = "ShoppingCartFragment";
+
     private SharedPreferences sharedPreferences;
     private ProductCartAdapter cartAdapter;
     private RecyclerView cartListRecyclerView;

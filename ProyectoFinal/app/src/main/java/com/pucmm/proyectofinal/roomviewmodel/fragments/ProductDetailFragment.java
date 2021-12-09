@@ -164,13 +164,16 @@ public class ProductDetailFragment extends Fragment {
 
             getActivity().getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .replace(R.id.content_frame, ShoppingCartFragment.newInstance(managedProduct, user))
-                    .addToBackStack(null)
+                    .replace(R.id.content_frame, ShoppingCartFragment.newInstance(managedProduct, user), "CartFromDetail")
                     .commit();
+
+
         });
 
         return view;
     }
+
+
 
     private final Consumer<ArrayList<Drawable>> carouselView = new Consumer<ArrayList<Drawable>>() {
         @Override

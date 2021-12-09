@@ -203,8 +203,8 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
     public void OnClick(ProductWithCarousel element) {
         getActivity().getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
-                .replace(R.id.content_frame, ProductDetailFragment.newInstance(element, user))
-                .addToBackStack(null)
+                .replace(R.id.content_frame, ProductDetailFragment.newInstance(element, user), "Detail")
+                .addToBackStack("Detail")
                 .commit();
     }
 }

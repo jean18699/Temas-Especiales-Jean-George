@@ -53,4 +53,5 @@
     <string name="menuLogout">Logout</string>
     <string name="btn_select_image">Select image(s)</string>
     <string name="clear">Clear Notifications</string>
+    <string name="welcome_to_the_shop">Welcome to the shop!</string>
 </resources>
