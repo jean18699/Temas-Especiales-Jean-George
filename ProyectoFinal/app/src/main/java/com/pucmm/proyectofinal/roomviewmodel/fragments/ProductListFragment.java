@@ -95,6 +95,9 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_product_list, container, false);
         FloatingActionButton floatingActionButton = view.findViewById(R.id.floatBtn_addProduct);
+        if(user.getRol().equals(User.ROL.CUSTOMER)){
+            floatingActionButton.setVisibility(View.GONE);
+        }
 
         productListRecyclerView = view.findViewById(R.id.productList);
 
