@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.roomviewmodel.adapters.ProductCartAdapter;
@@ -89,6 +91,7 @@ public class ShoppingCartFragment extends Fragment {
         txtSubTotal = view.findViewById(R.id.txtSubTotal);
         txtTotalPrice = view.findViewById(R.id.txtTotalPrice);
         txtCarQuantity = getActivity().findViewById(R.id.cart_badge);
+        Button btnCheckout = view.findViewById(R.id.btnCheckout);
         //sharedPreferences.edit().clear().commit(); //limpiar shared preferences
         cartListRecyclerView = view.findViewById(R.id.cartList);
 
@@ -104,6 +107,24 @@ public class ShoppingCartFragment extends Fragment {
         }
         loadCart();
         cartListRecyclerView.setAdapter(cartAdapter);
+
+
+        btnCheckout.setOnClickListener(v->{
+            AppExecutors.getInstance().diskIO().execute(() -> {
+                for(ProductWithCarousel product : productList){
+                    product.product.setActive(true);
+                    appDatabase.productDao().update(product.product);
+                }
+            });
+            productList.clear();
+            sharedPreferences.edit().clear().commit();
+            cartAdapter.setProducts(productList);
+            txtSubTotal.setText("Sub total (0 items): ");
+            txtTotalPrice.setText("0.0");
+            txtCarQuantity.setText(String.valueOf(productList.size()));
+            Snackbar.make(getView(), "Su compra ha sido realizada con exito!", Snackbar.LENGTH_LONG).show();
+        });
+
         return view;
 
     }

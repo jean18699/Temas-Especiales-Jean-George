@@ -29,7 +29,7 @@ public class Product implements Serializable {
     private Double price;
 
     @ColumnInfo(name = "active")
-    private boolean active;
+    private boolean active; //Si este producto fue comprado se convierte en activo y no puede ser borrado
 
     public Product(){
         this.productId = UUID.randomUUID().toString();
@@ -41,7 +41,7 @@ public class Product implements Serializable {
         this.description = description;
         this.category = category;
         this.price = price;
-        this.active = true;
+        this.active = false;
     }
 
 

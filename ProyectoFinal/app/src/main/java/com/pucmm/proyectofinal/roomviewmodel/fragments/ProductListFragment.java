@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.pucmm.proyectofinal.R;
 import com.pucmm.proyectofinal.networksync.FirebaseNetwork;
@@ -118,6 +119,7 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
 
         retrieveTasks();
         productListRecyclerView.setAdapter(productAdapter);
+
         productAdapter.setOptionsMenuListener((OptionsMenuListener<ProductWithCarousel>) (view1, element) -> {
             CommonUtil.popupMenu(getContext(), view1, () -> {
                 Intent intent = new Intent(getContext(), ProductManagerActivity.class);
@@ -135,25 +137,33 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
     }
 
     private void delete(ProductWithCarousel element) {
-        final KProgressHUD progressDialog = new KProgressHUDUtils(getActivity()).showConnecting();
-        function.apply(progressDialog).apply(true).accept(element);
 
-        if (element.carousels != null && !element.carousels.isEmpty()) {
-            FirebaseNetwork.obtain().deletes(element.carousels, new NetResponse<String>() {
-                @Override
-                public void onResponse(String response) {
-                    function.apply(progressDialog).apply(true).accept(element);
-                }
-
-                @Override
-                public void onFailure(Throwable t) {
-                    function.apply(progressDialog).apply(false).accept(element);
-                    FancyToast.makeText(getContext(), t.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
-                }
-            });
-        } else {
+        if(element.product.isActive() == true){
+            Snackbar.make(getView(), "Este producto ha sido comprado con anterioridad, no se puede borrar.", Snackbar.LENGTH_LONG).show();
+        }else
+        {
+            final KProgressHUD progressDialog = new KProgressHUDUtils(getActivity()).showConnecting();
             function.apply(progressDialog).apply(true).accept(element);
+
+            if (element.carousels != null && !element.carousels.isEmpty()) {
+                FirebaseNetwork.obtain().deletes(element.carousels, new NetResponse<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        function.apply(progressDialog).apply(true).accept(element);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        function.apply(progressDialog).apply(false).accept(element);
+                        FancyToast.makeText(getContext(), t.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                    }
+                });
+            } else {
+                function.apply(progressDialog).apply(true).accept(element);
+            }
         }
+
+
     }
 
     private final Function<KProgressHUD, Function<Boolean, Consumer<ProductWithCarousel>>> function = progress -> success -> element -> {
@@ -185,11 +195,7 @@ public class ProductListFragment extends Fragment implements OnTouchListener<Pro
         }).get(ProductViewModel.class);
 
         productViewModel.getProductListLiveData().observe(getActivity(), products -> productAdapter.setProducts(products));
-            /*@Override
-            public void onChanged(List<ProductWithCarousel> products) {
-                productAdapter.setProducts(products);
 
-        });*/
 
     }
 

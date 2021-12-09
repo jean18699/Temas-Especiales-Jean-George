@@ -12,7 +12,7 @@ import com.pucmm.proyectofinal.databinding.ActivitySplashBinding;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private final static int LOADING_TIME = 1000;
+    private final static int LOADING_TIME = 3000;
     private LottieAnimationView lottie;
 
     @Override
